@@ -116,6 +116,25 @@ For the Open InterOPT runners, export the variables from `.env` into your shell 
 
 ## 📊 Results at a glance
 
+### Model Performance on OR-Clarify
+
+How well do different models clarify an incomplete optimization request? These results compare the tested models under the base Open/FreeQA and Choice/MC-D protocols, **without InterOPT's two-stage policy** ([Table 1 in the paper](https://arxiv.org/html/2609.05258v1#S6.T1)).
+
+| Setting | Tested model | All-Slot Exact ↑ | Core Exact ↑ | Silent/run ↓ | Avg Turns | Avg Q |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Open / FreeQA | DeepSeek V4 Pro | 0.426 | 0.472 | 0.682 | 3.912 | 3.232 |
+| Open / FreeQA | GLM-5.1 | 0.454 | 0.491 | 0.624 | 4.484 | 3.880 |
+| Open / FreeQA | GPT-5.5 | 0.430 | 0.498 | 0.632 | 3.491 | 2.540 |
+| Open / FreeQA | Opus-4.8 | 0.548 | 0.583 | 0.424 | 4.406 | 3.504 |
+| Choice / MC-D | DeepSeek V4 Pro | 0.474 | 0.506 | 0.692 | 3.258 | 2.350 |
+| Choice / MC-D | GLM-5.1 | 0.400 | 0.434 | 0.712 | 2.898 | 1.970 |
+| Choice / MC-D | GPT-5.5 | 0.414 | 0.449 | 0.660 | 3.184 | 2.218 |
+| Choice / MC-D | Opus-4.8 | 0.542 | 0.583 | 0.456 | 3.724 | 2.906 |
+
+Each model/protocol pair is evaluated on **100 cases**, with **K=5 runs per case** and **max_turns=20** (500 runs). Scores are averaged within each case, then across cases. Core Exact includes only the **94 cases with at least one P0/P1 slot** (470 runs). All values are reported to three decimal places. Silent/run counts hidden requirements that the agent assumes without confirmation, averaged per run.
+
+### Method comparison
+
 ![Paper Figure 4: exact requirement recovery versus cumulative atomic questions. Open results are shown above Choice results; the left panels show All-Slot Exact and the right panels show Core Exact.](assets/clarification-results.png)
 
 *Figure 4 from the paper. Curves average five runs per case, with shaded bands showing 95% case-level bootstrap confidence intervals. Compare methods within each protocol.*
