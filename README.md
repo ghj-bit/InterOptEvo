@@ -128,3 +128,18 @@ Under Choice, InterOPT reaches higher recovery while asking more questions. Open
 - **Core Exact** — the same all-or-nothing test, but only over the P0/P1 requirements (the 94 cases that have them).
 - **Avg Q** — the average number of independently answerable (atomic) questions per run. A single turn may contain several such questions.
 - **Avg Turns** — the average number of agent turns per run, including the final `READY_TO_MODEL` action when present. That stopping turn adds no questions.
+
+## 📖 Citation
+
+If you use OR-Clarify or InterOPT in your work, please cite:
+
+```bibtex
+@misc{ge2026askoptimize,
+  title={Ask Before You Optimize: Dynamic Pre-Formulation Clarification for Interactive Optimization},
+  author={Sihan Ge and Yichen Lin and Chenyu Zhou and Jianghao Lin and Tao Yao and Dongdong Ge},
+  year={2026},
+  eprint={2609.05258},
+  archivePrefix={arXiv},
+  primaryClass={math.OC},
+  url={https://arxiv.org/abs/2609.05258}
+}
