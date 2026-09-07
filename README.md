@@ -53,8 +53,8 @@ These answers add two concrete constraints: no same-period resale and an exact e
 Use a Python 3.11+ environment. The commands below use Bash (Linux, macOS, or Git Bash on Windows).
 
 ```bash
-git clone https://github.com/AIOR-Research/ask_before_you_optimize.git
-cd ask_before_you_optimize
+git clone https://github.com/AIOR-Research/InterOpt.git
+cd InterOpt
 python -m pip install -r requirements.txt
 cp -n .env.example .env
 ```
