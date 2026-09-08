@@ -2,6 +2,8 @@
 
 # Dynamic Pre-Formulation Clarification for Interactive Optimization
 
+📄 Paper: [Ask Before You Optimize: Dynamic Pre-Formulation Clarification for Interactive Optimization](https://arxiv.org/abs/2609.05258)
+
 📦 **Dataset:** [OR-Clarify on Hugging Face](https://huggingface.co/datasets/AIOR-Research/OR-Clarify)
 
 “Buy low, sell high” sounds simple—but can newly purchased stock be sold immediately? Must a fixed amount remain in storage at the end? Guessing these rules can mean optimizing the wrong problem. **InterOPT** asks targeted questions before formulation, while **OR-Clarify** evaluates whether agents uncover the missing requirements.
