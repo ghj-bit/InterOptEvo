@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_profit_maximization_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "what should the plan actually optimize for — for example, maximize total profit, minimize total production cost, maximize total units produced, or is any plan that simply satisfies all the constraints acceptable?",
+      "rationale": "The agent explicitly asked what objective to optimize, including maximize total profit, and the user confirmed profit maximization."
+    },
+    {
+      "slot_id": "H2",
+      "name": "missing_idle_time_minimization_objective",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "does it also imply that any unused time within those limits is simply wasted (i.e., there is no penalty or carryover for idle capacity)?",
+      "rationale": "The agent touched on unused/idle capacity, but only as a clarification of the overtime constraint, not as a possible secondary objective to minimize idle time with cost-proportional weights."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Idle time is not part of the optimization objective; unused capacity is only reported as slack.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only whether unused time is wasted under the overtime rule, not whether idle time should be minimized as a secondary objective, and then omitted any idle-time objective from the final model."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The P0 objective slot was resolved, but the P1 idle-time minimization objective was not fully clarified before READY_TO_MODEL."
+  },
+  "summary": "The agent recovered the core profit-maximization objective and many modeling details, but only partially addressed the idle-time minimization requirement and then stopped with that P1 issue unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

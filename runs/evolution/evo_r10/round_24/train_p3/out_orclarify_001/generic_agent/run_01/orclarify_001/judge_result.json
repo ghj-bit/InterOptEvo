@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "no_production_during_training_period",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "When a skilled worker spends a two-week period training up to 3 new workers, does that worker still produce food during those two weeks (at a reduced rate, or at the normal rate), or is the worker fully occupied with training and produces nothing during the training period?",
+      "rationale": "The agent explicitly asked whether the skilled trainer produces during the training period, directly covering the no-production-during-training hidden fact."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_cost",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about the optimization objective or whether the goal is to minimize total cost before entering the repeated final-question loop."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The objective is to minimize total cost, as implied by the initial brief and never confirmed with the user.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked whether the objective is to minimize total cost or something else, so the objective remained an unconfirmed hidden slot."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The conversation never reached READY_TO_MODEL or an equivalent final modeling state; the agent instead repeated the same question many times, leaving the P0 objective slot unresolved."
+  },
+  "summary": "The agent recovered the P1 training-production fact but failed to ask about the P0 optimization objective and then became stuck repeating the same question, so the interaction did not reach a valid modeling stop.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.4,
+    "earned_weight": 2.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 0.0,
+        "total_weight": 3.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

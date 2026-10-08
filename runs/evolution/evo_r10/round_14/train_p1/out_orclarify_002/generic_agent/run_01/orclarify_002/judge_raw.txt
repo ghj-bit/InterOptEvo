@@ -1,0 +1,54 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "How many trained pilots does one fighter jet produce per year when it is allocated to pilot training?",
+      "rationale": "The agent explicitly asked about the per-year pilot training capacity of a training jet, matching the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked how many combat jets a trained pilot can operate or about the pilot-to-combat-jet relationship."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "When a training jet trains pilots, does it train 5 pilots in each year it is in service (so a jet allocated in year 1 trains 5 in year 1 and another 5 in year 2, for 10 total), or does it train 5 pilots only in the year it is first allocated?",
+      "rationale": "The agent touched on the multi-year training timeline and persistence, but did not explicitly ask when training starts or how many years the training program lasts."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Trained pilots are counted directly without needing to clarify how many combat jets each pilot can operate.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the pilot-to-combat-jet mapping, so the one-to-one or other relationship was not confirmed."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Training starts in year 1 and continues for 2 years, with training jets remaining in service in year 2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about persistence of training jets but did not explicitly confirm the start year or total training duration."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H3"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 training duration/start slot was only partially resolved and not explicitly confirmed."
+  },
+  "summary": "The agent recovered the critical per-jet training capacity and clarified several operational details, but stopped before fully resolving the P1 training timeline and never addressed the P2 pilot-to-combat-jet mapping."
+}

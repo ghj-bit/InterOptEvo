@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "The \"total weekly profit must be at least $10,000\" — is this a hard constraint that the plan must satisfy (i.e., if no feasible plan reaches $10,000, the problem is infeasible), or is it a target that should be incorporated into the objective in some other way (e.g., a penalty for falling short)?",
+      "rationale": "The agent explicitly asked about the minimum profit requirement of $10,000 and whether it is a hard constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "For the \"at least 15 units of Model B per week\" requirement, is this a minimum (Model B can be produced in any quantity of 15 or more), or does it mean exactly 15 units of Model B must be produced each week?",
+      "rationale": "The agent explicitly asked about the minimum production quantity of Model B, specifically at least 15 units per week."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about Process I capacity and overtime, but never asked whether Process I time must be exactly 150 hours rather than an upper bound."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is a hard ceiling of at most 150 hours, not an exact equality of 150 hours.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent asked whether Process I could exceed 150 hours but never asked whether it must equal exactly 150 hours, and later treated the capacity as an upper bound."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The conversation ended without a clear READY_TO_MODEL or equivalent final modeling/final answer state; the agent continued repeating questions until the transcript ended."
+  },
+  "summary": "The agent recovered the minimum profit target and Model B minimum production requirement, but missed the exact Process I time requirement and never reached a clear final modeling state, instead repeating unresolved questions.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6666666666666666,
+    "earned_weight": 2.0,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 2.0,
+        "total_weight": 3.0,
+        "score": 0.6666666666666666
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

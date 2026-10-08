@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about production restrictions for Product I in Q2 or any quarter-specific production limitations."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the delay compensation cost, if demand for a product in a given quarter is not fully met, is the unmet amount carried over as backorder to be fulfilled in a later quarter (incurring the per-quarter delay penalty for each quarter it waits), or is the unmet demand simply lost and the penalty charged only once?",
+      "rationale": "The agent explicitly asked whether unmet demand is backordered and fulfilled later versus lost, directly covering the requirement that contract reservations must eventually be delivered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2, with no quarter-specific production restriction.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed any restriction on producing Product I in Q2, yet proceeded toward modeling without marking this hidden constraint as needing confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent stopped after many repetitive questions without ever resolving the P1 hidden slot H1 about Product I not being producible in Q2."
+  },
+  "summary": "The agent clarified several cost and backlogging semantics, including the delivery/backorder requirement, but failed to ask about the quarter-specific production restriction for Product I and then stopped with that P1 slot unresolved."
+}

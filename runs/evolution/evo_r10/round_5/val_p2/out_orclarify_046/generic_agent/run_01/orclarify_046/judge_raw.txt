@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a limit on the number of shifts or working days per student per week, and did not mark it as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never inquired about a daily limit on the count of distinct students assigned to duty, and did not flag it as an assumption."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of the scheduling plan — is it to minimize the total weekly labor cost (sum of wage × hours for all students), or is there another goal such as maximizing fairness or minimizing total hours worked?",
+      "rationale": "The agent explicitly asked about the optimization objective and whether it is to minimize total weekly labor cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no limit on the number of shifts or working days per student per week.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a weekly shift/day limit and did not confirm this assumption before finalizing the model."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no daily limit on the number of distinct students assigned to duty.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a daily distinct-student cap and did not confirm this assumption before finalizing the model."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while P1 hidden slots H1 and H2 remained unresolved and unconfirmed."
+  },
+  "summary": "The agent clarified the objective and several modeling details but failed to ask about two P1 constraints: the maximum number of shifts per week and the maximum number of distinct students per day, silently assuming neither limit exists."
+}

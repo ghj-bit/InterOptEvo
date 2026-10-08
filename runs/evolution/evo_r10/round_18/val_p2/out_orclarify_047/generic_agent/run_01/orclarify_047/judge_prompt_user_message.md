@@ -1,0 +1,197 @@
+# Case facts for Judge
+
+## Initial brief shown to Generic Agent
+Visible unit IDs: U1, U16, U17, U18, U19, U20, U21, U22, U2, U3, U4, U5, U6, U7, U8, U9, U10, U11, U12, U13, U14, U15
+I need help creating a farm operating plan where total land used for crops and dairy cows must not exceed 100 hectares, total investment for animals must not exceed 15,000 yuan, total person-days used for farm activities and external work in autumn and winter must not exceed 3,500, and in spring and summer must not exceed 4,000, the number of chickens cannot exceed 3,000, the number of dairy cows cannot exceed 32, and all labor day allocations (for crops and animals) must be integer numbers of days.
+
+Total available land: 100 hectares.
+
+Available funds: 15,000 yuan.
+
+Available labor: 3,500 person-days in autumn and winter, 4,000 person-days in spring and summer.
+
+External work earnings: 2.1 yuan/person-day in spring and summer, 1.8 yuan/person-day in autumn and winter.
+
+Crop cultivation requires no specialized investment.
+
+Investment cost per dairy cow: 400 yuan; per chicken: 3 yuan.
+
+Land required per dairy cow for feed: 1.5 hectares.
+
+Labor required per dairy cow: 100 person-days in autumn and winter, 50 person-days in spring and summer.
+
+Annual net income per dairy cow: 400 yuan.
+
+Labor required per chicken: 0.6 person-days in autumn and winter, 0.3 person-days in spring and summer.
+
+Annual net income per chicken: 2 yuan.
+
+Chicken coop maximum capacity: 3,000 chickens.
+
+Cow barn maximum capacity: 32 dairy cows.
+
+Crop labor and income requirements per year (per hectare):
+| Item           | Soybean | Corn | Wheat |
+|----------------|---------|------|-------|
+| Person-days (Autumn/Winter) | 20      | 35   | 10    |
+| Person-days (Spring/Summer) | 50      | 75   | 40    |
+| Annual Net Income (Yuan/hectare) | 175     | 300   | 120   |
+
+## Problem units
+- U1 (context): I need help creating a farm operating plan.
+- U2 (data): Total available land: 100 hectares.
+- U3 (data): Available funds: 15,000 yuan.
+- U4 (data): Available labor: 3,500 person-days in autumn and winter, 4,000 person-days in spring and summer.
+- U5 (data): External work earnings: 2.1 yuan/person-day in spring and summer, 1.8 yuan/person-day in autumn and winter.
+- U6 (data): Crop cultivation requires no specialized investment.
+- U7 (data): Investment cost per dairy cow: 400 yuan; per chicken: 3 yuan.
+- U8 (data): Land required per dairy cow for feed: 1.5 hectares.
+- U9 (data): Labor required per dairy cow: 100 person-days in autumn and winter, 50 person-days in spring and summer.
+- U10 (data): Annual net income per dairy cow: 400 yuan.
+- U11 (data): Labor required per chicken: 0.6 person-days in autumn and winter, 0.3 person-days in spring and summer.
+- U12 (data): Annual net income per chicken: 2 yuan.
+- U13 (data): Chicken coop maximum capacity: 3,000 chickens.
+- U14 (data): Cow barn maximum capacity: 32 dairy cows.
+- U15 (data): Crop labor and income requirements per year (per hectare):
+| Item           | Soybean | Corn | Wheat |
+|----------------|---------|------|-------|
+| Person-days (Autumn/Winter) | 20      | 35   | 10    |
+| Person-days (Spring/Summer) | 50      | 75   | 40    |
+| Annual Net Income (Yuan/hectare) | 175     | 300   | 120   |
+- U16 (constraint): Total land used for crops and dairy cows must not exceed 100 hectares.
+- U17 (constraint): Total investment for animals must not exceed 15,000 yuan.
+- U18 (constraint): Total person-days used for farm activities and external work in autumn and winter must not exceed 3,500.
+- U19 (constraint): Total person-days used for farm activities and external work in spring and summer must not exceed 4,000.
+- U20 (constraint): Number of chickens cannot exceed 3,000.
+- U21 (constraint): Number of dairy cows cannot exceed 32.
+- U22 (constraint): All labor day allocations (for crops and animals) must be integer numbers of days.
+- U23 (objective): Maximize total annual net income.
+
+## Hidden slot scoring rules
+## H1: missing_objective
+- Severity: P0
+- Severity reason: Without knowing that the objective is to maximize annual net income, the agent cannot formulate a meaningful optimization model. Any arbitrary objective would likely be incorrect.
+- Problem unit ID: U23
+- Semantic hit rule: The agent's question must ask about the optimization objective, specifically inquiring what the farm wants to maximize (e.g., net income, profit).
+- Reference acceptable questions:
+  - What is the objective we are trying to optimize?
+  - What is the goal of the farm's operating plan?
+- Failure modes:
+  - Silent assumption that the objective is to maximize total revenue rather than net income.
+  - Silent assumption that the objective is to minimize costs or maximize crop yield.
+
+
+# Full Transcript
+
+## Turn 1 - Generic Agent
+
+QUESTION: 除了奶牛和鸡之外，是否还有其他动物（例如猪、羊等）可以饲养，还是说农场只经营这三类作物（大豆、玉米、小麦）加奶牛和鸡这五种生产活动？
+
+## Turn 1 - User Simulator
+
+农场只经营这三类作物（大豆、玉米、小麦）加奶牛和鸡这五种生产活动，没有其他动物。
+
+## Turn 2 - Generic Agent
+
+QUESTION: 外部务工（外出打工）的用工天数是否计入秋/冬 3500 人日和春/夏 4000 人日的总劳动约束中，即"农场活动用工 + 外部务工用工 ≤ 可用劳动"，还是外部务工是独立于农场劳动之外的另一项资源？
+
+## Turn 2 - User Simulator
+
+外部务工的用工天数计入秋/冬 3500 人日和春/夏 4000 人日的总劳动约束中，即"农场活动用工 + 外部务工用工 ≤ 可用劳动"。
+
+## Turn 3 - Generic Agent
+
+QUESTION: 外部务工的用工天数是否也必须是整数人日（与作物和动物的用工整数要求一致），还是外部务工可以是任意实数人日？
+
+## Turn 3 - User Simulator
+
+外部务工的用工天数也必须是整数人日。
+
+## Turn 4 - Generic Agent
+
+QUESTION: 土地约束"作物用地 + 奶牛饲料用地 ≤ 100 公顷"中，鸡是否完全不占用土地（即鸡舍用地忽略不计），还是鸡也需要占用一部分土地？
+
+## Turn 4 - User Simulator
+
+鸡完全不占用土地，鸡舍用地忽略不计。
+
+## Turn 5 - Generic Agent
+
+QUESTION: 投资约束"动物总投资 ≤ 15,000 元"中，作物不需要专门投资这一点已明确，那么这 15,000 元是否只用于奶牛（400 元/头）和鸡（3 元/只）的购置，即投资 = 400×奶牛数 + 3×鸡数 ≤ 15,000？
+
+## Turn 5 - User Simulator
+
+是的，这 15,000 元只用于奶牛和鸡的购置，即投资 = 400×奶牛数 + 3×鸡数 ≤ 15,000。
+
+## Turn 6 - Generic Agent
+
+QUESTION: 目标函数是最大化农场年度总净收入（三类作物净收入 + 奶牛净收入 + 鸡净收入 + 外部务工收入）吗？
+
+## Turn 6 - User Simulator
+
+是的，目标函数是最大化农场年度总净收入，包括三类作物净收入、奶牛净收入、鸡净收入以及外部务工收入。
+
+## Turn 7 - Generic Agent
+
+QUESTION: 作物用地（大豆、玉米、小麦各自的公顷数）是否允许为任意非负实数，还是也必须取整数公顷？
+
+## Turn 7 - User Simulator
+
+作物用地允许为任意非负实数，不要求取整数公顷。
+
+## Turn 8 - Generic Agent
+
+QUESTION: 奶牛和鸡的数量是否必须取整数（即奶牛数、鸡数为非负整数）？
+
+## Turn 8 - User Simulator
+
+是的，奶牛和鸡的数量必须取非负整数。
+
+## Turn 9 - Generic Agent
+
+QUESTION: 外部务工的用工天数是否允许为零（即可以完全不外出打工），还是必须外出打工一定天数？
+
+## Turn 9 - User Simulator
+
+外部务工的用工天数允许为零，即可以完全不外出打工。
+
+## Turn 10 - Generic Agent
+
+QUESTION: 作物用地是否必须恰好把 100 公顷全部用完（即"作物用地 + 奶牛饲料用地 = 100"），还是允许有剩余土地闲置（即"≤ 100"）？
+
+## Turn 10 - User Simulator
+
+允许有剩余土地闲置，即"作物用地 + 奶牛饲料用地 ≤ 100"。
+
+## Turn 11 - Generic Agent
+
+QUESTION: 劳动约束中，外部务工收入按春/夏 2.1 元/人日、秋/冬 1.8 元/人日计算，那么外部务工的用工天数是否也分春/夏和秋/冬两个季节分别计算（即春/夏外部务工天数和秋/冬外部务工天数是两个独立的整数变量）？
+
+## Turn 11 - User Simulator
+
+是的，外部务工的用工天数分春/夏和秋/冬两个季节分别计算，是两个独立的整数变量。
+
+## Turn 12 - Generic Agent
+
+READY_TO_MODEL
+
+确认的理解如下：
+
+**决策变量：**
+- 大豆、玉米、小麦的种植面积（公顷），非负实数
+- 奶牛数量，非负整数
+- 鸡的数量，非负整数
+- 春/夏外部务工天数，非负整数
+- 秋/冬外部务工天数，非负整数
+
+**目标函数：** 最大化年度总净收入 = 作物净收入（大豆175 + 玉米300 + 小麦120 元/公顷）+ 奶牛净收入（400元/头）+ 鸡净收入（2元/只）+ 外部务工收入（春/夏 2.1元/人日 + 秋/冬 1.8元/人日）
+
+**约束条件：**
+1. 土地：大豆面积 + 玉米面积 + 小麦面积 + 1.5×奶牛数 ≤ 100 公顷
+2. 投资：400×奶牛数 + 3×鸡数 ≤ 15,000 元
+3. 秋/冬劳动：20×大豆 + 35×玉米 + 10×小麦 + 100×奶牛 + 0.6×鸡 + 秋/冬外部务工 ≤ 3,500 人日
+4. 春/夏劳动：50×大豆 + 75×玉米 + 40×小麦 + 50×奶牛 + 0.3×鸡 + 春/夏外部务工 ≤ 4,000 人日
+5. 鸡数量 ≤ 3,000
+6. 奶牛数量 ≤ 32
+7. 所有劳动用工（作物、动物、外部务工）均为整数人日
+8. 作物面积为非负实数，奶牛和鸡为非负整数，外部务工天数为非负整数

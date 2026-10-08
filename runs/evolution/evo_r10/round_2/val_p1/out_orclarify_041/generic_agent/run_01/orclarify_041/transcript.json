@@ -1,0 +1,77 @@
+[
+  {
+    "turn": 1,
+    "speaker": "generic_agent",
+    "content": "QUESTION: At the end of Year 3, is any money that has not been invested in a maturing product (i.e., cash held idle) counted toward the objective, or must all funds be invested in products that mature by the end of Year 3?",
+    "detected_question_count": 1,
+    "detected_atomic_questions": [
+      "At the end of Year 3, is any money that has not been invested in a maturing product (i.e., cash held idle) counted toward the objective, or must all funds be invested in products that mature by the end of Year 3?"
+    ]
+  },
+  {
+    "turn": 1,
+    "speaker": "user_simulator",
+    "content": "Cash held idle at the end of Year 3 is counted toward the objective. The goal is to maximize total wealth (principal plus interest) at the end of Year 3, which includes any uninvested cash remaining at that time."
+  },
+  {
+    "turn": 2,
+    "speaker": "generic_agent",
+    "content": "QUESTION: For product (1), the 1-year product available at the beginning of each year, can the proceeds from a product that matures at the end of a year be reinvested in product (1) at the beginning of the next year (i.e., is there no friction or delay between maturity and reinvestment)?",
+    "detected_question_count": 1,
+    "detected_atomic_questions": [
+      "For product (1), the 1-year product available at the beginning of each year, can the proceeds from a product that matures at the end of a year be reinvested in product (1) at the beginning of the next year (i.e., is there no friction or delay between maturity and reinvestment)?"
+    ]
+  },
+  {
+    "turn": 2,
+    "speaker": "user_simulator",
+    "content": "Yes, proceeds from a product that matures at the end of a year can be reinvested in product (1) at the beginning of the next year. There is no friction or delay; the cash is available for investment at the start of the following year."
+  },
+  {
+    "turn": 3,
+    "speaker": "generic_agent",
+    "content": "QUESTION: Is there any minimum investment amount or granularity requirement for any of the products, or can any non-negative amount be invested in each product?",
+    "detected_question_count": 1,
+    "detected_atomic_questions": [
+      "Is there any minimum investment amount or granularity requirement for any of the products, or can any non-negative amount be invested in each product?"
+    ]
+  },
+  {
+    "turn": 3,
+    "speaker": "user_simulator",
+    "content": "There is no minimum investment amount or granularity requirement. Any non-negative amount can be invested in each product, subject to the stated maximum caps for products (2), (3), and (4)."
+  },
+  {
+    "turn": 4,
+    "speaker": "generic_agent",
+    "content": "QUESTION: Is there any constraint that requires a minimum amount of cash to be kept liquid (uninvested) at the beginning of any year, or can 100% of available cash be invested each year?",
+    "detected_question_count": 1,
+    "detected_atomic_questions": [
+      "Is there any constraint that requires a minimum amount of cash to be kept liquid (uninvested) at the beginning of any year, or can 100% of available cash be invested each year?"
+    ]
+  },
+  {
+    "turn": 4,
+    "speaker": "user_simulator",
+    "content": "There is no constraint requiring a minimum amount of cash to be kept liquid. 100% of available cash can be invested at the beginning of any year, subject to the product availability and capacity limits."
+  },
+  {
+    "turn": 5,
+    "speaker": "generic_agent",
+    "content": "QUESTION: Is there any limit on the total amount that can be invested in product (1) across all three years, or is it truly unlimited in each year it is available?",
+    "detected_question_count": 1,
+    "detected_atomic_questions": [
+      "Is there any limit on the total amount that can be invested in product (1) across all three years, or is it truly unlimited in each year it is available?"
+    ]
+  },
+  {
+    "turn": 5,
+    "speaker": "user_simulator",
+    "content": "Product (1) is truly unlimited in each year it is available. There is no cap on the total amount that can be invested in product (1) across all three years."
+  },
+  {
+    "turn": 6,
+    "speaker": "generic_agent",
+    "content": "READY_TO_MODEL\n\nHere is my confirmed understanding of the problem:\n\n**Objective:** Maximize total wealth (principal + interest + any idle cash) at the end of Year 3.\n\n**Initial capital:** 500,000 yuan at the beginning of Year 1.\n\n**Products and their parameters:**\n\n| Product | Type | Available | Matures | Return | Cap |\n|---------|------|-----------|---------|--------|-----|\n| (1) | 1-year | Beginning of Years 1, 2, 3 | End of same year | 1.20 × I | Unlimited |\n| (2) | 2-year | Beginning of Year 1 only | End of Year 2 | 1.50 × I | 120,000 |\n| (3) | Same-year | Beginning of Year 2 only | End of Year 2 | 1.60 × I | 150,000 |\n| (4) | 1-year | Beginning of Year 3 only | End of Year 3 | 1.40 × I | 100,000 |\n\n**Key rules confirmed:**\n- Proceeds from maturing products are immediately available for reinvestment at the beginning of the next year (no friction or delay).\n- Any non-negative amount can be invested (no minimums or granularity).\n- 100% of available cash may be invested each year (no liquidity reserve requirement).\n- Product (1) has no capacity limit in any year.\n- Idle cash at the end of Year 3 counts toward the objective.\n- The only constraints are the per-product caps on (2), (3), and (4), and the cash-flow balance at each year boundary.\n\n**Decision variables (continuous, non-negative):**\n- x₁, x₂, x₃: amounts invested in product (1) at the beginning of Years 1, 2, 3 respectively.\n- x₄: amount invested in product (2) at the beginning of Year 1.\n- x₅: amount invested in product (3) at the beginning of Year 2.\n- x₆: amount invested in product (4) at the beginning of Year 3.\n\n**Cash-flow constraints:**\n- Beginning of Year 1: x₁ + x₄ ≤ 500,000\n- Beginning of Year 2: x₂ + x₅ ≤ 1.20·x₁ + 1.50·x₄ (proceeds from Year 1 product (1) and product (2))\n- Beginning of Year 3: x₃ + x₆ ≤ 1.20·x₂ + 1.60·x₅ (proceeds from Year 2 product (1) and product (3))\n\n**Capacity constraints:**\n- x₄ ≤ 120,000\n- x₅ ≤ 150,000\n- x₆ ≤ 100,000\n\n**Objective (end of Year 3 wealth):**\nMaximize 1.20·x₃ + 1.40·x₆ + (any idle cash at end of Year 3)\n\nwhere idle cash at end of Year 3 = (1.20·x₂ + 1.60·x₅) − x₃ − x₆ (if positive).\n\nThis is a linear program with 6 continuous non-negative variables."
+  }
+]

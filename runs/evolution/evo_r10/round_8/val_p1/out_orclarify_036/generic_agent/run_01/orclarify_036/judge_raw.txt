@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand could be split across multiple vehicles; it treated 'each served exactly once' as stated and did not explicitly confirm the no-split-delivery rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "After a truck finishes serving its last customer, must it return to the depot, or is the route complete once the last customer is served?",
+      "rationale": "The agent explicitly asked whether trucks must return to the depot, directly covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer must be served entirely by one vehicle; split deliveries are not allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether customer demand could be split across vehicles, but in READY_TO_MODEL it stated '20 customers, each must be served exactly once' and modeled the problem as a standard VRPTW without split deliveries."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H1 (single vehicle per customer / no split deliveries) remained unresolved and was silently assumed."
+  },
+  "summary": "The agent recovered the depot-return requirement and several other operational details, but failed to ask about the no-split-delivery rule and silently assumed each customer is served by exactly one vehicle before declaring READY_TO_MODEL."
+}

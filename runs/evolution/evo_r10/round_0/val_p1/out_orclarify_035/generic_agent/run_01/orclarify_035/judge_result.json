@@ -1,0 +1,70 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_vat_sequence",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether each batch must pass through all three vats in a fixed sequence (vat 1 → vat 2 → vat 3). Instead, it asked whether a batch can be split across vats and whether vats can process multiple batches, then assumed each batch is assigned to exactly one vat."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each batch is assigned to exactly one vat and does not need to be processed sequentially through all three vats.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed the required vat sequence; it treated the problem as unrelated-machine scheduling with one operation per batch, contradicting the hidden constraint that each batch must be dyed in sequence in each vat."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot about the fixed vat sequence remained unresolved, and it silently assumed a different scheduling structure."
+  },
+  "summary": "The agent clarified several scheduling details but missed the critical hidden constraint that each batch must be processed sequentially through all three vats in a fixed order, leading to a materially incorrect model assumption.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 2.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 1,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 1,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

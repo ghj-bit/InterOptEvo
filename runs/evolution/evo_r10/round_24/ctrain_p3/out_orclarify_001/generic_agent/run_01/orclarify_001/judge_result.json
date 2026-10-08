@@ -1,0 +1,71 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "no_production_during_training_period",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "While a skilled worker is training a batch of trainees, can that skilled worker still produce food (at the normal 10 kg/h or 6 kg/h rate), or is the skilled worker fully occupied with training and produces nothing during those two weeks?",
+      "rationale": "The agent explicitly asked whether the trainer can produce during training, directly covering the hidden slot's key meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 19 generic_agent",
+      "evidence_quote": "Is the objective to minimize total cost (labor wages + overtime + late-delivery compensation), or is there a different objective (e.g., maximize profit, minimize total hours, etc.)?",
+      "rationale": "The agent explicitly asked about the optimization objective and whether it is to minimize total cost."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were resolved by turn 19, but the agent continued with repeated identical questions about trainer pay in turns 24-30, which is low-value over-questioning."
+  },
+  "summary": "The agent recovered both hidden slots, including the P0 objective and P1 training-production constraint, but then repeated the same already-answered trainer-pay question many times, showing poor stopping behavior.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 5.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about production restrictions for Product I in Q2 or any quarter-specific production prohibition."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For each product and quarter, is the contract reservation a minimum amount that must be delivered (with any excess production allowed to be carried as inventory), or is it an exact amount that must be delivered in that quarter (so producing more than the reservation in a quarter is not allowed)?",
+      "rationale": "The agent asked whether reservations are minimum or exact delivery amounts, which touches demand fulfillment semantics, but did not explicitly ask whether all reservations must eventually be delivered or whether late delivery/backlogging is allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, and no user response confirmed that Q2 production is allowed or prohibited."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent stopped after many low-value repeated cost-timing questions without resolving the P1 hidden slots about Product I Q2 production prohibition and full contract reservation delivery/backlogging semantics."
+  },
+  "summary": "The agent asked many detailed but repetitive questions about delay and holding cost timing, but missed the key P1 production restriction for Product I in Q2 and only partially addressed whether all contract reservations must be delivered. It stopped with unresolved P1 hidden slots, making the interaction materially incomplete.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

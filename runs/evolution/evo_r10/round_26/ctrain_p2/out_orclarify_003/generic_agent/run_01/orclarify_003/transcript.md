@@ -1,0 +1,239 @@
+## Turn 1 - Generic Agent
+
+QUESTION: When you say "total overtime hours per month for the entire workforce cannot exceed 20 hours per worker," do you mean each individual worker can work at most 20 overtime hours in a month (so total overtime is capped at 20 times the number of workers that month), or that the whole workforce combined can work at most 20 overtime hours total in a month?
+
+## Turn 1 - User Simulator
+
+Each individual worker can work at most 20 overtime hours in a month. So the total overtime hours for the entire workforce in a given month is capped at 20 times the number of workers employed that month.
+
+## Turn 2 - Generic Agent
+
+QUESTION: When you say orders are fulfilled using available inventory from the previous month, current in-house production, and outsourced units, does the fulfillment order matter for costs (i.e., must we use up previous inventory first before using current production or outsourcing), or is it just that all three sources are available to meet demand and the model can choose the cheapest mix?
+
+## Turn 2 - User Simulator
+
+The fulfillment order does not matter for costs. All three sources—previous month's inventory, current in-house production, and outsourced units—are available to meet demand, and the plan can choose the cheapest mix.
+
+## Turn 3 - Generic Agent
+
+QUESTION: For the raw material cost of 90 Yuan per unit, is this cost incurred only on units that are actually produced in-house (regardless of whether they are sold, held in inventory, or backordered), or is it incurred only on units that are ultimately sold?
+
+## Turn 3 - User Simulator
+
+The raw material cost of 90 Yuan per unit is incurred only on units that are actually produced in-house, regardless of whether they are sold, held in inventory, or backordered.
+
+## Turn 4 - Generic Agent
+
+QUESTION: For the sales price of 300 Yuan per unit, is revenue recognized when the unit is actually delivered to the customer (i.e., when demand is fulfilled, which may be in a later month if backordered), or is it recognized in the month the demand originally occurred?
+
+## Turn 4 - User Simulator
+
+Revenue is recognized when the unit is actually delivered to the customer, i.e., when demand is fulfilled. If demand is backordered, the revenue is recognized in the later month when the unit is delivered.
+
+## Turn 5 - Generic Agent
+
+QUESTION: For the inventory holding cost of 15 Yuan per unit, is this charged on the ending inventory of each month (i.e., units left over at the end of that month), and does it apply to all units in ending inventory regardless of whether they came from in-house production or outsourcing?
+
+## Turn 5 - User Simulator
+
+Yes, the inventory holding cost of 15 Yuan per unit is charged on the ending inventory of each month, and it applies to all units in ending inventory regardless of whether they came from in-house production or outsourcing.
+
+## Turn 6 - Generic Agent
+
+QUESTION: For the backorder cost of 35 Yuan per unit, is this charged on the number of units that are backordered at the end of each month (i.e., the unfulfilled demand carried over to the next month), and is it charged once per month that the units remain backordered?
+
+## Turn 6 - User Simulator
+
+Yes, the backorder cost of 35 Yuan per unit is charged on the number of units that are backordered at the end of each month, and it is charged once per month that the units remain backordered.
+
+## Turn 7 - Generic Agent
+
+QUESTION: For the regular wage of 30 Yuan per hour for 160 hours per worker, paid regardless of utilization, does this mean each worker employed in a month costs 1,000 × 30 = 4,800 Yuan in regular wages for that month, even if the worker's hours are not fully used for production?
+
+## Turn 7 - User Simulator
+
+Yes, each worker employed in a month costs 1,000 × 30 = 4,800 Yuan in regular wages for that month, even if the worker's hours are not fully used for production.
+
+## Turn 8 - Generic Agent
+
+QUESTION: For the hiring and firing costs, are these one-time costs incurred in the month a worker is hired or fired, and can workers be both hired and fired in the same month (i.e., is the workforce level a net change or can there be simultaneous hiring and firing)?
+
+## Turn 8 - User Simulator
+
+Yes, hiring and firing costs are one-time costs incurred in the month a worker is hired or fired. Workers can be both hired and fired in the same month; the workforce level is not restricted to a net change only.
+
+## Turn 9 - Generic Agent
+
+QUESTION: For the workforce, is there any constraint on the number of workers that can be hired or fired in a single month (e.g., a maximum hiring rate or maximum firing rate), or can any number of workers be hired or fired in any month as long as the workforce stays non-negative?
+
+## Turn 9 - User Simulator
+
+There is no constraint on the number of workers that can be hired or fired in a single month. Any number of workers can be hired or fired in any month, as long as the workforce stays non-negative.
+
+## Turn 10 - Generic Agent
+
+QUESTION: For the in-house production capacity, is the only limit the available labor hours (160 regular + up to 20 overtime per worker), or is there also a separate machine or facility capacity cap on the number of units that can be produced in-house per month?
+
+## Turn 10 - User Simulator
+
+The only limit on in-house production capacity is the available labor hours (160 regular + up to 20 overtime per worker). There is no separate machine or facility capacity cap on the number of units that can be produced in-house per month.
+
+## Turn 11 - Generic Agent
+
+QUESTION: For outsourcing, is there any limit on the number of units that can be outsourced in a month (e.g., a maximum outsourcing capacity), or can any number of units be outsourced as long as the outsourcing cost is paid?
+
+## Turn 11 - User Simulator
+
+There is no limit on the number of units that can be outsourced in a month. Any number of units can be outsourced as long as the outsourcing cost is paid.
+
+## Turn 12 - Generic Agent
+
+QUESTION: For the ending inventory requirement of at least 10,000 units at the end of June, does this 10,000 units need to be in physical inventory (i.e., not backordered), and does it mean that after fulfilling all demand through June, at least 10,000 units must remain in inventory?
+
+## Turn 12 - User Simulator
+
+Yes, the 10,000 units must be in physical inventory at the end of June, not backordered. It means that after fulfilling all demand through June, at least 10,000 units must remain in inventory.
+
+## Turn 13 - Generic Agent
+
+QUESTION: For the backorder fulfillment, when backordered units from a previous month are fulfilled in a later month, are they fulfilled using the same mix of sources (previous inventory, current in-house production, outsourcing) available in that later month, or is there any special rule for how backorders must be fulfilled?
+
+## Turn 13 - User Simulator
+
+Backordered units are fulfilled using the same mix of sources available in the later month: previous inventory, current in-house production, and outsourcing. There is no special rule for how backorders must be fulfilled.
+
+## Turn 14 - Generic Agent
+
+QUESTION: For the overtime hours, is the overtime used only for in-house production (i.e., overtime hours contribute to producing in-house units at 5 labor hours per unit), or can overtime hours be used for any other purpose?
+
+## Turn 14 - User Simulator
+
+Overtime hours are used only for in-house production. They contribute to producing in-house units at 5 labor hours per unit.
+
+## Turn 15 - Generic Agent
+
+QUESTION: For the workforce, is the number of workers required to be an integer (whole number of workers), or can it be treated as a continuous variable in the model?
+
+## Turn 15 - User Simulator
+
+The number of workers must be an integer (whole number of workers).
+
+## Turn 16 - Generic Agent
+
+QUESTION: For the production and inventory variables, do the number of units produced in-house, outsourced, and held in inventory need to be integers, or can they be treated as continuous variables?
+
+## Turn 16 - User Simulator
+
+The number of units produced in-house, outsourced, and held in inventory can be treated as continuous variables.
+
+## Turn 17 - Generic Agent
+
+QUESTION: For the backorder variable, does the number of backordered units need to be an integer, or can it be treated as a continuous variable?
+
+## Turn 17 - User Simulator
+
+The number of backordered units can be treated as a continuous variable.
+
+## Turn 18 - Generic Agent
+
+QUESTION: For the overtime hours variable, does the number of overtime hours used in a month need to be an integer, or can it be treated as a continuous variable?
+
+## Turn 18 - User Simulator
+
+The number of overtime hours used in a month can be treated as a continuous variable.
+
+## Turn 19 - Generic Agent
+
+QUESTION: For the net profit objective, is it simply total revenue minus all costs (raw material, outsourcing, inventory holding, backorder, regular wages, overtime wages, hiring, and firing), with no other revenue or cost components I should include?
+
+## Turn 19 - User Simulator
+
+Yes, the net profit objective is simply total revenue minus all costs: raw material, outsourcing, inventory holding, backorder, regular wages, overtime wages, hiring, and firing. There are no other revenue or cost components to include.
+
+## Turn 20 - Generic Agent
+
+QUESTION: For the initial inventory of 15,000 units at the start of January, is this inventory available to fulfill January's demand (i.e., it can be used to meet January's 20,000 units of demand), or is it only available starting from February?
+
+## Turn 20 - User Simulator
+
+The initial inventory of 15,000 units at the start of January is available to fulfill January's demand. It can be used to meet January's 20,000 units of demand.
+
+## Turn 21 - Generic Agent
+
+QUESTION: For the initial workforce of 1,000 employees at the start of January, are these 1,000 workers available to work in January (i.e., they can produce in-house units in January), or are they only available starting from February?
+
+## Turn 21 - User Simulator
+
+The initial workforce of 1,000 employees at the start of January is available to work in January. They can produce in-house units in January.
+
+## Turn 22 - Generic Agent
+
+QUESTION: For the workforce in each month, is the workforce level constant throughout the month (i.e., workers hired or fired in a month are available for the entire month's production), or are they only available from the point of hiring/firing within the month?
+
+## Turn 22 - User Simulator
+
+The workforce level is constant throughout the month. Workers hired or fired in a month are available for the entire month's production.
+
+## Turn 23 - Generic Agent
+
+QUESTION: For the workforce, is the workforce at the end of June (after any hiring/firing in June) subject to any constraint, or can the company end June with any number of workers as long as the workforce stays non-negative?
+
+## Turn 23 - User Simulator
+
+The workforce at the end of June is not subject to any specific constraint. The company can end June with any number of workers, as long as the workforce stays non-negative.
+
+## Turn 24 - Generic Agent
+
+QUESTION: For the inventory balance, is the ending inventory of each month equal to the beginning inventory plus in-house production plus outsourcing minus the units delivered to fulfill that month's demand (including any backorders from previous months), and is the beginning inventory of the next month equal to the ending inventory of the current month?
+
+## Turn 24 - User Simulator
+
+Yes, the ending inventory of each month is equal to the beginning inventory plus in-house production plus outsourcing minus the units delivered to fulfill that month's demand (including any backorders from previous months). The beginning inventory of the next month is equal to the ending inventory of the current month.
+
+## Turn 25 - Generic Agent
+
+QUESTION: For the backorder balance, is the ending backorder of each month equal to the beginning backorder plus that month's demand minus the units delivered to fulfill demand in that month, and is the beginning backorder of the next month equal to the ending backorder of the current month?
+
+## Turn 25 - User Simulator
+
+Yes, the ending backorder of each month is equal to the beginning backorder plus that month's demand minus the units delivered to fulfill demand in that month. The beginning backorder of the next month is equal to the ending backorder of the current month.
+
+## Turn 26 - Generic Agent
+
+QUESTION: For the inventory and backorder variables, can both ending inventory and ending backorder be positive in the same month, or must one of them be zero in each month (i.e., you cannot simultaneously have leftover inventory and unfulfilled demand)?
+
+## Turn 26 - User Simulator
+
+Both ending inventory and ending backorder can be positive in the same month. There is no requirement that one of them must be zero in each month.
+
+## Turn 27 - Generic Agent
+
+QUESTION: For the labor hours constraint, is the total labor hours used for in-house production in a month (5 hours per in-house unit) required to be less than or equal to the total available hours (160 regular hours plus overtime hours per worker), and is the overtime hours used in a month required to be less than or equal to 20 times the number of workers in that month?
+
+## Turn 27 - User Simulator
+
+Yes, the total labor hours used for in-house production in a month (5 hours per in-house unit) is required to be less than or equal to the total available hours (160 regular hours plus overtime hours per worker). The overtime hours used in a month is required to be less than or equal to 20 times the number of workers in that month.
+
+## Turn 28 - Generic Agent
+
+QUESTION: For the regular wage cost, is it simply 4,800 Yuan per worker per month (160 hours × 30 Yuan/hour) for each worker employed in that month, regardless of how many regular hours are actually used for production?
+
+## Turn 28 - User Simulator
+
+Yes, the regular wage cost is simply 4,800 Yuan per worker per month (160 hours × 30 Yuan/hour) for each worker employed in that month, regardless of how many regular hours are actually used for production.
+
+## Turn 29 - Generic Agent
+
+QUESTION: For the overtime wage cost, is it simply 40 Yuan per overtime hour used, so the total overtime wage cost in a month is 40 times the total overtime hours used in that month?
+
+## Turn 29 - User Simulator
+
+Yes, the overtime wage cost is simply 40 Yuan per overtime hour used, so the total overtime wage cost in a month is 40 times the total overtime hours used in that month.
+
+## Turn 30 - Generic Agent
+
+QUESTION: For the workforce balance, is the workforce at the end of each month equal to the workforce at the beginning of the month plus workers hired in that month minus workers fired in that month, and is the workforce at the beginning of the next month equal to the workforce at the end of the current month?
+
+## Turn 30 - User Simulator
+
+Yes, the workforce at the end of each month is equal to the workforce at the beginning of the month plus workers hired in that month minus workers fired in that month. The workforce at the beginning of the next month is equal to the workforce at the end of the current month.

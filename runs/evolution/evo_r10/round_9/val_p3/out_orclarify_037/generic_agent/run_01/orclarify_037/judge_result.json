@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Is there any other constraint or requirement I should be aware of that isn't already covered — for example, a maximum on Model B production, a minimum total output, or any other business rule that would affect the plan?",
+      "rationale": "The agent asked an open-ended catch-all question that elicited the $10,000 minimum profit constraint, and then explicitly confirmed it as a hard constraint in turn 10."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is there any minimum production requirement for Model B (e.g., at least some number of units per week), or can Model B production be zero if that maximizes profit?",
+      "rationale": "The agent explicitly asked about a minimum production requirement for Model B, which directly targets the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is Process I's 150-hour weekly capacity a hard upper limit that cannot be exceeded (no overtime allowed for Process I), or can Process I also run overtime beyond 150 hours?",
+      "rationale": "The agent asked about Process I capacity and overtime, touching on the boundary, but did not explicitly ask whether Process I time must be exactly 150 hours (equality) rather than just an upper bound."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were resolved before READY_TO_MODEL; the only remaining issue is a P2 partial on H3, which is a minor boundary detail."
+  },
+  "summary": "The agent conducted a thorough clarification interview, explicitly asking about minimum Model B production and eliciting the minimum profit constraint, and stopped appropriately after resolving all critical hidden slots.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8333333333333334,
+    "earned_weight": 2.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 2.5,
+        "total_weight": 3.0,
+        "score": 0.8333333333333334
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

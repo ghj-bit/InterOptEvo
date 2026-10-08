@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "is the number of trained pilots produced in a given year equal to the number of fighter jets allocated to training that year (i.e., one pilot trained per training jet), or is there a different conversion rate between training jets and pilots?",
+      "rationale": "The agent explicitly asked about the conversion rate between training jets and pilots, directly targeting the per-jet training capacity."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked how many combat jets a trained pilot can operate or about the pilot-to-combat-jet relationship."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "does that mean a jet allocated to training in year 1 produces 5 pilots in year 1 AND can also produce 5 pilots in year 2 (i.e., the same jet trains pilots in both years), or does a jet allocated to training in year 1 only produce pilots in year 1 and a separate allocation is needed for year 2?",
+      "rationale": "The agent touched on the timing of pilot production across years but did not explicitly ask about the start year or total duration of the training program."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Trained pilots are counted directly without needing to map them to combat jets; no pilot-to-combat-jet ratio was considered.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the relationship between trained pilots and combat jets, so this mapping was silently assumed to be irrelevant or one-to-one."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent resolved the P0 slot (training capacity) and the P1 slot (training duration/start) before entering READY_TO_MODEL; the only unresolved slot is P2, which does not affect core correctness."
+  },
+  "summary": "The agent asked targeted questions that recovered the critical P0 training capacity and P1 training timing details, but missed the low-impact P2 pilot-to-combat-jet mapping. It stopped appropriately after resolving all P0/P1 slots."
+}

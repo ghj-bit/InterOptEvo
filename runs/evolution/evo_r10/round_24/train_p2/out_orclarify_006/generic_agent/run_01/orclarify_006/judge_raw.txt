@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about production restrictions for Product I in Q2 or any quarter-specific production prohibition."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Can a unit be produced in a quarter later than its contract quarter and still be delivered (incurring delay compensation for each quarter late), or must every contract unit be produced no later than its contract quarter?",
+      "rationale": "The agent touched late delivery and eventual delivery, but did not explicitly ask whether all contract reservations must be fulfilled or whether demand can be lost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, and no user message confirmed that Q2 production is allowed or prohibited."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "All contract reservations must eventually be delivered, with late delivery allowed and penalized.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent asked about late production/delivery mechanics but did not explicitly confirm that all contract reservations are firm and must be fulfilled rather than treated as lost sales."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent stopped after extensive cost-timing clarification without resolving the P1 hidden slots on Product I Q2 production restriction and firm contract reservation fulfillment."
+  },
+  "summary": "The agent thoroughly clarified delay and holding cost timing conventions but missed two material P1 modeling facts: the Product I Q2 production prohibition and the requirement that all contract reservations be fulfilled. This leaves the model materially incomplete despite the detailed cost discussion."
+}

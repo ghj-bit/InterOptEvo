@@ -1,0 +1,76 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether a signed contract must be kept active for its entire term or whether partial usage is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost over the 4 months, with no other goals or constraints (such as a budget cap or a limit on the number of warehouses used)?",
+      "rationale": "The user simulator volunteered the diversification constraint in response, but the agent's question was broad and did not explicitly ask about requiring at least two distinct contract lengths. However, the agent later clarified the meaning of the volunteered constraint in turns 6 and 7, which counts as touching the hidden slot. Since the agent did not independently ask about the requirement before it was volunteered, this is partial at best, but the semantic hit rule requires asking whether the plan is forced to include contracts of at least two distinct lengths. The agent did not ask this; the user volunteered it. Therefore, no credit."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about a limit on the number of distinct contract lengths or types. The user simulator volunteered this constraint in turn 5."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "The required area for each month is a minimum that must be met or exceeded (renting extra area is allowed but costs money), correct — rather than an exact target that must be matched precisely?",
+      "rationale": "The agent explicitly asked whether the required area is a minimum or an exact target, directly targeting the exact satisfaction rule."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost over the 4 months, with no other goals or constraints (such as a budget cap or a limit on the number of warehouses used)?",
+      "rationale": "The agent explicitly asked to confirm that the objective is to minimize total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A contract, once signed, must be used for its entire term (full coverage of all months in its period).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether partial usage of a contract is allowed; it assumed full-term commitment without confirmation."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "At least two distinct contract lengths must be used.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about this requirement; it was volunteered by the user simulator in turn 5, and the agent incorporated it without independently confirming the hidden slot."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "At most three distinct contract lengths may be used.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about this limit; it was volunteered by the user simulator in turn 5, and the agent incorporated it without independently confirming the hidden slot."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 hidden slot H2 (contract length diversity) was not resolved by an agent question; it was only volunteered by the user simulator. The agent did not independently ask about the diversification requirement."
+  },
+  "summary": "The agent successfully clarified P0 slots H4 and H5, but missed P2 slots H1 and H3, and did not independently ask about the P1 diversification requirement H2, which was only volunteered by the user simulator. The agent stopped prematurely with H2 unresolved."
+}

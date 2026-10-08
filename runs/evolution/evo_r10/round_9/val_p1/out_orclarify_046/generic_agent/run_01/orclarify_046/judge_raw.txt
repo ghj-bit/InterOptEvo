@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a limit on the number of shifts or working days per student per week, and did not explicitly mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never inquired about a daily limit on the count of distinct students assigned to duty, and did not explicitly mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "does the \"only one\" rule mean that in any hour that IS staffed, exactly one student works (no two students simultaneously), and the objective is to minimize total weekly labor cost subject to the weekly minimums (8h undergrad / 7h grad) and the daily caps?",
+      "rationale": "The agent explicitly asked whether the objective is to minimize total weekly labor cost, directly covering the optimization goal."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no limit on the number of shifts or working days per student per week.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed a maximum number of shifts/days per student, yet the READY_TO_MODEL summary lists 'No other constraints' and omits any such limit."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no daily limit on the number of distinct students assigned to duty.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed a cap on distinct students per day, yet the READY_TO_MODEL summary lists 'No other constraints' and omits any such limit."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while P1 hidden slots H1 (max shifts per week) and H2 (max students per day) remained unresolved and were silently assumed absent."
+  },
+  "summary": "The agent clarified the objective and several key constraints, but failed to ask about the weekly shift limit and daily distinct-student cap, silently assuming no such constraints before declaring READY_TO_MODEL."
+}

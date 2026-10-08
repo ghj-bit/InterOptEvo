@@ -1,0 +1,48 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the exact rule for how many trained pilots a single fighter jet produces when it is allocated to training in a given year (for example, a fixed number of pilots per jet per year, or a rate that depends on something else)?",
+      "rationale": "The agent explicitly asked for the per-jet pilot training capacity/rate, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask how many combat jets a trained pilot can operate or otherwise clarify the pilot-to-combat-jet mapping."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "When a jet is allocated to training in a year, does it train 5 pilots in that same year only, or does it continue training pilots in subsequent years as well (i.e., is the allocation a per-year flow or a standing assignment)?",
+      "rationale": "The agent asked about whether training continues in subsequent years, which touches duration/carryover, but did not explicitly ask about the start year or total training duration."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Training starts in year 1 and the relevant horizon is exactly 2 years, with no separate training duration beyond the per-year flow.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not explicitly confirm the start year or training duration; it only asked whether a jet's training effect carries over to subsequent years."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H3"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 training start/duration slot was only partially resolved and not explicitly confirmed."
+  },
+  "summary": "The agent recovered the critical per-jet training capacity and clarified several allocation mechanics, but it did not fully resolve the training start/duration slot before stopping and never asked about the pilot-to-combat-jet mapping."
+}

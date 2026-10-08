@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "sequential_machine_order_constraint",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "You mentioned that the order of processing the three products on each machine should remain the same — does this mean we are choosing one single common sequence (e.g., 1-2-3) to apply to all three machines, or does it mean each machine can have its own sequence as long as the relative order is consistent across machines?",
+      "rationale": "The agent asked about the common product sequence across machines, which is related to U6, but did not ask about the required machine routing order for each product (Machine 1 → Machine 2 → Machine 3) as specified in U5."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_processing_cycle",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "When you say \"minimizing the total processing cycle,\" do you mean minimizing the time at which the last product finishes on Machine 3 (the makespan), or minimizing the sum of the completion times of all three products (total flow time)?",
+      "rationale": "The agent explicitly asked for clarification of 'total processing cycle' and whether it means makespan, fully covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each product is processed on all three machines in the fixed order Machine 1 → Machine 2 → Machine 3.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the required machine routing order for each product; this constraint was assumed without confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while the P0 hidden slot H1 (sequential machine order constraint) was only partially resolved; the required machine routing order was never confirmed."
+  },
+  "summary": "The agent clarified the objective and the common product sequence across machines, but failed to ask about the required machine routing order for each product, leaving a P0 hidden slot unresolved before stopping.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 4.5,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 4.5,
+        "total_weight": 6.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

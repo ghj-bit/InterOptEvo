@@ -1,0 +1,91 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum profit requirement or a $10,000 lower bound on weekly profit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is there any minimum production requirement for Model B per week, or can Model B production be zero?",
+      "rationale": "The agent explicitly asked about a minimum production requirement for Model B, which elicited the 15-unit contractual minimum."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Is Process I's 150-hour capacity a hard upper limit (i.e., 4x_A + 6x_B ≤ 150), or can Process I also use overtime beyond 150 hours?",
+      "rationale": "The agent asked about Process I capacity and overtime, but did not ask whether Process I time must be exactly 150 hours rather than merely at most 150."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No minimum profit target or $10,000 lower bound on weekly profit is required.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum profit requirement, and the READY_TO_MODEL summary omits any such constraint while treating the model as complete."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is only constrained by a hard upper limit of 150 hours, not an exact-150 equality.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about Process I as a hard upper limit or overtime, but never confirmed whether the 150 hours must be used exactly; the READY_TO_MODEL summary assumes only 4x_A + 6x_B ≤ 150."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were resolved or not applicable; the remaining unresolved slots H1 and H3 are P2 boundary/reporting issues, so stopping was appropriate."
+  },
+  "summary": "The agent asked targeted questions that recovered the Model B minimum and clarified Process II overtime, but missed the minimum profit target and did not fully clarify whether Process I time must be exactly 150 hours. Overall the interaction resolved the core modeling issues and stopped appropriately, with only P2 omissions remaining.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 1.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

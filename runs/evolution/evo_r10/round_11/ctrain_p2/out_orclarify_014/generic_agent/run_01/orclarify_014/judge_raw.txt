@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), can you buy any fractional amount (e.g., 150g of chicken), or must protein also be purchased in whole 100g units like the vegetables?",
+      "rationale": "The agent explicitly asked whether proteins can be bought in fractional amounts or must be in whole 100g units, directly covering the purchase quantity type."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about minimum/maximum amounts of individual food items and whether at least one protein or vegetable is required, but never asked about a minimum number of distinct vegetable types."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to select at least three different types of vegetables.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum number of distinct vegetable types, and the user simulator did not volunteer this constraint; the agent's READY_TO_MODEL summary omits any such requirement."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H2 (minimum three distinct vegetable types) remained unresolved and was silently assumed away."
+  },
+  "summary": "The agent recovered the protein purchase quantity type but missed the hidden constraint requiring at least three distinct vegetable types, then stopped prematurely with that P1 slot unresolved."
+}

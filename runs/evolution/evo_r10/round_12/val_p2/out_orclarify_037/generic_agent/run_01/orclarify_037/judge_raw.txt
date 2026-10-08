@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 10 generic_agent",
+      "evidence_quote": "Is there any other constraint on the plan besides the two process capacities, the minimum of 10 units of Model A, the minimum of 15 units of Model B, and the requirement that the 70 regular hours of Process II be fully used?",
+      "rationale": "The agent asked about other constraints, which elicited the $10,000 minimum profit requirement, and then followed up in turn 11 to clarify whether it was hard or a target."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is there any minimum production requirement for Model B, or can the plan produce zero units of Model B if that maximizes profit?",
+      "rationale": "The agent explicitly asked about a minimum production requirement for Model B, matching the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked whether Process I overtime was allowed and treated the 150-hour capacity as a hard limit, but never asked whether Process I time must be exactly 150 hours rather than at most 150."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is limited to at most 150 hours, not required to equal exactly 150 hours.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent asked about overtime for Process I and was told the 150-hour capacity is a hard limit, but never confirmed whether the requirement is an equality of exactly 150 hours."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The conversation ended without a clear READY_TO_MODEL or equivalent final modeling state; the agent continued repeating questions until the transcript ended."
+  },
+  "summary": "The agent recovered the minimum Model B production and minimum profit target slots, but missed the exact Process I time requirement and never reached a clear final modeling state, instead repeating unresolved questions."
+}

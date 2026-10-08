@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about total weekly hours and daily maxima, but never asked whether there is a limit on the number of shifts or distinct working days per student per week."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether there is a daily cap on the number of distinct students assigned to duty."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "The objective is to minimize total weekly labor cost (sum of wage × hours worked across all students and slots), correct?",
+      "rationale": "The agent explicitly asked about the optimization objective and confirmed minimizing total weekly labor cost/gross pay."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no limit on the number of shifts or distinct working days per student per week.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a weekly shift/day-count limit, but its READY_TO_MODEL summary omits any such constraint and only mentions daily caps and minimum weekly hours."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no daily limit on the number of distinct students assigned to duty.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a per-day distinct-student cap, and the READY_TO_MODEL summary does not include such a constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while P1 hidden slots H1 and H2 remained unresolved; it never asked about weekly shift/day limits or daily distinct-student caps."
+  },
+  "summary": "The agent clarified the objective and several core scheduling details, but missed two P1 business constraints: the maximum shifts/days per student per week and the maximum distinct students per day. It then stopped with those unresolved and silently assumed no such limits."
+}

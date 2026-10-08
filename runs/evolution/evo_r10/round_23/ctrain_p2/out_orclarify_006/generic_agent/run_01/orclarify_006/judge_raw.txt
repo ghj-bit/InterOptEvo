@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about production restrictions for Product I in Q2 or any quarter-specific production limitations."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For each product and quarter, is the contract reservation a minimum amount that must be delivered (with any extra production allowed to be carried as inventory), or an exact amount that must be delivered (so producing more than the reservation in that quarter is not permitted)?",
+      "rationale": "The agent asked whether reservations are minimum or exact delivery amounts, which touches on demand fulfillment semantics, but did not explicitly ask whether all reservations must eventually be fulfilled or whether late delivery/backlogging is allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, so the hidden constraint that Product I cannot be produced in Q2 was never confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The conversation ended without a READY_TO_MODEL or equivalent final modeling state, and P1 hidden slots H1 and H2 remained unresolved."
+  },
+  "summary": "The agent asked many detailed cost-accounting questions but became stuck in a repetitive loop and never addressed the hidden production restriction for Product I in Q2 or fully clarified contract fulfillment semantics; it also never reached a final modeling state."
+}

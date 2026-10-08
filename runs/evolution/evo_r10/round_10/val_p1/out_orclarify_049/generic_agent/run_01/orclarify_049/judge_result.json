@@ -1,0 +1,125 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Since the 4-month contract must cover all 4 months and the requirement must be exactly matched each month, does choosing a 4-month contract mean it must cover the full required area in every month (1500, 1000, 2000, 1200), or can it cover a fixed area across all 4 months?",
+      "rationale": "The agent asked about the 4-month contract's coverage behavior, which is related to full-term coverage, but did not explicitly ask whether a signed contract must remain active for all months in its term or whether partial usage is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether the plan must include at least two distinct contract lengths or whether a single contract type is acceptable."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about any limit on the number of distinct contract lengths or types that can be signed."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "If a contract's area is rented for more months than a given month requires, is the excess area in that month simply unused (no penalty, no refund), or does it have to be exactly matched to the requirement each month?",
+      "rationale": "The agent explicitly asked whether monthly rented area must exactly match the requirement or whether excess is allowed, directly covering the exact-satisfaction slot."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 10 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost over the 4 months?",
+      "rationale": "The agent explicitly confirmed the optimization objective as minimizing total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No requirement to diversify contract lengths; any combination of contract lengths is allowed.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about the contract-length diversity constraint, so treating it as absent was unconfirmed."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "There is no cap on the number of distinct contract types that can be signed.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about a maximum number of distinct contracts, so assuming no cap was unconfirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped after resolving the P0 slots but never asked about the P1 contract-length diversity requirement, leaving a material hidden slot unresolved."
+  },
+  "summary": "The agent recovered the core P0 objective and exact-demand requirements, but missed the P1 contract-length diversity rule and the P2 distinct-contract cap, and it became stuck repeatedly asking an unresolved unit-discretization question.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.65,
+    "earned_weight": 6.5,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 2.0,
+        "score": 0.25
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

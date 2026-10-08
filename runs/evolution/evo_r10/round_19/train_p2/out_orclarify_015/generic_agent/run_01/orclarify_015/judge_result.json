@@ -1,0 +1,104 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about the optimization objective or goal of the planning problem."
+    },
+    {
+      "slot_id": "H2",
+      "name": "mandatory_repair_after_each_stage",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not explicitly ask whether all tools used in a stage must be sent for repair after that stage."
+    },
+    {
+      "slot_id": "H3",
+      "name": "fast_repair_return_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "When a tool is sent for fast repair at the end of stage j, does it become available at the start of stage j+q (usable during stage j+q), or at the start of stage j+q+1 (first usable in stage j+q+1)?",
+      "rationale": "The agent explicitly asked about the exact timing when fast-repaired tools become available."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The objective is to minimize cost spent on tools during the planning period.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about or confirmed the optimization objective before proceeding with cost-focused questions."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Tools used in a stage must be sent for repair at the end of that stage.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent asked about repair timing and availability but never explicitly confirmed that repair after each stage is mandatory for all used tools."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [
+      "H1"
+    ],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The conversation ended without a READY_TO_MODEL or equivalent final modeling state, and P0/P1 slots H1 and H2 remained unresolved."
+  },
+  "summary": "The agent recovered fast-repair return timing but failed to ask about the core objective and mandatory repair rule, then repeated the same low-value question many times without reaching a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.2857142857142857,
+    "earned_weight": 2.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 0.0,
+        "total_weight": 3.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1"
+    ],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

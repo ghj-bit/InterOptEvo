@@ -1,0 +1,70 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "purchase_at_month_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is there any requirement that the warehouse inventory must be non-negative at the end of every month (i.e., you cannot sell more than what you have in stock at the start of the month plus what you buy that month), or is there some other rule about when purchases and sales occur within a month?",
+      "rationale": "The agent touched on intra-month timing by asking whether there is another rule about when purchases and sales occur, but did not explicitly ask whether purchases occur at the beginning of the month."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Purchases occur at the beginning of each month before sales, as implied by the inventory balance and capacity constraint formulation.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not explicitly confirm the timing of purchases within the month; the user only confirmed non-negative ending inventory and that sales cannot exceed starting stock plus purchases."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL without fully resolving the P1 hidden slot about purchase timing within the month."
+  },
+  "summary": "The agent asked several useful clarification questions and resolved most modeling details, but only partially addressed the timing of purchases within the month and then stopped with that P1 issue unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 1.0,
+    "total_weight": 2.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 1,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 1,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

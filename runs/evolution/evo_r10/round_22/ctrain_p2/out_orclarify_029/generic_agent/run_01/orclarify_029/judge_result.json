@@ -1,0 +1,71 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "The demand in Table 4-3 sums to 8500, but there are only 9000 people available. Should the branch demands be treated as exact requirements that must be met exactly, or as maximum capacities that may be under-filled?",
+      "rationale": "The agent explicitly asked whether branch demands must be met exactly or treated as capacities, covering the exact-equality vs lower-bound issue."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Should this be modeled as a single objective that minimizes the number of people who do NOT meet their preferred city (with the two 8000 targets treated as soft goals to be satisfied as much as possible), or as a multi-objective / goal-programming formulation where all three goals are handled explicitly?",
+      "rationale": "The agent explicitly asked whether to use a multi-objective/goal-programming formulation with all three goals handled explicitly, which elicited the strict priority order p1, p2, p3."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent resolved the P0 priority-order slot by turn 5 and the P1 exact-demand slot by turn 3, but then repeated the same low-value questions about the 8500 vs 9000 measurement group many times from turns 7 through 30 without reaching READY_TO_MODEL."
+  },
+  "summary": "The agent successfully recovered the key hidden slots on exact demand equality and lexicographic priority order, but then engaged in extensive repetitive questioning about the same measurement-group issue, indicating over-questioning rather than efficient stopping.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 5.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

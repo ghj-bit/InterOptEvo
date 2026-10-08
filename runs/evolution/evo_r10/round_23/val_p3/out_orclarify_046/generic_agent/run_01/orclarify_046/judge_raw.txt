@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 14 generic_agent",
+      "evidence_quote": "is there any constraint on how many days per week a student can work, or can a student work on any subset of the five days as long as their daily hours don't exceed the table values and their weekly total meets the minimum?",
+      "rationale": "The agent explicitly asked about a limit on the number of days/shifts per week, which directly targets the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether there is a daily cap on the number of distinct students assigned to duty."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of the scheduling plan — should it minimize total weekly labor cost, or is there another goal (e.g., maximize fairness, minimize total hours, or something else)?",
+      "rationale": "The agent explicitly asked about the optimization objective and whether it is to minimize total weekly labor cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no limit on the number of distinct students who can be scheduled on a given day.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a daily cap on distinct students, and the hidden slot remained unconfirmed before the final modeling state."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent stopped after resolving the objective and shift-limit issues, but never clarified the P1 daily distinct-student cap, leaving H2 unresolved."
+  },
+  "summary": "The agent recovered the objective and the weekly shift limit, but failed to ask about the daily cap on distinct students and stopped with that P1 hidden slot unresolved."
+}

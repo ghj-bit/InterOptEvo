@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about production restrictions for Product I in Q2 or any quarter-specific production limitations."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Since the backlog at the end of the fourth quarter is charged with delay compensation, is there a requirement that all contracted demand must be fully delivered by the end of the fourth quarter (i.e., zero backlog at the end of Q4), or can some units remain undelivered at the end of the year with the penalty simply included in the cost?",
+      "rationale": "The agent explicitly asked whether all contracted demand must be fully delivered by the end of Q4, covering the requirement to fulfill all contract reservations."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, and the READY_TO_MODEL summary lists no such constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H1 (Product I cannot be produced in Q2) remained unresolved and was silently assumed away."
+  },
+  "summary": "The agent clarified many cost and demand semantics well, including full delivery of contract reservations, but missed the P1 production restriction that Product I cannot be produced in Q2 and stopped prematurely with that hidden fact unresolved."
+}

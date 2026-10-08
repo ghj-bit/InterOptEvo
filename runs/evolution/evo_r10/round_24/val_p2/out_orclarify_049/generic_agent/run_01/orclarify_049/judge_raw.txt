@@ -1,0 +1,80 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "If a 4-month contract is chosen, does it have to cover the full required area for all 4 months, or can it cover only part of the area with other contracts covering the rest?",
+      "rationale": "The agent asked about full-area coverage for a 4-month contract, which is related to contract coverage, but did not explicitly ask whether a signed contract must remain active for every month in its term."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether at least two different contract lengths must be signed or whether a single contract type is acceptable."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a maximum limit on the number of distinct contract lengths or types."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Can the company rent more area than the required amount in any month, or must the total rented area in each month be exactly equal to the required area?",
+      "rationale": "The agent explicitly asked whether monthly rented area must exactly equal the required area, covering the no-shortage/no-excess requirement."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked for the optimization goal or confirmed that the objective is to minimize total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No requirement to diversify contract lengths; any combination of contract lengths is allowed.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about contract-length diversity, so this business constraint remained unconfirmed."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "There is no cap on the number of distinct contract lengths or types.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about a maximum number of distinct contracts, so this operational limit remained unconfirmed."
+    },
+    {
+      "related_slot": "H5",
+      "agent_assumption": "The objective is to minimize total rental cost.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never explicitly asked for or confirmed the optimization objective."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H5"
+    ],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped after repeated demand-satisfaction questions without resolving the P0 objective slot H5 or the P1 contract-diversity slot H2."
+  },
+  "summary": "The agent confirmed exact demand satisfaction but failed to ask about the optimization objective, contract-length diversity, or the maximum number of distinct contracts, and then stopped prematurely after many repetitive questions."
+}

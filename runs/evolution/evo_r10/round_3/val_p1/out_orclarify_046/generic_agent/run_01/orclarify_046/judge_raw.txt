@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a limit on the number of shifts or working days per student per week."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never inquired about a daily cap on the number of distinct students assigned to duty."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Setting aside the Monday correction for now, is the objective of this scheduling plan to minimize the total weekly labor cost (sum of each student's hours worked times their hourly wage)?",
+      "rationale": "The agent explicitly asked whether the objective is to minimize total weekly labor cost, matching the hidden objective."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No limit on the number of shifts or working days per student per week.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about a weekly shift/day cap, so any later modeling would silently omit this constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No daily limit on the number of distinct students assigned to duty.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about a per-day distinct-student cap, so any later modeling would silently omit this constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The transcript ends mid-conversation without a READY_TO_MODEL or final modeling state; P1 slots H1 and H2 remain unresolved."
+  },
+  "summary": "The agent recovered the P0 objective but failed to ask about the P1 weekly shift cap and daily distinct-student cap, and then got stuck in repetitive undergraduate/graduate classification questions without reaching a final modeling state."
+}

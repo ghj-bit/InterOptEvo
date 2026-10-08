@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand can be split across multiple vehicles or must be served by exactly one vehicle. Turn 4 only asked about route capacity and multiple customers per truck, not split deliveries for a single customer."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Do all 5 trucks start at the depot at time 0 and must each return to the depot by the end of the depot's operating window (1236 minutes)?",
+      "rationale": "The agent explicitly asked whether trucks must return to the depot, directly covering the depot-return requirement."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer is served by exactly one vehicle and demand cannot be split across vehicles.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether split deliveries are allowed, but the READY_TO_MODEL summary and model framing assume standard VRPTW routing where each customer is visited once."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H1 (single vehicle per customer / no split deliveries) remained unresolved."
+  },
+  "summary": "The agent resolved the depot-return requirement and many other modeling details, but failed to ask whether customer demand may be split across vehicles, leaving a P1 hidden slot unresolved before stopping."
+}

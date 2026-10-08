@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_profit_maximization_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Since profit is a hard minimum constraint rather than the objective, what should the plan actually optimize — for example, minimize total process cost, minimize total hours used, maximize total units produced, or is any feasible plan that meets all constraints acceptable?",
+      "rationale": "The agent explicitly asked what should be optimized and the user confirmed maximizing weekly profit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "missing_idle_time_minimization_objective",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about minimizing idle time or unused capacity, nor about any secondary objective weighted by process costs."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The only objective is to maximize weekly profit; idle time minimization is not part of the optimization.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about idle time or a secondary objective, and the user did not volunteer it; the READY_TO_MODEL summary omits any idle-time objective."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent stopped at READY_TO_MODEL after resolving the P0 objective slot but without resolving the P1 idle-time minimization objective."
+  },
+  "summary": "The agent recovered the core profit-maximization objective and key constraints, but missed the P1 secondary objective of minimizing process idle time with cost-proportional weights, silently assuming profit maximization was the only objective."
+}

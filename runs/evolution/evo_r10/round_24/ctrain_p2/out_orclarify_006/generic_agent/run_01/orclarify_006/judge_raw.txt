@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Product I has any quarter-specific production restriction, especially the Q2 prohibition. The READY_TO_MODEL summary also omits this constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "When a quarter's demand (contract reservation) exceeds what is produced and available from inventory, is the shortfall allowed to be carried over as backorder into the next quarter (incurring the delay compensation for each quarter it is late), or must every quarter's demand be fully met by the end of that same quarter?",
+      "rationale": "The agent explicitly asked whether shortfalls can be carried over as backorders, directly addressing whether contract reservations must eventually be fulfilled and how late delivery is handled."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2, with no quarter-specific production restriction.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, and the READY_TO_MODEL summary lists only the total quarterly hours constraint without any Product I Q2 prohibition."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H1, the Product I Q2 production prohibition, remained unresolved and was silently omitted from the model."
+  },
+  "summary": "The agent thoroughly clarified many demand, cost, and constraint semantics, including backorder handling, but failed to ask about the Product I Q2 production prohibition and stopped with that P1 hidden slot unresolved."
+}

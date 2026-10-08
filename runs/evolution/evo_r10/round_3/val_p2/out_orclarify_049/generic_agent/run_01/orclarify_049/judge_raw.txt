@@ -1,0 +1,78 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether a signed contract must be kept for its entire term or whether partial usage is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether at least two distinct contract lengths must be used."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about any cap on the number of distinct contract types."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "is it acceptable for the total rented area in a given month to exceed the required area (i.e., over-renting is allowed), or must the total rented area in each month be exactly equal to the required area?",
+      "rationale": "The agent explicitly asked whether monthly rented area must exactly match required area or whether over-renting is allowed."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "is the objective to minimize the total rental cost across all warehouses and all contract types?",
+      "rationale": "The agent explicitly confirmed the objective is to minimize total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed contract is used for its entire term; no partial usage or early termination is modeled.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether a contract must remain active for all months in its coverage period."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No requirement to use at least two distinct contract lengths; any combination, including a single contract type, is allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about contract-length diversification."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "There is no limit on the number of distinct contract types that can be signed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a maximum number of distinct contracts."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 contract-length diversity requirement remained unresolved."
+  },
+  "summary": "The agent clarified several important modeling details, including exact demand satisfaction and the cost-minimization objective, but missed the P1 contract-length diversity requirement and two lower-severity hidden constraints before declaring READY_TO_MODEL."
+}

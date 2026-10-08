@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the model be limited to only the four fiber-containing vegetables (okra, carrots, celery, cabbage), or should the three meats (salmon, beef, pork) also be selectable as part of the 600g dinner?",
+      "rationale": "The agent explicitly asked whether the three meats are selectable, which directly targets the protein selection rule; the user then confirmed exactly one protein must be included."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a minimum number of vegetable types is required, nor did it explicitly mark this as an assumption needing confirmation before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum vegetable variety constraint is required; vegetables can be selected arbitrarily without requiring at least two kinds.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed the minimum number of vegetable types, but its READY_TO_MODEL summary omits any vegetable variety constraint and treats the vegetable selection as unconstrained."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H2 about minimum vegetable types remained unresolved and was silently assumed away."
+  },
+  "summary": "The agent recovered the protein selection rule and several modeling details, but failed to ask about the minimum vegetable variety requirement and silently omitted it from the final model, making the stopping behavior premature."
+}

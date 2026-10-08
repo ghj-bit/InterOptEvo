@@ -1,0 +1,58 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements I should know about that aren't covered in the table or the brief, such as demand limits, raw material constraints, or labor restrictions?",
+      "rationale": "The agent asked a broad catch-all question that elicited the $10,000 minimum profit requirement, and then explicitly confirmed it in turn 12."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Are there any minimum production requirements for Model B, or can Model B production be zero if that maximizes profit?",
+      "rationale": "The agent directly asked about minimum production requirements for Model B, which elicited the 15-unit contractual minimum."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements I should know about that aren't covered in the table or the brief, such as demand limits, raw material constraints, or labor restrictions?",
+      "rationale": "The agent's catch-all question elicited the exact-150-hour Process I requirement, and the agent incorporated it into the READY_TO_MODEL summary."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The $10,000 minimum weekly profit is a hard constraint.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about this in turn 12 and the user confirmed it, so it is not silent. However, the agent did not explicitly mark it as needing confirmation in the READY_TO_MODEL summary, but it was confirmed."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Model B must be at least 15 units per week.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about this in turn 8 and the user confirmed it, so it is not silent."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time must be exactly 150 hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about this in turn 11 and the user confirmed it, so it is not silent."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0 and P1 hidden slots were resolved before the agent entered READY_TO_MODEL. The remaining unresolved items (overtime cost, overtime limit, integrality, total output cap) are not listed as hidden slots in the case and are not P0/P1 per the provided slot severities. The agent appropriately stopped after confirming the key business rules."
+  },
+  "summary": "The agent successfully recovered all three hidden slots (minimum profit target, minimum Model B production, and exact Process I time) through direct questions and a catch-all query. It stopped appropriately after resolving all P0/P1 slots, though it left some non-hidden operational details (overtime cost, integrality) as deferred assumptions."
+}

@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are they also sold in fixed 100g units that must be bought in whole units, or can they be purchased in any continuous amount (e.g., 150g of chicken)?",
+      "rationale": "The agent explicitly asked whether proteins are sold in fixed whole units or can be purchased continuously, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about minimum/maximum amounts per food type, but did not ask about a minimum number of distinct vegetable types or varieties."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to select at least three different vegetable types; vegetables are optional and any number of vegetable types may be used.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum distinct vegetable-type requirement, and the user did not volunteer it. The READY_TO_MODEL summary omits this constraint and states only that any food can be zero."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 hidden slot H2, requiring at least three different vegetable types, remained unresolved and was silently omitted from the model."
+  },
+  "summary": "The agent recovered the protein purchase-unit ambiguity but missed the hidden minimum-distinct-vegetable-types constraint, then stopped with that P1 issue unresolved and silently assumed it away."
+}

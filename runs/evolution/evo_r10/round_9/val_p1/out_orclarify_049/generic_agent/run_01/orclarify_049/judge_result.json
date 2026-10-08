@@ -1,0 +1,125 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether a signed contract must be kept for its entire term or whether partial usage is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether at least two distinct contract lengths must be used."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "can you rent multiple warehouses of the same contract length in parallel ... or is at most one warehouse of each contract length allowed?",
+      "rationale": "The question touched on the number of warehouses/contracts per length, but did not ask about a cap on the number of distinct contract lengths/types."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "does the area requirement for each month need to be met exactly, or is it acceptable to have the total rented area exceed the required area in some months (i.e., is over-renting allowed)?",
+      "rationale": "The agent explicitly asked whether monthly area requirements must be met exactly with no excess."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "is the objective to minimize this total cost over the 4 months?",
+      "rationale": "The agent explicitly confirmed the objective is to minimize total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No requirement to diversify contract lengths; any combination of contract lengths is allowed.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about a minimum number of distinct contract lengths, and the user did not volunteer this constraint."
+    },
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed contract need not be used for its entire term; partial usage is allowed.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked whether a contract must be kept for all months in its coverage period."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The conversation ended without a READY_TO_MODEL or equivalent final modeling state, and the P1 diversity slot remained unresolved."
+  },
+  "summary": "The agent confirmed the P0 demand and objective slots but missed the P1 contract-length diversity requirement and the P2 full-coverage and distinct-contract-cap details. The interaction also became stuck in repeated identical questions and never reached a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.65,
+    "earned_weight": 6.5,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 2.0,
+        "score": 0.25
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

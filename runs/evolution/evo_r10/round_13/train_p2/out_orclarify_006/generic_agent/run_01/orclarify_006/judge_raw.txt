@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, including whether Product I can be produced in Q2."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "The table is labeled \"contract reservations\" — should each quarter's production be at least the reserved amount (i.e., reservations are minimum delivery requirements that can be exceeded), or exactly equal to the reserved amount (i.e., production/delivery is fixed and cannot exceed the reservation)?",
+      "rationale": "The agent asked whether reservations are minimum delivery requirements, which touches demand fulfillment semantics, but did not explicitly ask whether all reservations must eventually be delivered or whether late delivery/backlogging is allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2, unless otherwise restricted.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about the hidden constraint that Product I cannot be produced in Q2, and no user message confirmed it."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Contract reservations are minimum delivery requirements that can be exceeded, but the agent did not confirm that all reservations must eventually be fulfilled even if late.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent asked only whether reservations are minimum versus exact, not whether late delivery is allowed and all reservations must be fulfilled."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent stopped after repeated low-value questions without resolving the P1 hidden slots about Product I Q2 production restriction and full contract reservation fulfillment."
+  },
+  "summary": "The agent asked many clarifying questions but missed the two key hidden constraints: Product I cannot be produced in Q2, and all contract reservations must eventually be delivered with late delivery allowed. It also repeated several questions unnecessarily, indicating poor stopping behavior."
+}

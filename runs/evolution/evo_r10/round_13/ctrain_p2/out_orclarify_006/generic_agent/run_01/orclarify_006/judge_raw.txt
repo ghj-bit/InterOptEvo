@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, and the READY_TO_MODEL summary does not mention that Product I cannot be produced in Q2."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "When a product is short in a quarter (produced less than that quarter's demand), is the shortfall carried forward as a backorder that must be made up in later quarters ... or is each quarter's demand independent and any shortfall is simply lost ...?",
+      "rationale": "The agent explicitly asked whether shortfalls are backordered and must be made up later, covering the requirement that contract reservations must eventually be delivered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions, and the READY_TO_MODEL summary omits the Product I Q2 production ban."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H1 about Product I not being producible in Q2 remained unresolved."
+  },
+  "summary": "The agent clarified many demand, cost, and end-of-horizon details well, including backorder fulfillment, but missed the P1 constraint that Product I cannot be produced in Q2 and stopped prematurely."
+}

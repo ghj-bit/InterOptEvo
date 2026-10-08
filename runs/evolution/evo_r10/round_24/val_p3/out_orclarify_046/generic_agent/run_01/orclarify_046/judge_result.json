@@ -1,0 +1,80 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 13 generic_agent",
+      "evidence_quote": "Are there any other constraints or preferences I should include in the model — for example, a maximum number of days per week any student can work, a preference to minimize the number of students used, or a cap on total weekly labor cost?",
+      "rationale": "The agent explicitly asked about a maximum number of days per week any student can work, which targets the shift/day limit hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 13 generic_agent",
+      "evidence_quote": "Are there any other constraints or preferences I should include in the model — for example, a maximum number of days per week any student can work, a preference to minimize the number of students used, or a cap on total weekly labor cost?",
+      "rationale": "The agent asked about a preference to minimize the number of students used, which is related to but not exactly the daily distinct-student cap; however, the user then volunteered the exact constraint, and the agent clarified it in turn 15. The initial question is a partial hit, but the follow-up clarification in turn 15 confirms the daily limit on named students, making it a full hit."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "What should the model optimize — should it minimize the total weekly labor cost (sum of each student's hours times their wage, plus the additional worker's hours times w_add), subject to all the coverage, minimum-hour, and maximum-hour constraints?",
+      "rationale": "The agent explicitly asked about the optimization objective, specifically minimizing total weekly labor cost, which matches the hidden slot."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0 and P1 hidden slots were resolved before the agent entered READY_TO_MODEL. The agent asked about the objective, shift limit, and daily student cap, and received confirmations. Remaining pending items (w_add, min_hours classification) were explicitly marked as parameters to be confirmed later, not silent assumptions."
+  },
+  "summary": "The agent systematically clarified all hidden slots, including the objective, shift limit, and daily student cap, and appropriately stopped after resolving P0/P1 issues. The interaction was thorough and well-structured.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 7.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 3,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 4.0,
+        "total_weight": 4.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

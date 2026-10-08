@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand can be split across vehicles or must be served by exactly one vehicle."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Should each truck start and end its route at the central depot (Depot 0), or is it acceptable for a truck to finish at its last customer?",
+      "rationale": "The agent explicitly asked whether trucks must return to the depot or may finish at the last customer."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer is served by exactly one vehicle and demand cannot be split across vehicles.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about split deliveries or single-vehicle service, so this core routing assumption remained unconfirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent stopped after repeated unresolved questions about distance/speed while P1 slot H1 remained unasked and unresolved."
+  },
+  "summary": "The agent recovered the depot-return requirement but failed to ask about single-vehicle-per-customer service, then got stuck repeating the same unresolved distance/speed question many times before stopping."
+}

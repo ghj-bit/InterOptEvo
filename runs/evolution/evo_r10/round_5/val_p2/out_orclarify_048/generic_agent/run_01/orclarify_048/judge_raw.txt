@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "min_weekly_production_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly production requirement for model A, and the READY_TO_MODEL summary omits any such lower bound."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_weekly_production_B",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly production requirement for model B, and the READY_TO_MODEL summary omits any such lower bound."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_overtime_process_II",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "When production exceeds the 70-hour regular capacity of Process II, is the overtime portion limited to some maximum number of hours per week, or can it be any non-negative amount?",
+      "rationale": "The agent explicitly asked whether overtime for Process II has a maximum weekly limit, directly targeting the hidden cap."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum weekly production requirement for model A; production can be zero or any non-negative integer.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production requirement for model A, but the READY_TO_MODEL summary lists only integer non-negative units and omits any lower bound."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no minimum weekly production requirement for model B; production can be zero or any non-negative integer.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production requirement for model B, but the READY_TO_MODEL summary lists only integer non-negative units and omits any lower bound."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 minimum-production constraints for models A and B remained unresolved and were silently assumed absent."
+  },
+  "summary": "The agent recovered the overtime cap and clarified several modeling details, but it never asked about the contractual minimum weekly production requirements for models A and B, then stopped with those P1 slots unresolved."
+}

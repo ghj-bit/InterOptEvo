@@ -1,0 +1,104 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "project1_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For project (1), is the 20% annual profit paid at the end of each year while the principal stays invested, and can you invest in project (1) at the beginning of any of the three years?",
+      "rationale": "The agent explicitly asked whether project (1) can be invested at the beginning of any of the three years, matching the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "project1_reinvestment_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For project (1), is the 20% profit paid at the end of each year while the principal stays invested, or is the principal returned at the end of the year along with the profit?",
+      "rationale": "The agent clarified that project (1) principal and profit are returned at year-end, which is related to reinvestment, but did not explicitly ask whether those proceeds can be reinvested in the following year."
+    },
+    {
+      "slot_id": "H3",
+      "name": "project2_recovery_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "For project (2), is the 150% total return (principal plus profit) recovered at the end of the third year, the same as projects (3) and (4)?",
+      "rationale": "The agent directly asked about the recovery timing of project (2), prompting confirmation that it is recovered at the end of the second year."
+    },
+    {
+      "slot_id": "H4",
+      "name": "project3_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "For project (3), is the 160% total return (principal plus profit) recovered at the end of the third year, and can you invest in project (3) at the beginning of any of the three years?",
+      "rationale": "The agent explicitly asked whether project (3) can be invested at the beginning of any of the three years, covering the timing restriction."
+    },
+    {
+      "slot_id": "H5",
+      "name": "project4_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "For project (4), is the 40% profit paid at the end of the year along with the principal, and can you invest in project (4) at the beginning of any of the three years?",
+      "rationale": "The agent explicitly asked whether project (4) can be invested at the beginning of any of the three years, covering the timing restriction."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Project (1) principal and profit returned at the end of each year can be reinvested in the following year.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent confirmed that principal and profit are returned at year-end but did not explicitly confirm that these proceeds are available for reinvestment in subsequent years."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were addressed before READY_TO_MODEL; remaining unresolved items (idle cash treatment, minimum investment) are P2 or minor."
+  },
+  "summary": "The agent thoroughly clarified the investment timing and recovery rules for all projects, resolving the key hidden slots before modeling. A minor gap remains regarding explicit confirmation of project (1) reinvestment, but overall the interaction was effective.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.9,
+    "earned_weight": 9.0,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 4,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 9.0,
+        "total_weight": 10.0,
+        "score": 0.9
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 5,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

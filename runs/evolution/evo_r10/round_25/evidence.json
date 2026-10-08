@@ -1,0 +1,1220 @@
+{
+  "schema_version": 1,
+  "benchmark": "OR-Clarify",
+  "round": 25,
+  "passes": 3,
+  "aggregate": {
+    "cases": 8,
+    "core": 0.5833,
+    "allslot": 0.625,
+    "silent": 0.292,
+    "net": 0.5749
+  },
+  "metrics_note": "Core Exact / All-Slot Exact 是 run 级全有或全无（分别针对 P0/P1 与全部隐藏要素）；Silent/run 是未确认却当真用的假设条数。net = 0.5*Core + 0.5*AllSlot - 0.1*Silent。每个 case 给出各遍的判定与 pass1 的完整问答历史。",
+  "records": [
+    {
+      "case_id": "orclarify_007",
+      "core_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allslot_runs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "silent_runs": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "net_runs": [
+        -0.1,
+        -0.1,
+        0.5
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        5,
+        3,
+        7
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P2",
+          "hit": "no"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "Let me analyze this problem carefully before asking questions.\n\n**What I see:**\n- 6 warehouses with empty container inventory (total: 10+12+20+24+18+40 = 124)\n- 5 ports with container demand (total: 20+15+25+33+21 = 114)\n- Distance matrix (km) between each warehouse and port\n- Cost rate: 30 euros per container per kilometer\n\n**Key observations:**\n- Total supply (124) > Total demand (114), so there's a surplus of 10 containers\n- This is a classic transportation problem (min-cost flow)\n\n**Slot inventory:**\n1. **Objective**: Minimize total transportation cost — CONFIRMED (stated)\n2. **Decision variables**: How many containers to ship from each warehouse to each port — implied, standard\n3. **Supply constraint**: Each warehouse can ship at most its inventory — implied, but need to confirm: is it \"at most\" or \"exactly\"?\n4. **Demand constraint**: Each port must receive at least its demand — implied, but need to confirm: is it \"at least\" or \"exactly\"?\n5. **Surplus treatment**: 10 extra containers — what happens to them? Left at warehouses?\n6. **Cost structure**: 30 euros/container/km — is this the only cost? No fixed costs, no capacity constraints on routes?\n7. **Integrality**: Containers are discrete units — should the solution be integer?\n8. **Route capacity**: Are there any limits on how many containers can go on a single route?\n\nLet me think about severity:\n- GATE: Supply constraint direction (at most vs exactly), Demand constraint direction (at least vs exactly), surplus treatment\n- SUPPORT: Integrality, route capacity\n- EDGE: Cost structure details\n\nThe most critical question first: Since supply exceeds demand, the treatment of the surplus is load-bearing. But actually, the most fundamental question is whether demand must be met exactly or at least, and whether supply must be fully used or can be partially used. Let me start with the demand side since that's the binding constraint.\n\nActually, let me think about what's most load-bearing. The problem says \"port container demand\" — this strongly implies each port needs exactly that many containers. And \"warehouse empty container inventory\" implies each warehouse has that many available. The surplus of 10 is the key structural question.\n\nLet me ask about the surplus first since it's the most GATE-level uncertainty.\n\nQUESTION: Since total warehouse inventory (124) exceeds total port demand (114), there will be 10 containers left over. Should the model allow warehouses to ship fewer than their full inventory (i.e., some containers simply stay at the warehouse), or is there a requirement that all 124 containers must be shipped somewhere?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "Some containers can stay at the warehouse. There is no requirement to ship all 124 containers; only the port demand needs to be met."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "Good, that confirms:\n- Supply constraint: each warehouse ships **at most** its inventory (≤)\n- Demand constraint: each port receives **at least** its demand (≥) — though in a min-cost problem with no benefit to over-shipping, this will bind as equality\n- Surplus: 10 containers stay at warehouses, no penalty for that\n\nNow let me update my ledger:\n1. Objective: minimize total transportation cost — CONFIRMED\n2. Supply: at most inventory — CONFIRMED\n3. Demand: must be met (at least) — CONFIRMED (implied by \"only the port demand needs to be met\")\n4. Surplus treatment: stay at warehouse, no cost — CONFIRMED\n5. Cost structure: 30 euros/container/km only? — OPEN (SUPPORT)\n6. Integrality: integer containers? — OPEN (SUPPORT)\n7. Route capacity: any limits? — OPEN (SUPPORT)\n8. Any other costs (fixed, handling, etc.)? — OPEN (SUPPORT)\n\nThe next most important question: Is the cost purely 30 euros per container per km, with no other cost components (fixed costs per route, handling fees, etc.)? And are there any route capacity limits?\n\nLet me consolidate: I'll ask about whether the cost is purely variable (per container per km) with no fixed or other costs, and whether there are route capacity limits. Actually, the protocol says one question per turn. Let me pick the most load-bearing one.\n\nThe cost structure is SUPPORT level. Integrality is also SUPPORT. Route capacity is SUPPORT.\n\nActually, for a transportation problem with these numbers, integrality is almost certainly expected (you can't ship half a container), but it's worth confirming. However, the cost structure question is more load-bearing because if there are fixed costs, the model structure changes significantly.\n\nLet me ask about the cost structure.\n\nQUESTION: Is the total transportation cost for a shipment simply 30 euros × (number of containers) × (distance in km), with no additional fixed costs per route, no handling fees, and no other cost components?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "Yes, the total transportation cost is simply 30 euros multiplied by the number of containers multiplied by the distance in kilometers. There are no additional fixed costs per route, no handling fees, and no other cost components."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "Good, cost structure is confirmed: purely linear, 30 × containers × km.\n\nUpdated ledger:\n1. Objective: minimize total transportation cost — CONFIRMED\n2. Supply: at most inventory — CONFIRMED\n3. Demand: must be met — CONFIRMED\n4. Surplus treatment: stay at warehouse, no cost — CONFIRMED\n5. Cost structure: 30 × containers × km, no other costs — CONFIRMED\n6. Integrality: integer containers? — OPEN (SUPPORT)\n7. Route capacity: any limits? — OPEN (SUPPORT)\n\nNow, integrality and route capacity. For a standard transportation problem with these small numbers, integrality is almost certainly expected. Route capacity is less likely to be an issue but worth checking.\n\nLet me ask about integrality since it's more fundamental to the model structure.\n\nQUESTION: Should the number of containers shipped on each warehouse-to-port route be a whole number (integer), or is it acceptable to treat container quantities as continuous values in the model?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The number of containers shipped on each route must be a whole number."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "Good, integrality confirmed.\n\nUpdated ledger:\n1. Objective: minimize total transportation cost — CONFIRMED\n2. Supply: at most inventory — CONFIRMED\n3. Demand: must be met — CONFIRMED\n4. Surplus treatment: stay at warehouse, no cost — CONFIRMED\n5. Cost structure: 30 × containers × km, no other costs — CONFIRMED\n6. Integrality: integer — CONFIRMED\n7. Route capacity: any limits? — OPEN (SUPPORT)\n\nNow route capacity. This is a SUPPORT-level question. In a standard transportation problem, there are typically no per-route capacity limits beyond the supply and demand constraints. But it's worth confirming.\n\nQUESTION: Are there any capacity limits on individual routes (e.g., a maximum number of containers that can be shipped from a specific warehouse to a specific port), or are the only constraints the warehouse inventories and port demands?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "There are no capacity limits on individual routes. The only constraints are the warehouse inventories and port demands."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "Good, no route capacity limits.\n\nUpdated ledger:\n1. Objective: minimize total transportation cost — CONFIRMED\n2. Supply: at most inventory — CONFIRMED\n3. Demand: must be met — CONFIRMED\n4. Surplus treatment: stay at warehouse, no cost — CONFIRMED\n5. Cost structure: 30 × containers × km, no other costs — CONFIRMED\n6. Integrality: integer — CONFIRMED\n7. Route capacity: none — CONFIRMED\n\nLet me do a final walk-through of the ledger:\n\n- **Objective**: Minimize total transportation cost (30 × containers × km) — CONFIRMED\n- **Decision variables**: x[i][j] = number of containers shipped from warehouse i to port j, integer ≥ 0 — CONFIRMED\n- **Supply constraints**: For each warehouse i, sum_j x[i][j] ≤ inventory[i] — CONFIRMED\n- **Demand constraints**: For each port j, sum_i x[i][j] ≥ demand[j] — CONFIRMED\n- **Surplus**: 10 containers stay at warehouses, no penalty — CONFIRMED\n- **Cost**: 30 × x[i][j] × distance[i][j] — CONFIRMED\n- **Integrality**: x[i][j] integer — CONFIRMED\n- **Route capacity**: None — CONFIRMED\n\nAll GATE and SUPPORT rows are CONFIRMED. No EDGE rows were identified that need probing. The problem is a standard integer transportation problem with supply exceeding demand.\n\nI'm ready to model.\n\nREADY_TO_MODEL\n\n**Confirmed understanding:**\n\n- **Problem type**: Integer transportation problem (min-cost flow)\n- **Objective**: Minimize total transportation cost, where cost = 30 euros × (number of containers) × (distance in km) for each warehouse-to-port shipment\n- **Decision variables**: x[i][j] = number of containers shipped from warehouse i to port j, where i ∈ {Verona, Perugia, Rome, Pescara, Taranto, Lamezia} and j ∈ {Genoa, Venice, Ancona, Naples, Bari}; x[i][j] must be a non-negative integer\n- **Supply constraints**: For each warehouse i, the total containers shipped out cannot exceed its inventory (Verona: 10, Perugia: 12, Rome: 20, Pescara: 24, Taranto: 18, Lamezia: 40)\n- **Demand constraints**: For each port j, the total containers received must meet its demand (Genoa: 20, Venice: 15, Ancona: 25, Naples: 33, Bari: 21)\n- **Surplus**: Total supply (124) exceeds total demand (114) by 10 containers; these may remain at warehouses with no penalty\n- **No route capacity limits**: The only constraints are warehouse inventories and port demands\n- **No additional costs**: No fixed costs, handling fees, or other cost components"
+        }
+      ],
+      "mean_net": 0.1
+    },
+    {
+      "case_id": "orclarify_014",
+      "core_runs": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        -0.1,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "premature_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        6,
+        7,
+        13
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P1",
+          "hit": "no"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: For the protein options (chicken, salmon, tofu), are they also sold in 100g units that must be purchased in whole 100g increments, or can they be bought in any continuous amount (e.g., 150g of chicken)?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "They can be bought in any continuous amount. You do not need to purchase chicken, salmon, or tofu in whole 100g increments."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Is there any minimum or maximum amount of each food type that must be included (for example, at least one pack of vegetables, or at least some protein), or can the solution include zero of any given food as long as the budget and weight constraints are satisfied?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "There is no minimum or maximum amount for any specific protein or vegetable type. You can include zero of any given food, provided the overall budget and weight constraints are satisfied."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Is the goal to maximize total protein intake from all food combined (both proteins and vegetables), or only from the protein options (chicken, salmon, tofu), with vegetables just filling out the meal?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The goal is to maximize total protein intake from all food combined, including both the protein options and the vegetables."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Are the cost and weight figures given per 100g (i.e., cost and weight scale linearly with the amount purchased), so that for example 150g of chicken costs $4.50 and weighs 150g?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "Yes, the cost and weight figures are per 100g and scale linearly with the amount purchased."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Is the $20 budget a hard cap that must not be exceeded (i.e., total cost ≤ $20), and is the 800g weight also a hard cap (total weight ≤ 800g), with no requirement to spend the full budget or use the full weight?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "Yes, the $20 budget and 800g weight are hard caps. Total cost must not exceed $20, and total weight must not exceed 800g. There is no requirement to spend the full budget or use the full weight."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\nConfirmed understanding:\n\n- **Objective:** Maximize total protein intake (grams) from all food combined (proteins + vegetables).\n- **Protein options** (continuous, non-negative amounts, cost/weight scale linearly per 100g):\n  - Chicken: 23g protein, $3.00 per 100g\n  - Salmon: 20g protein, $5.00 per 100g\n  - Tofu: 8g protein, $1.50 per 100g\n- **Vegetable options** (sold in 100g packs, non-negative integer number of packs):\n  - Broccoli: 2.8g protein, $1.20 per pack\n  - Carrots: 0.9g protein, $0.80 per pack\n  - Spinach: 2.9g protein, $1.50 per pack\n  - Bell Pepper: 1.0g protein, $1.00 per pack\n  - Mushrooms: 3.1g protein, $2.00 per pack\n- **Constraints:**\n  - Total cost ≤ $20 (hard cap)\n  - Total weight ≤ 800g (hard cap)\n  - No minimum or maximum on any individual food; zero of any food is allowed.\n  - No requirement to spend the full budget or use the full weight."
+        }
+      ],
+      "mean_net": 0.633
+    },
+    {
+      "case_id": "orclarify_015",
+      "core_runs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "allslot_runs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "no_stop",
+        "no_stop",
+        "no_stop"
+      ],
+      "turns_runs": [
+        30,
+        30,
+        30
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P0",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P1",
+          "hit": "partial"
+        },
+        {
+          "slot_id": "H3",
+          "severity": "P1",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: At the start of stage 1, how many tools do you have on hand, and of those, how many are broken and need repair versus working?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "I don't have that information in the request I submitted. The number of tools on hand at the start of stage 1, and how many of those are broken versus working, still needs internal confirmation."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: When a tool is sent for slow repair at the end of stage j and becomes available at the start of stage j+p, is it available for use during stage j+p itself, or only from stage j+p+1 onward?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "It is available for use during stage j+p itself."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: When a tool is sent for fast repair at the end of stage j and the fast repair duration is q, is it available for use during stage j+q itself, or only from stage j+q+1 onward?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "It is available for use during stage j+q itself."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Can a tool be sent for repair at the end of stage n (the final stage), or does repair only make sense at the end of stages 1 through n-1?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "Yes, a tool can be sent for repair at the end of stage n."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: The brief mentions \"the special tool will no longer be used after stage n\" — what exactly is the special tool, and what does \"no longer used\" mean for the model: is it a specific tool that must be retired (removed from the available pool) after stage n, or is it just a statement that no tools are needed after stage n?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "It is just a statement that no tools are needed after stage n."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Can a single tool be sent for both slow and fast repair at the end of the same stage, or must each tool be assigned to at most one repair type per stage?"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "Each tool must be assigned to at most one repair type per stage."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: Can a tool that is already broken (and thus not counted toward the available requirement) be sent for repair at the end of a stage, or can only tools that are currently working/available be sent for repair?"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "Only tools that are currently working/available can be sent for repair."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: When you send a working tool for repair at the end of stage j, does it become \"broken\" (unavailable) during the repair period, or does it simply leave the available pool and rejoin later without being counted as broken in the meantime?"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "It simply leaves the available pool and rejoin later without being counted as broken in the meantime."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION: Can a tool that is already in repair (in the pipeline) be sent for another repair at the end of a stage, or can only tools that are currently in the available pool be sent for repair?"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "Only tools that are currently in the available pool can be sent for repair."
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "QUESTION: Can a tool be sent for repair multiple times across different stages (i.e., after it re-enters the available pool, it can be sent for repair again at a later stage), or is each tool repaired at most once over the entire horizon?"
+        },
+        {
+          "turn": 10,
+          "who": "client",
+          "text": "A tool can be sent for repair multiple times across different stages."
+        },
+        {
+          "turn": 11,
+          "who": "agent",
+          "text": "QUESTION: Is the objective to minimize the total cost (sum of purchase costs, slow repair costs, and fast repair costs) over all stages, subject to meeting the tool requirement r_j at each stage?"
+        },
+        {
+          "turn": 11,
+          "who": "client",
+          "text": "Yes, that is correct."
+        },
+        {
+          "turn": 12,
+          "who": "agent",
+          "text": "QUESTION: Are the numbers of tools sent for slow repair, fast repair, and purchased at each stage required to be non-negative integers, or can they be fractional?"
+        },
+        {
+          "turn": 12,
+          "who": "client",
+          "text": "They must be non-negative integers."
+        },
+        {
+          "turn": 13,
+          "who": "agent",
+          "text": "QUESTION: Is there any upper limit on how many new tools can be purchased at a single stage, or is the purchase quantity unbounded as long as it's a non-negative integer?"
+        },
+        {
+          "turn": 13,
+          "who": "client",
+          "text": "The purchase quantity is unbounded as long as it's a non-negative integer."
+        },
+        {
+          "turn": 14,
+          "who": "agent",
+          "text": "QUESTION: If a tool is sent for slow repair at the end of stage j and becomes available at the start of stage j+p, can it be sent for repair again at the end of stage j+p (the same stage it becomes available)?"
+        },
+        {
+          "turn": 14,
+          "who": "client",
+          "text": "Yes, it can be sent for repair again at the end of stage j+p."
+        },
+        {
+          "turn": 15,
+          "who": "agent",
+          "text": "QUESTION: When you say \"the number of available tools must be at least r_j\" at stage j, does \"available\" include tools that are in the available pool at the start of stage j (i.e., tools that have completed repair and are ready to use), or does it also include tools that will complete repair during stage j?"
+        },
+        {
+          "turn": 15,
+          "who": "client",
+          "text": "\"Available\" includes tools that are in the available pool at the start of stage j."
+        },
+        {
+          "turn": 16,
+          "who": "agent",
+          "text": "QUESTION: At the end of stage j, can you send tools for repair that were just purchased at stage j (i.e., tools that entered the available pool at the start of stage j and are used during stage j)?"
+        },
+        {
+          "turn": 16,
+          "who": "client",
+          "text": "Yes, tools purchased at stage j can be sent for repair at the end of stage j."
+        },
+        {
+          "turn": 17,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint that limits the total number of tools that can be in repair (in the pipeline) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 17,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 18,
+          "who": "agent",
+          "text": "QUESTION: Can a tool be sent for both slow and fast repair at the end of the same stage, or must each tool be assigned to at most one repair type per stage?"
+        },
+        {
+          "turn": 18,
+          "who": "client",
+          "text": "Each tool must be assigned to at most one repair type per stage."
+        },
+        {
+          "turn": 19,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 19,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 20,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 20,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 21,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 21,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 22,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 22,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 23,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 23,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 24,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 24,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 25,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 25,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 26,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 26,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 27,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 27,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 28,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 28,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 29,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 29,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        },
+        {
+          "turn": 30,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of tools that can be in the pipeline (in repair) at any given time, or is the only constraint that you can only send tools that are currently in the available pool?"
+        },
+        {
+          "turn": 30,
+          "who": "client",
+          "text": "The only constraint is that you can only send tools that are currently in the available pool."
+        }
+      ],
+      "mean_net": 0.333
+    },
+    {
+      "case_id": "orclarify_024",
+      "core_runs": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "net_runs": [
+        1.0,
+        1.0,
+        -0.1
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "premature_stop"
+      ],
+      "turns_runs": [
+        9,
+        9,
+        9
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P0",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the \"at least 10\" constraint specifically about truck trips (i.e., at least 10 trips must be made by trucks), or is it about the total number of trips across all vehicle types?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "It is specifically about truck trips. We need at least 10 trips made by trucks."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Is the 1800-unit delivery target a minimum (we can deliver more than 1800 if it helps), or must we deliver exactly 1800 units?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "It is a minimum. We must deliver at least 1800 units, so delivering more is allowed if it helps."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Is there any limit on how many trips each vehicle type can make, or can we use as many trips of each type as needed?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "There is no limit on how many trips each vehicle type can make. We can use as many trips of each type as needed."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Is there an objective to optimize, such as minimizing total pollution, minimizing total cost, or minimizing the total number of trips, or is any feasible plan that satisfies the constraints acceptable?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "Yes, the objective is to minimize the total pollution generated from all trips, while still delivering at least 1800 units."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Are the number of trips for each vehicle type required to be whole numbers (i.e., you can only make 1, 2, 3... trips, not 1.5 trips)?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "Yes, the number of trips for each vehicle type must be whole numbers."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Is the 2000-unit pollution limit a hard constraint that must be satisfied, or is it a target that we try to meet but could potentially exceed if needed to deliver the 1800 units?"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "It is a hard constraint. Total pollution from all trips must not exceed 2000 units."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: Are there any other constraints or considerations I should be aware of, such as a maximum total number of trips, a budget limit, or a requirement to use all vehicle types?"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "Yes, there is one additional constraint: we can use either vans or electric vehicles, but not both. We must pick one type or the other, not mix them."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: Is there any requirement that we must use at least one trip of each vehicle type (truck, van, motorcycle, electric vehicle), or can some vehicle types have zero trips?"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "There is no requirement to use at least one trip of each vehicle type. Some vehicle types can have zero trips, subject to the constraint that we can use either vans or electric vehicles, but not both."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\nHere is my confirmed understanding of the problem:\n\n**Decision Variables:**\n- Number of trips for each vehicle type (truck, van, motorcycle, electric vehicle), all non-negative integers.\n\n**Objective:**\n- Minimize total pollution generated from all trips.\n\n**Constraints:**\n1. Total pollution ≤ 2000 units (hard constraint).\n2. Number of truck trips ≥ 10.\n3. Total units delivered ≥ 1800 units (minimum, delivering more is allowed).\n4. No limit on the number of trips per vehicle type.\n5. Vans and electric vehicles are mutually exclusive: we can use trips of one or the other, but not both (i.e., if van trips > 0 then electric vehicle trips = 0, and vice versa).\n6. No requirement to use all vehicle types; some can have zero trips.\n\n**Parameters:**\n- Capacities per trip: truck 100, van 80, motorcycle 40, electric vehicle 60 units.\n- Pollution per trip: truck 100, van 50, motorcycle 10, electric vehicle 0 units.\n- 3 sales points (noted, but no per-sales-point allocation constraint was specified)."
+        }
+      ],
+      "mean_net": 0.633
+    },
+    {
+      "case_id": "orclarify_009",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "silent_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "net_runs": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        5,
+        4,
+        5
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P0",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P2",
+          "hit": "no"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Are the production quantities for each toy type required to be whole numbers (integer units), or can they be fractional?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The production quantities for each toy type must be whole numbers (integer units)."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: When you say \"if trucks are manufactured, then trains are not manufactured,\" does this mean that producing any positive number of trucks forces zero trains (and vice versa, producing any trains forces zero trucks), or is it only one-way (trucks force no trains, but trains can still be produced alongside trucks)?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "It is one-way: producing any positive number of trucks forces zero trains. Producing trains does not force zero trucks."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: For the rule \"if boats are manufactured, then airplanes are also manufactured,\" does this mean that producing any positive number of boats requires producing at least one airplane, or does it require the number of airplanes to be at least as large as the number of boats?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "It means that producing any positive number of boats requires producing at least one airplane."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Is the goal to maximize total profit from the toys produced, subject to the wood and steel limits and the two conditional rules?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "Yes, the goal is to maximize total profit from the toys produced, subject to the wood and steel limits and the two conditional rules."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\nConfirmed understanding:\n\n- **Products:** toy trucks, toy airplanes, toy boats, toy trains.\n- **Decision variables:** non-negative integer production quantities for each of the four toy types.\n- **Objective:** maximize total profit = 5·(trucks) + 10·(airplanes) + 8·(boats) + 7·(trains).\n- **Resource constraints:**\n  - Wood: 12·(trucks) + 20·(airplanes) + 15·(boats) + 10·(trains) ≤ 890.\n  - Steel: 6·(trucks) + 3·(airplanes) + 5·(boats) + 4·(trains) ≤ 500.\n- **Conditional rules:**\n  - One-way: if trucks > 0, then trains = 0. (Trains may be produced even when trucks are produced.)\n  - If boats > 0, then airplanes ≥ 1.\n- **Integrality:** all production quantities must be whole numbers."
+        }
+      ],
+      "mean_net": 0.4
+    },
+    {
+      "case_id": "orclarify_025",
+      "core_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "no_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        17,
+        30,
+        13
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P2",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: For the first investment, when the 0.7 yuan return is received at the end of year 1, is that 0.7 yuan in addition to getting the original 1 yuan back (i.e., you end up with 1.7 yuan total), or does it replace the principal (i.e., you end up with only 0.7 yuan)?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The 0.7 yuan is in addition to getting the original 1 yuan back. You end up with 1.7 yuan total."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: For the second investment, when the 2 yuan return is received at the end of two years, is that 2 yuan in addition to getting the original 1 yuan back (i.e., you end up with 3 yuan total), or does it replace the principal (i.e., you end up with only 2 yuan)?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "The 2 yuan is in addition to getting the original 1 yuan back. You end up with 3 yuan total."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: At the end of each year, can the money you receive (principal plus returns) be reinvested into either investment option, or is the 100,000 yuan the only money that can ever be invested?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The money received at the end of each year (principal plus returns) can be reinvested into either investment option."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: The second investment must be held for a period that is a multiple of two years — does this mean it can be held for exactly 2 years, or could it also be held for 4 years (or longer), and if held longer, does it earn the 2-yuan-per-1-yuan return again for each additional two-year period?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "It can be held for exactly 2 years. It cannot be held for 4 years or longer."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: What is the goal of this investment plan — is it to maximize the total amount of money you have at the end of year 3?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "Yes, the goal is to maximize the total amount of money you have at the end of year 3."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: If you invest in the second option at the start of year 2, it matures at the end of year 3 — is that allowed, or can the second investment only be made at the start of year 1 (so it matures at the end of year 2)?"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "It is allowed to invest in the second option at the start of year 2, so it matures at the end of year 3."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: If you invest in the first option at the start of year 3, it would mature at the end of year 3 — is that allowed, or does the first investment need to be held for a full year before the end of the horizon (i.e., only investable at the start of years 1 and 2)?"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "It is allowed to invest in the first option at the start of year 3, so it matures at the end of year 3."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: If you have money available at the start of a year that you do not invest in either option, does it simply sit idle with no return until the end of year 3, or is there any other treatment for uninvested cash?"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "Uninvested cash sits idle with no return until the end of year 3."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION: Is there any limit on how much you can invest in each option per year, or can you invest any amount (up to your available cash) in either option at the start of any year?"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "There is no limit on how much you can invest in each option per year. You can invest any amount, up to your available cash, in either option at the start of any year."
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "QUESTION: The brief says \"the total amount invested initially cannot exceed the available capital of 100,000 yuan\" — does this constraint apply only to the money invested at the start of year 1, or does it also cap the total amount invested across all three years combined?"
+        },
+        {
+          "turn": 10,
+          "who": "client",
+          "text": "This constraint applies only to the money invested at the start of year 1."
+        },
+        {
+          "turn": 11,
+          "who": "agent",
+          "text": "QUESTION: Can you split your available cash between the two investment options in the same year (e.g., invest 40,000 in option 1 and 30,000 in option 2 at the start of year 1), or must you choose only one option per year?"
+        },
+        {
+          "turn": 11,
+          "who": "client",
+          "text": "You can split your available cash between the two investment options in the same year."
+        },
+        {
+          "turn": 12,
+          "who": "agent",
+          "text": "QUESTION: Are the investment amounts required to be in whole yuan (integer amounts), or can you invest fractional amounts (e.g., 12,345.67 yuan)?"
+        },
+        {
+          "turn": 12,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 13,
+          "who": "agent",
+          "text": "QUESTION: When you invest in the first option at the start of a year, is the money locked up for that entire year (i.e., you cannot access it mid-year), or is there any flexibility in the timing within the year?"
+        },
+        {
+          "turn": 13,
+          "who": "client",
+          "text": "The money is locked up for that entire year."
+        },
+        {
+          "turn": 14,
+          "who": "agent",
+          "text": "QUESTION: Is there any minimum investment amount required for either option, or can you invest any positive amount (even 1 yuan)?"
+        },
+        {
+          "turn": 14,
+          "who": "client",
+          "text": "There is no minimum investment amount required for either option."
+        },
+        {
+          "turn": 15,
+          "who": "agent",
+          "text": "QUESTION: Are there any transaction costs, fees, or taxes associated with making an investment or receiving a return, or are the returns stated (1.7x and 3x) the exact net amounts you receive?"
+        },
+        {
+          "turn": 15,
+          "who": "client",
+          "text": "There are no transaction costs, fees, or taxes. The returns stated are the exact net amounts you receive."
+        },
+        {
+          "turn": 16,
+          "who": "agent",
+          "text": "QUESTION: At the end of year 3, when both investments mature and any idle cash is counted, is the objective simply the sum of all money you hold at that point (matured investments plus any uninvested cash), with no further reinvestment or compounding beyond that?"
+        },
+        {
+          "turn": 16,
+          "who": "client",
+          "text": "Yes, the objective is simply the sum of all money you hold at the end of year 3, with no further reinvestment or compounding beyond that."
+        },
+        {
+          "turn": 17,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\nHere is my confirmed understanding of the investment planning problem:\n\n**Horizon:** 3 years (start of year 1 through end of year 3).\n\n**Initial capital:** 100,000 yuan available at the start of year 1. The constraint \"total amount invested initially cannot exceed 100,000\" applies only to the start-of-year-1 investments.\n\n**Investment options:**\n- **Option 1:** Invest at the start of any year (1, 2, or 3). Money is locked for that full year. At the end of that year, you receive 1.7 yuan per 1 yuan invested (principal + 0.7 return).\n- **Option 2:** Invest at the start of any year (1 or 2). Money is locked for exactly 2 years. At the end of the second year, you receive 3 yuan per 1 yuan invested (principal + 2 return). It cannot be held for 4+ years.\n\n**Reinvestment:** Money received at the end of any year (principal + returns) can be reinvested in either option at the start of the next year.\n\n**Splitting:** You can split available cash between both options in the same year.\n\n**Idle cash:** Any cash not invested sits idle with zero return until the end of year 3.\n\n**No limits:** No per-year cap on either option, no minimum investment, no transaction costs or taxes.\n\n**Objective:** Maximize total money held at the end of year 3 (sum of all matured investment proceeds plus any uninvested idle cash).\n\n**Open item (parked):** Whether investment amounts must be whole yuan (integer) or can be fractional — deferred to internal confirmation. I will model with continuous (fractional) amounts as the default, which is the standard LP formulation; if integers are required, the structure is the same with integrality constraints added."
+        }
+      ],
+      "mean_net": 0.5
+    },
+    {
+      "case_id": "orclarify_026",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        5,
+        12,
+        8
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P0",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the goal to minimize the total number of salespeople scheduled (i.e., the sum of people starting each of the six shifts), or is there a different objective such as minimizing total labor cost with different pay rates per shift?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The goal is to minimize the total number of salespeople scheduled. There are no different pay rates per shift; we are simply looking for the smallest total headcount needed to meet the coverage requirements."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Do salespeople work on a repeating daily schedule (so the 22:00-2:00 overnight period is covered by people who started at 22:00 the previous day and at 2:00 the same day), meaning the schedule is a steady-state daily pattern that repeats every day?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "Yes, the schedule is a steady-state daily pattern that repeats every day. The 22:00–2:00 period is covered by salespeople who started at 22:00 and those who started at 2:00."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Is there any upper limit on how many salespeople can start a shift at any given start time, or is the only constraint that each period's coverage is at least the required number?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "There is no upper limit on how many salespeople can start a shift at any given start time. The only constraint is that each period's coverage must be at least the required number."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Can the number of salespeople starting each shift be any non-negative integer, or must it be a whole number of people (i.e., integer values only)?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The number of salespeople starting each shift must be a whole number of people (integer values only)."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\nConfirmed understanding:\n\n- **Problem type:** Integer linear programming (staffing/scheduling).\n- **Decision variables:** Six non-negative integer variables, one per shift start time (2:00, 6:00, 10:00, 14:00, 18:00, 22:00), representing the number of salespeople starting at that time.\n- **Shift structure:** Each salesperson works exactly one 8-hour shift, covering the four consecutive 2-hour periods beginning at the start time.\n- **Time periods and coverage:**\n  - 2:00–6:00: covered by shifts starting at 22:00 and 2:00 → need ≥ 10\n  - 6:00–10:00: covered by shifts starting at 2:00 and 6:00 → need ≥ 15\n  - 10:00–14:00: covered by shifts starting at 6:00 and 10:00 → need ≥ 25\n  - 14:00–18:00: covered by shifts starting at 10:00 and 14:00 → need ≥ 20\n  - 18:00–22:00: covered by shifts starting at 14:00 and 18:00 → need ≥ 18\n  - 22:00–2:00: covered by shifts starting at 18:00 and 22:00 → need ≥ 12\n- **Objective:** Minimize the total number of salespeople scheduled (sum of all six shift-start variables).\n- **Constraints:** Each period's total coverage (sum of the two relevant shift variables) must be at least the required number. No upper bounds on any shift.\n- **Schedule nature:** Steady-state daily repeating pattern.\n- **Integrality:** All variables are non-negative integers."
+        }
+      ],
+      "mean_net": 1.0
+    },
+    {
+      "case_id": "orclarify_027",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        10,
+        9,
+        18
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: What is the objective of this production plan — are we maximizing total profit (unit price minus raw material cost minus the machine operating costs), or is there a different goal such as maximizing total output or meeting a specific demand?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The objective is to maximize the factory's total profit.\n\nTo be clear on the cost structure: the \"Operating Costs at Full Capacity\" listed in the table are fixed charges. If a machine is used at all during the planning period, you must pay that entire amount. Therefore, the profit calculation is:\n\nTotal Revenue (from unit prices)\nminus Total Raw Material Costs\nminus Total Fixed Operating Costs (fo …"
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Are there any demand limits or minimum production requirements for each product, or can we produce unlimited quantities of each product as long as machine hours allow?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "There are no demand limits or minimum production requirements for any of the products. We can produce any quantity of each product, provided the machine hour constraints are satisfied."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Since each product must go through both procedure A and procedure B, does the quantity of each product produced on the A side have to exactly equal the quantity produced on the B side (i.e., no work-in-progress or leftover units that complete only one procedure)?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "Yes, the quantity of each product processed on the A side must exactly equal the quantity processed on the B side. There is no work-in-progress or leftover units that complete only one procedure."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: For the fixed operating cost, is the charge applied per machine (so if any product is processed on A1, you pay the full 300 yuan for A1 regardless of how many products use it), or is it applied per product-machine combination (so if both Product I and Product II are processed on A1, you pay 300 yuan twice)?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The charge is applied per machine. If any product is processed on A1, you pay the full 300 yuan for A1 once, regardless of how many products use it."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Are the processing times in the table (e.g., 5 for Product I on A1) in minutes per unit, and are the effective machine hours (e.g., 6000 for A1) in minutes as well, so the constraint is simply sum of (units × time per unit) ≤ 6000?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "Yes, the processing times in the table are in minutes per unit, and the effective machine hours are also in minutes. The constraint is simply that the sum of (units produced × time per unit) for each machine must not exceed its effective machine hours."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Is there any constraint on the total number of units of each product that can be produced, or is the only limit the machine hour capacity?"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "There is no constraint on the total number of units of each product that can be produced. The only limits are the machine hour capacities."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: Since the operating costs are fixed charges paid only if a machine is used at all, is it possible that the optimal solution would choose not to use a particular machine (and thus avoid its fixed cost), or must every machine be operated?"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "It is possible that the optimal solution would choose not to use a particular machine to avoid its fixed cost. There is no requirement that every machine must be operated."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: For Product III, which can only be processed on A2 for procedure A and B2 for procedure B, does this mean that if we produce any Product III, we must necessarily pay the fixed costs for both A2 and B2, or could there be some other arrangement?"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "Yes, if we produce any Product III, we must necessarily pay the fixed costs for both A2 and B2, because Product III can only be processed on those specific machines."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION: For the profit calculation, is the raw material cost (0.25, 0.35, 0.50 yuan per unit) incurred for every unit produced regardless of which machines are used, and is it simply subtracted from revenue on a per-unit basis?"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "Yes, the raw material cost is incurred for every unit produced regardless of which machines are used. It is simply subtracted from revenue on a per-unit basis."
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\nHere is my confirmed understanding of the problem:\n\n**Objective:** Maximize total profit = Total Revenue − Total Raw Material Costs − Total Fixed Operating Costs (for machines actually used).\n\n**Products:** I, II, III. Each unit must be processed on exactly one A-machine and exactly one B-machine. The quantity of each product on the A side must equal the quantity on the B side (no WIP).\n\n**Machine assignments (processing times in minutes/unit):**\n- Product I: A1 (5), A2 (7); B1 (6), B2 (4), B3 (7)\n- Product II: A1 (10), A2 (9); B1 (8) only\n- Product III: A2 (12) only; B2 (11) only\n\n**Machine capacities (minutes):** A1 = 6000, A2 = 10000, B1 = 4000, B2 = 7000, B3 = 4000.\n\n**Fixed operating costs (paid once if the machine is used at all):** A1 = 300, A2 = 321, B1 = 250, B2 = 783, B3 = 200 yuan. A machine may be left unused to avoid its fixed cost.\n\n**Per-unit economics:**\n- Product I: price 1.25, raw material 0.25 → contribution 1.00\n- Product II: price 2.00, raw material 0.35 → contribution 1.65\n- Product III: price 2.80, raw material 0.50 → contribution 2.30\n\n**Constraints:**\n- For each machine: sum over products of (units assigned to that machine × processing time) ≤ capacity.\n- For each product: total units on A side = total units on B side.\n- All production quantities ≥ 0 (continuous or integer to be determined by the model).\n- No demand limits, no minimum production, no other constraints.\n\n**Decision variables:** For each product and each eligible machine, the number of units assigned to that machine, plus binary variables indicating whether each machine is used (to activate fixed costs)."
+        }
+      ],
+      "mean_net": 1.0
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand can be split across multiple vehicles or must be served by exactly one vehicle. Turn 6 asked whether a truck can serve more than one customer, which is the reverse issue and does not cover the single-vehicle-per-customer rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Do vehicles have to return to the depot after completing their route, or is the objective only the distance traveled while serving customers (excluding the return leg)?",
+      "rationale": "The agent explicitly asked whether vehicles must return to the depot or whether routes can be open, directly covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer is served by exactly one vehicle and demand cannot be split across vehicles.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about split deliveries or single-vehicle service; the user simulator only volunteered that a truck can serve multiple customers, which does not confirm the single-vehicle-per-customer rule."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The transcript ends without a READY_TO_MODEL or equivalent final modeling state, and the P1 hidden slot H1 remained unresolved."
+  },
+  "summary": "The agent recovered the depot-return requirement but failed to ask about the single-vehicle-per-customer rule, then became stuck repeatedly asking unresolved distance/travel-time questions without reaching a final modeling state."
+}

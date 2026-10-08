@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "min_weekly_production_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly production requirement for Model A, and the READY_TO_MODEL summary omits any such constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_weekly_production_B",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly production requirement for Model B, and the READY_TO_MODEL summary omits any such constraint."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_overtime_process_II",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For Process II, is the 70-hour maximum capacity the total available time (meaning any production beyond 70 hours requires overtime at the adjusted profit rates), or is 70 hours the regular-time limit with a separate, additional overtime capacity that I should treat as a distinct resource?",
+      "rationale": "The agent explicitly asked whether there is a separate additional overtime capacity for Process II, which directly targets the overtime cap hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum weekly production requirement for Model A.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production requirement for Model A, but the final model omits any lower bound on A."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no minimum weekly production requirement for Model B.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production requirement for Model B, but the final model omits any lower bound on B."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 minimum-production constraints for Model A and Model B remained unresolved and were silently omitted."
+  },
+  "summary": "The agent clarified several important modeling details, including the Process II overtime cap, but failed to ask about the minimum weekly production requirements for Models A and B, then stopped with those P1 constraints silently omitted."
+}

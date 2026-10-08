@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should these three meats be included as selectable foods in the plan (with zero fiber contribution), or should the plan be limited to only the four vegetables (okra, carrots, celery, cabbage)?",
+      "rationale": "The agent explicitly asked about the role and selection of the protein foods, and the user clarified exactly one protein source must be included. The agent also later confirmed the positive-amount interpretation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked whether all four vegetables are optional and whether there are per-food bounds, but never explicitly asked about a minimum number of vegetable types, such as requiring at least two different vegetables."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "All four vegetables are optional and there is no minimum number of vegetable types required.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether at least two vegetable types must be selected; it only asked whether vegetables could be zero and whether there were per-food bounds, then treated the absence of per-food bounds as confirming no vegetable-variety requirement."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H2 about the minimum number of vegetable types remained unresolved."
+  },
+  "summary": "The agent recovered the protein-selection rule and several other structural details, but it failed to ask about the minimum vegetable-variety requirement and silently assumed no such constraint before declaring readiness to model."
+}

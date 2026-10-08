@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_profit_maximization_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the profit to be maximized (i.e., maximize total weekly profit subject to it being at least 3000 yuan), or is 3000 yuan simply a minimum requirement and the actual objective is something else (e.g., minimize cost or maximize units produced)?",
+      "rationale": "The agent explicitly asked whether the objective is to maximize total weekly profit, directly covering the hidden objective slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "missing_idle_time_minimization_objective",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about minimizing idle time or any secondary objective involving unused process capacity, and did not mark it as an assumption needing confirmation."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The only objective is to maximize weekly profit; idle time minimization with cost-proportional weights is not part of the model.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about idle time or a secondary objective, but its READY_TO_MODEL summary lists only 'Maximize total weekly profit' and omits any idle-time objective."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The P0 objective slot was resolved, but the P1 idle-time minimization objective was never asked about or confirmed before the agent entered READY_TO_MODEL."
+  },
+  "summary": "The agent correctly clarified the primary profit-maximization objective and several constraints, but it missed the P1 secondary objective of minimizing process idle time with cost-proportional weights and silently assumed profit maximization was the only objective.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 3.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

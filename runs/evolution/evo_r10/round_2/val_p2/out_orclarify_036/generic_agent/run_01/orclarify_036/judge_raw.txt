@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand can be split across multiple vehicles or must be served by exactly one vehicle."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "is there another load-bearing detail I should confirm now — for example, whether each truck must return to the central depot after completing its route, or whether it may end its route at the last customer served?",
+      "rationale": "The agent explicitly asked whether trucks must return to the depot or may end at the last customer, matching the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer is served by exactly one vehicle and demand is not split across vehicles.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about split deliveries or single-vehicle service, yet later discussed splitting total demand across trucks without confirming that individual customer demands cannot be split."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent stopped after resolving H2 but never resolved H1, a P1 hidden slot about whether each customer must be served by exactly one vehicle."
+  },
+  "summary": "The agent recovered the depot-return requirement but missed the single-vehicle-per-customer rule, leaving a P1 hidden slot unresolved while repeatedly asking low-value or already-answered questions."
+}

@@ -1,0 +1,71 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "The total demand across all branches and specialties is 8500, but only 9000 people are available. Should the model require that all 8500 demand positions be filled exactly, or is it acceptable to leave some positions unfilled?",
+      "rationale": "The agent explicitly asked whether all demand positions must be filled exactly or whether some can be left unfilled, which targets the exact-equality vs lower-bound distinction for p1."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Since maximizing preferred-city and minimizing not-preferred-city are essentially the same thing, how should these be combined into a single optimization — should I use a weighted sum with specific weights, or treat them as a lexicographic (priority-ordered) sequence where one goal is optimized before the next?",
+      "rationale": "The agent explicitly asked whether the objectives should be combined by weighted sum or lexicographic priority order, directly covering the hidden priority structure."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Both P0 and P1 hidden slots were resolved by turn 4, but the agent continued asking many repeated and low-value questions, including re-asking the same preferred-specialty/preferred-city independence questions multiple times in turns 21–30."
+  },
+  "summary": "The agent successfully recovered the key hidden modeling facts, including exact demand equality and lexicographic priority order, but then continued with numerous repetitive and low-value clarification questions after the core ambiguities were already resolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 5.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a signed contract must be kept active for its entire term or whether partial usage is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether at least two distinct contract lengths must be used; it only asked about mutual-exclusion rules."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never inquired about a cap on the number of distinct contract lengths or types."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is it acceptable for the total rented area to exceed the required area in some month (i.e., renting more than needed is allowed and simply costs more), or must the rented area exactly equal the required area in every month?",
+      "rationale": "The agent explicitly asked whether monthly rented area must exactly match required area or whether excess is allowed."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked for or confirmed the optimization objective, such as minimizing total rental cost."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [
+      "H5"
+    ],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The conversation ended without a READY_TO_MODEL or final modeling state, and the agent had not resolved the P0 objective slot or the P1 contract-diversity slot."
+  },
+  "summary": "The agent recovered the exact-demand requirement but missed the objective, contract-length diversity, full-coverage, and contract-count limit slots; it then became stuck repeatedly asking the same unresolved area-granularity question and never reached a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.3,
+    "earned_weight": 3.0,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 4,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 6.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2",
+      "H5"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H5"
+    ],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

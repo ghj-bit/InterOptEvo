@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about production restrictions for Product I in Q2 or any quarter-specific production limitations."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the \"contract reservations\" (demand) per quarter per product, is the requirement that each quarter's demand must be fully met from that quarter's production plus beginning inventory (i.e., no backlogging allowed, and any unmet demand incurs the delay compensation cost), or can demand be delayed to later quarters where the delay compensation cost applies?",
+      "rationale": "The agent explicitly asked whether demand can be delayed and whether all reservations must be fulfilled, directly covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2, with no quarter-specific production restriction.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, and the hidden constraint U10 was not confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent stopped after repeated delay-cost questions without ever asking about the Product I Q2 production restriction, leaving a P1 hidden slot unresolved."
+  },
+  "summary": "The agent resolved the contract-delivery semantics but missed the Product I Q2 production restriction and then repeated the same delay-cost questions many times, leading to a premature stop with an unresolved P1 slot."
+}

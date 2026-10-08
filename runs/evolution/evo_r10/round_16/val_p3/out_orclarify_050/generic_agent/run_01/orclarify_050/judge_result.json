@@ -1,0 +1,70 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "purchase_at_month_start",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked when purchases occur within the month. Turn 6 asked about end-of-month inventory capacity, but not purchase timing relative to sales."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Purchases and sales can be modeled with a single end-of-month inventory balance, without specifying whether purchases occur at the beginning of the month before sales.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about intra-month purchase timing, and the READY_TO_MODEL model uses only I_m = I_{m-1} + x_m - s_m with I_m <= 500, silently treating purchase timing as irrelevant."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot about purchase timing within the month remained unresolved."
+  },
+  "summary": "The agent clarified several important modeling details, including objective meaning, sales limits, integer quantities, and capacity timing, but missed the hidden P1 assumption about when purchases occur within each month and then silently assumed it was irrelevant in the final model.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 2.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 1,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 1,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

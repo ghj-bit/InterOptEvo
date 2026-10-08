@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand can be split across multiple vehicles or must be served by exactly one vehicle. Turn 6 asked whether a truck can serve more than one customer, which is the reverse issue and does not cover the single-vehicle-per-customer rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Do vehicles have to return to the depot after completing their route, or is the objective only the distance traveled while serving customers (excluding the return leg)?",
+      "rationale": "The agent explicitly asked whether vehicles must return to the depot or whether routes can be open, directly covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer is served by exactly one vehicle and demand cannot be split across vehicles.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about split deliveries or single-vehicle service; the user simulator only volunteered that a truck can serve multiple customers, which does not confirm the single-vehicle-per-customer rule."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The transcript ends without a READY_TO_MODEL or equivalent final modeling state, and the P1 hidden slot H1 remained unresolved."
+  },
+  "summary": "The agent recovered the depot-return requirement but failed to ask about the single-vehicle-per-customer rule, then became stuck repeatedly asking unresolved distance/travel-time questions without reaching a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

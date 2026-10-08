@@ -1,0 +1,80 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 12 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total cost (sum of purchase, slow repair, and fast repair costs) over all n stages?",
+      "rationale": "The agent explicitly asked about the optimization objective and confirmed it is to minimize total tool-related cost."
+    },
+    {
+      "slot_id": "H2",
+      "name": "mandatory_repair_after_each_stage",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "When a tool is sent for repair at the end of stage j, does it have to be one of the tools that was actually used (i.e., counted toward meeting r_j) during stage j, or can any available tool be sent for repair regardless of whether it was needed to meet the requirement?",
+      "rationale": "The agent asked whether used tools must be sent for repair, and the follow-up in turn 8 clarified that every used tool must be repaired."
+    },
+    {
+      "slot_id": "H3",
+      "name": "fast_repair_return_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "When a tool is sent for fast repair at the end of stage j, does it become available at the start of stage j+q (i.e., usable in stage j+q), following the same convention as slow repair?",
+      "rationale": "The agent explicitly asked about the exact return timing for fast-repaired tools."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent never entered READY_TO_MODEL or an equivalent final modeling state; it continued repeating the same unresolved question through the end of the transcript."
+  },
+  "summary": "The agent recovered the key hidden slots H1-H3, but then became stuck repeatedly asking the same unresolved question and never reached a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 7.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 3,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 4.0,
+        "total_weight": 4.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

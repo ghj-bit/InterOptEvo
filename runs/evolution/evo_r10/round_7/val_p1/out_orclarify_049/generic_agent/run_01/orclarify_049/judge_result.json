@@ -1,0 +1,112 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 10 generic_agent",
+      "evidence_quote": "is the area of each contract a single fixed value across its entire duration, or can it vary by month within the contract?",
+      "rationale": "The agent explicitly asked whether a contract's area is fixed across its entire duration, which directly targets the full-coverage obligation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 16 generic_agent",
+      "evidence_quote": "You mentioned the company must sign at least two contracts of different lengths — is that a hard constraint (the solution is infeasible if fewer than two contracts are chosen), or is it just a description of what typically happens?",
+      "rationale": "The agent explicitly confirmed the requirement to sign at least two contracts of different lengths as a hard constraint."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a maximum limit on the number of distinct contract lengths or types."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "is it acceptable for the total rented area to exceed the required area in some month (i.e., over-renting is allowed), or must the rented area match the required area exactly each month?",
+      "rationale": "The agent explicitly asked whether rented area must exactly match required area each month, directly covering the exact-satisfaction requirement."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "is the objective to minimize the total rental cost across all chosen contracts?",
+      "rationale": "The agent explicitly confirmed that the objective is to minimize total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "There is no cap on the number of distinct contract lengths that can be used.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a maximum number of distinct contracts, yet the READY_TO_MODEL summary and feasible-combination analysis implicitly assume no such cap."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0 and P1 hidden slots were resolved before READY_TO_MODEL; the only unresolved slot is P2 (H3), which does not block modeling."
+  },
+  "summary": "The agent thoroughly clarified the core constraints and objective, resolving all P0/P1 hidden slots, but missed the P2 cap on distinct contract types and stopped appropriately after confirming the feasible solution.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.9,
+    "earned_weight": 9.0,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 4,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}
