@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -123,6 +124,9 @@ HIT_VALUES = {"yes": 1.0, "partial": 0.5, "no": 0.0}
 # Agent 协议干预默认关闭；传入 --max_agent_retries 才会真正重采样。
 MAX_AGENT_RETRIES_PER_TURN = 0
 
+# 本 pipeline 只跑自由问答（Open/FreeQA）协议；仅用于断点续跑的契约指纹。
+PROTOCOL_MODE = "open"
+
 
 @dataclass
 class ChatResult:
@@ -149,7 +153,11 @@ class ChatClient:
             raise RuntimeError("DEEPSEEK_API_KEY is not set. Put it in repo root .env or the process environment.")
         return base_url, api_key
 
-    def complete(self, messages: list[dict[str, str]], timeout: int = 180, max_retries: int = 5) -> ChatResult:
+    def complete(self, messages: list[dict[str, str]], timeout: int = 0, max_retries: int = 0) -> ChatResult:
+        # 环境变量门控（不设环境变量时与旧默认 180s/5 次完全一致）：
+        # 慢模型（如 rightapi 的 gpt-6.1-sol，单次 45–100s+）需要更大的 LLM_TIMEOUT。
+        timeout = timeout or int(os.getenv("LLM_TIMEOUT", "180"))
+        max_retries = max_retries or int(os.getenv("LLM_MAX_RETRIES", "5"))
         retry = 0
         while True:
             try:
@@ -679,6 +687,70 @@ def run_interaction(
     case_id = case["_case_id"]
     run_dir = output_root / agent_profile / f"run_{run_index:02d}" / case_id
     run_dir.mkdir(parents=True, exist_ok=True)
+
+    # 逐轮落盘 + 断点续跑状态：崩溃/被杀后可从上一轮继续，而不是从头再跑。
+    resume_path = run_dir / "resume_state.json"
+
+    def _resume_contract() -> dict[str, Any]:
+        blob = json.dumps(
+            [
+                generic_prompt,
+                question_detector_prompt,
+                answer_detector_prompt,
+                simulator_prompt_base,
+                judge_prompt,
+                case["initial_brief"]["content"],
+                PROTOCOL_MODE,
+                max_turns,
+            ],
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        return {
+            "case_id": case_id,
+            "interaction_mode": PROTOCOL_MODE,
+            "max_turns": max_turns,
+            "prompts_sha": hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16],
+            "agent_model": agent_client.model,
+            "user_model": user_client.model,
+            "detector_model": detector_client.model,
+            "judge_model": judge_client.model,
+        }
+
+    def write_live_checkpoint(turn_done: int) -> None:
+        (run_dir / "transcript.json").write_text(
+            json.dumps(transcript, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        (run_dir / "transcript.md").write_text(render_transcript(transcript), encoding="utf-8")
+        resume_path.write_text(
+            json.dumps(
+                {
+                    "contract": _resume_contract(),
+                    "turn": turn_done,
+                    "transcript": transcript,
+                    "agent_messages": agent_messages,
+                    "simulator_messages": simulator_messages,
+                    "counters": {
+                        "completed": completed,
+                        "protocol_failed": protocol_failed,
+                        "detector_rejection_count": detector_rejection_count,
+                        "detector_error_count": detector_error_count,
+                        "answer_scope_rejection_count": answer_scope_rejection_count,
+                        "answer_scope_error_count": answer_scope_error_count,
+                        "agent_question_turn_count": agent_question_turn_count,
+                        "agent_atomic_question_count": agent_atomic_question_count,
+                        "agent_multi_question_turn_count": agent_multi_question_turn_count,
+                        "answer_disclosed_hidden_slot_count": answer_disclosed_hidden_slot_count,
+                        "answer_multi_hidden_slot_disclosure_count": answer_multi_hidden_slot_disclosure_count,
+                        "answer_independent_fact_count": answer_independent_fact_count,
+                        "agent_retry_total": agent_retry_total,
+                        "agent_retry_limit_pass_through_count": agent_retry_limit_pass_through_count,
+                    },
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
     stats_path = run_dir / "statistics.json"
     judge_path = run_dir / "judge_result.json"
     if stats_path.exists() and judge_path.exists():
@@ -753,7 +825,41 @@ def run_interaction(
     agent_max_retries_exceeded = False
     agent_retry_limit_pass_through_count = 0
 
-    for turn in range(1, max_turns + 1):
+    # ---- 断点续跑：命中中间态且契约一致时，恢复到上一轮结束时的现场 ----
+    start_turn = 1
+    if resume_path.exists():
+        try:
+            saved = json.loads(resume_path.read_text(encoding="utf-8"))
+        except Exception:
+            saved = {}
+        if saved.get("contract") == _resume_contract() and int(saved.get("turn", 0)) >= 1:
+            transcript[:] = saved.get("transcript") or []
+            agent_messages[:] = saved.get("agent_messages") or agent_messages
+            simulator_messages[:] = saved.get("simulator_messages") or simulator_messages
+            c = saved.get("counters") or {}
+            completed = bool(c.get("completed", False))
+            protocol_failed = bool(c.get("protocol_failed", False))
+            detector_rejection_count = int(c.get("detector_rejection_count", 0))
+            detector_error_count = int(c.get("detector_error_count", 0))
+            answer_scope_rejection_count = int(c.get("answer_scope_rejection_count", 0))
+            answer_scope_error_count = int(c.get("answer_scope_error_count", 0))
+            agent_question_turn_count = int(c.get("agent_question_turn_count", 0))
+            agent_atomic_question_count = int(c.get("agent_atomic_question_count", 0))
+            agent_multi_question_turn_count = int(c.get("agent_multi_question_turn_count", 0))
+            answer_disclosed_hidden_slot_count = int(c.get("answer_disclosed_hidden_slot_count", 0))
+            answer_multi_hidden_slot_disclosure_count = int(c.get("answer_multi_hidden_slot_disclosure_count", 0))
+            answer_independent_fact_count = int(c.get("answer_independent_fact_count", 0))
+            agent_retry_total = int(c.get("agent_retry_total", 0))
+            agent_retry_limit_pass_through_count = int(c.get("agent_retry_limit_pass_through_count", 0))
+            start_turn = int(saved["turn"]) + 1
+            print(
+                f"[resume] 命中中间态：已完成 {saved['turn']} 轮、transcript {len(transcript)} 条，从第 {start_turn} 轮继续",
+                flush=True,
+            )
+        else:
+            print("[resume] 发现中间态但契约不匹配（prompt/模型/轮数已变），忽略并从第 1 轮开始", flush=True)
+
+    for turn in range(start_turn, max_turns + 1):
         # ----- Agent 重试循环 -----
         agent_retry = 0
         agent_retry_feedback: str | None = None
@@ -903,6 +1009,7 @@ def run_interaction(
             break
 
         if completed:
+            write_live_checkpoint(turn)
             break  # READY_TO_MODEL 结束
 
         # ----- User response loop -----
@@ -913,6 +1020,7 @@ def run_interaction(
             transcript.append({"turn": turn, "speaker": "user_simulator", "content": simulator_reply})
             agent_messages.append({"role": "user", "content": "Business user response:\n\n" + simulator_reply})
             time.sleep(0.2)
+            write_live_checkpoint(turn)  # 本分支下面有 continue，落盘必须放在它之前
             continue
 
         simulator_reply = user_client.complete(simulator_messages).content
@@ -971,6 +1079,7 @@ def run_interaction(
         agent_messages.append({"role": "user", "content": "Business user response:\n\n" + simulator_reply})
 
         time.sleep(0.2)
+        write_live_checkpoint(turn)
 
     # ----- Judge 与统计（同原逻辑，增加重试字段）-----
     judge_user_message = render_judge_case(case) + "\n\n# Full Transcript\n\n" + render_transcript(transcript)
@@ -1027,6 +1136,8 @@ def run_interaction(
     (run_dir / "judge_prompt_user_message.md").write_text(judge_user_message, encoding="utf-8")
     (run_dir / "judge_raw.txt").write_text(judge_raw, encoding="utf-8")
     judge_path.write_text(json.dumps(judge_result, ensure_ascii=False, indent=2), encoding="utf-8")
+    if resume_path.exists():  # 本次 case-run 已完整结束，清掉断点，避免下次误续
+        resume_path.unlink()
 
     stat = {
         "mode": pipeline_mode,

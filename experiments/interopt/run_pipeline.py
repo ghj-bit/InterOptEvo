@@ -378,7 +378,7 @@ class ChatClient:
     def _api_settings(self) -> tuple[str, str, bool]:
         return _resolve_api_settings(self.profile_name)
 
-    def complete(self, messages: list[dict[str, str]], timeout: int = 180, max_retries: int = 10) -> ChatResult:
+    def complete(self, messages: list[dict[str, str]], timeout: int = 420, max_retries: int = 10) -> ChatResult:
         retry = 0
         while True:
             try:
