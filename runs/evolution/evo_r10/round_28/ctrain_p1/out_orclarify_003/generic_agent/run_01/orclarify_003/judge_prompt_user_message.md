@@ -1,0 +1,324 @@
+# Case facts for Judge
+
+## Initial brief shown to Generic Agent
+Visible unit IDs: U1, U18, U19, U20, U21, U22, U2, U3, U4, U5, U6, U7, U8, U9, U10, U11, U12, U13, U14, U15, U16, U17
+I need help creating a production and human resources plan for a six-month period (January to June) for a foldable tables company, with the objective of maximizing total net profit. Unfulfilled demand from one month is back-ordered and must be met in subsequent months, and orders (current demand and backorders) are fulfilled using available inventory from the previous month, current in-house production, and outsourced units. Total overtime hours per month for the entire workforce cannot exceed 20 hours per worker, and the ending inventory at the end of June must be at least 10,000 units.
+
+Initial workforce at the start of January: 1,000 employees.
+
+Initial inventory at the start of January: 15,000 units.
+
+Sales price: 300 Yuan per unit sold.
+
+Raw material cost: 90 Yuan per unit, applicable only to units produced in-house.
+
+Outsourcing cost: 200 Yuan per unit for finished tables (all-inclusive).
+
+Inventory holding cost: 15 Yuan per unit for inventory held at the end of a month.
+
+Backorder cost: 35 Yuan per unit for unfulfilled demand carried over to the next month.
+
+Labor requirement: each in-house unit requires 5 labor hours to produce.
+
+Each worker provides 160 regular working hours per month.
+
+Regular wage rate: 30 Yuan per hour for the 160 regular hours per worker, paid regardless of utilization.
+
+Overtime wage rate: 40 Yuan per hour.
+
+Maximum overtime hours per worker per month: 20 hours.
+
+Hiring cost per new worker: 5,000 Yuan.
+
+Firing cost per worker: 8,000 Yuan.
+
+Demand forecast (in units):
+| Month | January | February | March | April | May | June |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Demand | 20,000 | 40,000 | 42,000 | 35,000 | 19,000 | 18,500 |
+
+Minimum ending inventory requirement: 10,000 units.
+
+## Problem units
+- U1 (context): I need help creating a production and human resources plan for a six-month period (January to June) for a foldable tables company.
+- U2 (data): Initial workforce at the start of January: 1,000 employees.
+- U3 (data): Initial inventory at the start of January: 15,000 units.
+- U4 (data): Sales price: 300 Yuan per unit sold.
+- U5 (data): Raw material cost: 90 Yuan per unit, applicable only to units produced in-house.
+- U6 (data): Outsourcing cost: 200 Yuan per unit for finished tables (all-inclusive).
+- U7 (data): Inventory holding cost: 15 Yuan per unit for inventory held at the end of a month.
+- U8 (data): Backorder cost: 35 Yuan per unit for unfulfilled demand carried over to the next month.
+- U9 (data): Labor requirement: each in-house unit requires 5 labor hours to produce.
+- U10 (data): Each worker provides 160 regular working hours per month.
+- U11 (data): Regular wage rate: 30 Yuan per hour for the 160 regular hours per worker, paid regardless of utilization.
+- U12 (data): Overtime wage rate: 40 Yuan per hour.
+- U13 (data): Maximum overtime hours per worker per month: 20 hours.
+- U14 (data): Hiring cost per new worker: 5,000 Yuan.
+- U15 (data): Firing cost per worker: 8,000 Yuan.
+- U16 (data): Demand forecast (in units):
+| Month | January | February | March | April | May | June |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Demand | 20,000 | 40,000 | 42,000 | 35,000 | 19,000 | 18,500 |
+- U17 (data): Minimum ending inventory requirement: 10,000 units.
+- U18 (objective): Maximize total net profit.
+- U19 (constraint): Unfulfilled demand from one month is back-ordered and must be met in subsequent months.
+- U20 (constraint): Orders (current demand and backorders) are fulfilled using available inventory from the previous month, current in-house production, and outsourced units.
+- U21 (constraint): Total overtime hours per month for the entire workforce cannot exceed 20 hours per worker.
+- U22 (constraint): The ending inventory at the end of June must be at least 10,000 units.
+- U23 (constraint): All backorders must be cleared by the end of June (ending backorders must be zero).
+
+## Hidden slot scoring rules
+## H1: ending_backorders_zero
+- Severity: P1
+- Severity reason: Without this terminal condition, the agent could model a scenario where backorders persist indefinitely beyond the planning horizon, resulting in a materially different (and likely invalid) profit-maximizing plan that does not force demand satisfaction.
+- Problem unit ID: U23
+- Semantic hit rule: The Agent's question must explicitly ask about a terminal condition on backorders, such as whether they must be zero at the end of June or whether all demand must be fulfilled by the end of the planning horizon.
+- Reference acceptable questions:
+  - At the end of June, do we need to clear all backorders so that nothing is left pending?
+  - Is there a requirement that all customer demand must eventually be met by the end of the six‑month period, with no backorders carried forward afterward?
+- Failure modes:
+  - Silently assuming backorders can be carried forward indefinitely beyond the planning horizon
+  - Assuming no end-of-horizon constraint on backorders, leading to a model that may leave some demand permanently unmet
+
+
+# Full Transcript
+
+## Turn 1 - Generic Agent
+
+QUESTION: When you say "total overtime hours per month for the entire workforce cannot exceed 20 hours per worker," do you mean each individual worker can work at most 20 overtime hours in a month (so total overtime is capped at 20 × number of workers that month), or that the whole workforce combined can work at most 20 overtime hours total per month?
+
+## Turn 1 - User Simulator
+
+Each individual worker can work at most 20 overtime hours in a month. So the total overtime hours for the entire workforce in a given month is capped at 20 times the number of workers employed that month.
+
+## Turn 2 - Generic Agent
+
+QUESTION: Regarding the workforce, can the number of workers change from month to month (i.e., can you hire or fire workers in any month, not just at the start of January), and if so, is there any limit on how many workers you can hire or fire in a single month?
+
+## Turn 2 - User Simulator
+
+Yes, the number of workers can change from month to month. You can hire or fire workers in any month. There is no limit on how many workers can be hired or fired in a single month.
+
+## Turn 3 - Generic Agent
+
+QUESTION: When a worker is hired or fired in a given month, does that change take effect for that same month's production (i.e., a worker hired in March can work regular and overtime hours in March), or does it take effect starting the following month?
+
+## Turn 3 - User Simulator
+
+The change takes effect for that same month. A worker hired in March can work regular and overtime hours in March.
+
+## Turn 4 - Generic Agent
+
+QUESTION: Regarding the regular wage: you said each worker is paid 30 Yuan per hour for 160 regular hours per month, paid regardless of utilization. Does this mean every worker employed in a month is paid a fixed 4,800 Yuan (160 × 30) for that month even if they work fewer than 160 hours, or is the regular wage only paid for the actual regular hours worked (up to 160)?
+
+## Turn 4 - User Simulator
+
+Every worker employed in a month is paid a fixed 4,800 Yuan (160 × 30) for that month, regardless of how many regular hours they actually work.
+
+## Turn 5 - Generic Agent
+
+QUESTION: Regarding backorders: when unfulfilled demand is carried over to the next month, is the backorder cost of 35 Yuan per unit charged once for the month it is carried, and then if it remains unfulfilled in the following month, is it charged again for that next month as well (i.e., 35 per unit per month of delay), or is it charged only once total per unit regardless of how many months it is delayed?
+
+## Turn 5 - User Simulator
+
+The backorder cost of 35 Yuan per unit is charged for each month the unit remains unfulfilled. So if a unit is backordered for two months, the cost is 35 Yuan for the first month and another 35 Yuan for the second month.
+
+## Turn 6 - Generic Agent
+
+QUESTION: Regarding the sales price of 300 Yuan per unit: is this revenue earned for every unit of demand that is eventually fulfilled (including backordered units when they are later delivered), or is it only earned for units fulfilled in the same month as the demand occurs?
+
+## Turn 6 - User Simulator
+
+The sales price of 300 Yuan per unit is earned for every unit of demand that is eventually fulfilled, including backordered units when they are later delivered.
+
+## Turn 7 - Generic Agent
+
+QUESTION: Regarding the raw material cost of 90 Yuan per unit: is this cost incurred only for units produced in-house, or does it also apply to outsourced units (in addition to the 200 Yuan outsourcing cost)?
+
+## Turn 7 - User Simulator
+
+The raw material cost of 90 Yuan per unit applies only to units produced in-house. It does not apply to outsourced units.
+
+## Turn 8 - Generic Agent
+
+QUESTION: Regarding the inventory holding cost of 15 Yuan per unit: is this charged on the ending inventory of each month (i.e., the units left over at the end of that month), and does it also apply to the ending inventory at the end of June (the 10,000+ units required)?
+
+## Turn 8 - User Simulator
+
+Yes, the inventory holding cost of 15 Yuan per unit is charged on the ending inventory of each month, including the ending inventory at the end of June.
+
+## Turn 9 - Generic Agent
+
+QUESTION: Regarding the minimum ending inventory of 10,000 units at the end of June: does this 10,000 units need to be on hand after fulfilling all of June's demand (including any backorders carried into June), meaning it is additional inventory on top of what is needed to meet demand?
+
+## Turn 9 - User Simulator
+
+Yes, the 10,000 units must be on hand at the end of June after fulfilling all of June's demand, including any backorders carried into June. It is additional inventory on top of what is needed to meet demand.
+
+## Turn 10 - Generic Agent
+
+QUESTION: Regarding the initial inventory of 15,000 units at the start of January: is there any cost associated with this initial inventory (e.g., a holding cost for January), or is it simply available to use for fulfilling January's demand at no additional cost?
+
+## Turn 10 - User Simulator
+
+The initial inventory of 15,000 units is simply available to use for fulfilling January's demand at no additional cost. There is no holding cost charged on the initial inventory at the start of January.
+
+## Turn 11 - Generic Agent
+
+QUESTION: Regarding the initial workforce of 1,000 employees at the start of January: are these 1,000 workers already employed and thus subject to the fixed 4,800 Yuan regular wage in January (and any subsequent months they remain employed), or is there some other arrangement for the starting workforce?
+
+## Turn 11 - User Simulator
+
+The 1,000 workers at the start of January are already employed and are subject to the fixed 4,800 Yuan regular wage in January, and in any subsequent months they remain employed.
+
+## Turn 12 - Generic Agent
+
+QUESTION: Regarding the outsourcing option: is there any limit on the number of units that can be outsourced in a given month, or can you outsource as many units as needed?
+
+## Turn 12 - User Simulator
+
+There is no limit on the number of units that can be outsourced in a given month. You can outsource as many units as needed.
+
+## Turn 13 - Generic Agent
+
+QUESTION: Regarding the in-house production capacity: is the only constraint on in-house production the available labor hours (regular 160 hours plus overtime up to 20 hours per worker, with each unit requiring 5 hours), or is there any additional machine or facility capacity limit on the number of units that can be produced in-house per month?
+
+## Turn 13 - User Simulator
+
+The only constraint on in-house production is the available labor hours (regular 160 hours plus overtime up to 20 hours per worker, with each unit requiring 5 hours). There is no additional machine or facility capacity limit.
+
+## Turn 14 - Generic Agent
+
+QUESTION: Regarding the backorder policy: is there any limit on how many months a unit can remain backordered before it must be fulfilled or cancelled, or can backorders be carried forward indefinitely as long as they are eventually met within the six-month planning horizon?
+
+## Turn 14 - User Simulator
+
+Backorders can be carried forward as long as they are eventually met within the six-month planning horizon. All backorders must be cleared by the end of June, so no outstanding customer orders can remain after June.
+
+## Turn 15 - Generic Agent
+
+QUESTION: Regarding the workforce at the end of June: is there any requirement or cost associated with the number of workers employed at the end of June (e.g., a minimum workforce level, or a penalty for having too many workers), or is the workforce level at the end of June free to be whatever minimizes cost?
+
+## Turn 15 - User Simulator
+
+There is no requirement or cost associated with the number of workers employed at the end of June. The workforce level at the end of June is free to be whatever minimizes cost.
+
+## Turn 16 - Generic Agent
+
+QUESTION: Regarding the objective function: you said the goal is to maximize total net profit. To confirm, net profit is calculated as total revenue (300 Yuan per unit sold) minus all costs (raw materials, outsourcing, inventory holding, backorder, regular wages, overtime wages, hiring, and firing), correct?
+
+## Turn 16 - User Simulator
+
+Yes, that is correct. Net profit is calculated as total revenue (300 Yuan per unit sold) minus all costs: raw materials, outsourcing, inventory holding, backorder, regular wages, overtime wages, hiring, and firing.
+
+## Turn 17 - Generic Agent
+
+QUESTION: Regarding the demand fulfillment logic: you mentioned that orders (current demand and backorders) are fulfilled using available inventory from the previous month, current in-house production, and outsourced units. Does this mean that in each month, the total units available to fulfill demand (previous month's ending inventory + current in-house production + current outsourcing) must be at least equal to the current month's demand plus any backorders carried into that month, with any excess becoming the new ending inventory?
+
+## Turn 17 - User Simulator
+
+Yes, that is correct. In each month, the total units available to fulfill demand (previous month's ending inventory + current in-house production + current outsourcing) must be at least equal to the current month's demand plus any backorders carried into that month. Any excess becomes the new ending inventory.
+
+## Turn 18 - Generic Agent
+
+QUESTION: Regarding the backorder variable: if in a given month the total available units (previous inventory + in-house production + outsourcing) is less than the total demand to be fulfilled (current demand + incoming backorders), the shortfall becomes the new backorder carried to the next month. Is it possible for a month to have both positive ending inventory AND positive backorders simultaneously, or must one of them be zero in each month?
+
+## Turn 18 - User Simulator
+
+In each month, it is not possible to have both positive ending inventory and positive backorders simultaneously. One of them must be zero.
+
+## Turn 19 - Generic Agent
+
+QUESTION: Regarding the hiring and firing: can you both hire and fire workers in the same month, or is it one or the other (i.e., the workforce can only go up or down in a given month, not both)?
+
+## Turn 19 - User Simulator
+
+You can only hire or fire workers in a given month, not both. The workforce can only go up or down in a given month, not both.
+
+## Turn 20 - Generic Agent
+
+QUESTION: Regarding the overtime hours: if a worker works overtime in a given month, is the overtime paid at 40 Yuan per hour for the actual overtime hours worked (up to 20 hours), in addition to the fixed 4,800 Yuan regular wage, or does the overtime rate replace the regular rate for those hours?
+
+## Turn 20 - User Simulator
+
+The overtime is paid at 40 Yuan per hour for the actual overtime hours worked (up to 20 hours), in addition to the fixed 4,800 Yuan regular wage.
+
+## Turn 21 - Generic Agent
+
+QUESTION: Regarding the in-house production and labor hours: the total in-house production in a month is limited by the total available labor hours (160 regular + up to 20 overtime per worker) divided by 5 hours per unit. Does this mean the in-house production in a month can be at most (180/5) × number of workers = 36 × number of workers units, and the overtime hours used in a month can be any value from 0 up to 20 × number of workers?
+
+## Turn 21 - User Simulator
+
+Yes, that is correct. The in-house production in a month can be at most 36 times the number of workers, and the overtime hours used in a month can be any value from 0 up to 20 times the number of workers.
+
+## Turn 22 - Generic Agent
+
+QUESTION: Regarding the regular hours: since the regular wage is a fixed 4,800 Yuan per worker regardless of utilization, does the model need to track actual regular hours used, or is the only constraint that total in-house production (in units) times 5 hours per unit cannot exceed 180 hours per worker (160 regular + 20 overtime), with overtime hours tracked separately for the overtime wage cost?
+
+## Turn 22 - User Simulator
+
+Yes, that is correct. The model does not need to track actual regular hours used separately. The only constraint is that total in-house production (in units) times 5 hours per unit cannot exceed 180 hours per worker (160 regular + 20 overtime), with overtime hours tracked separately for the overtime wage cost.
+
+## Turn 23 - Generic Agent
+
+QUESTION: Regarding the overtime hours tracking: since overtime is paid at 40 Yuan per hour and the regular wage is fixed, the model needs to know how many overtime hours are actually used in each month to compute the overtime cost. Is the overtime hours used in a month simply the total labor hours for in-house production minus the regular hours (160 × number of workers), whenever that difference is positive, or can the model choose to use fewer than 160 regular hours per worker and still use overtime (i.e., is there a requirement to use all regular hours before any overtime)?
+
+## Turn 23 - User Simulator
+
+The model can choose to use fewer than 160 regular hours per worker and still use overtime. There is no requirement to use all regular hours before any overtime.
+
+## Turn 24 - Generic Agent
+
+QUESTION: Regarding the overtime hours: since the model can choose to use fewer than 160 regular hours per worker and still use overtime, and overtime is more expensive (40 vs 30 Yuan/hour), would the optimal solution always use regular hours first before overtime (to minimize cost), making the overtime hours simply max(0, total labor hours used - 160 × workers)? Or is there a scenario where using overtime while leaving regular hours unused could be beneficial?
+
+## Turn 24 - User Simulator
+
+Since overtime is more expensive (40 Yuan/hour) than regular hours (30 Yuan/hour), the optimal solution would always use regular hours first before overtime. Therefore, the overtime hours used in a month would simply be max(0, total labor hours used - 160 × number of workers).
+
+## Turn 25 - Generic Agent
+
+QUESTION: Regarding the workforce transition: if the workforce in month t is W_t and in month t+1 is W_{t+1}, then if W_{t+1} > W_t, you hire (W_{t+1} - W_t) workers at 5,000 Yuan each, and if W_{t+1} < W_t, you fire (W_t - W_{t+1}) workers at 8,000 Yuan each. Is this correct, and is the workforce in each month a non-negative integer?
+
+## Turn 25 - User Simulator
+
+Yes, that is correct. If W_{t+1} > W_t, you hire (W_{t+1} - W_t) workers at 5,000 Yuan each. If W_{t+1} < W_t, you fire (W_t - W_{t+1}) workers at 8,000 Yuan each. The workforce in each month is a non-negative integer.
+
+## Turn 26 - Generic Agent
+
+QUESTION: Regarding the production and outsourcing variables: are the in-house production units and outsourcing units in each month required to be integers, or can they be continuous (fractional) values?
+
+## Turn 26 - User Simulator
+
+The in-house production units and outsourcing units in each month can be continuous (fractional) values.
+
+## Turn 27 - Generic Agent
+
+QUESTION: Regarding the inventory and backorder variables: are the ending inventory and backorder quantities in each month required to be integers, or can they be continuous (fractional) values?
+
+## Turn 27 - User Simulator
+
+The ending inventory and backorder quantities in each month can be continuous (fractional) values.
+
+## Turn 28 - Generic Agent
+
+QUESTION: Regarding the "no simultaneous positive inventory and backorder" constraint: in the model, this means that for each month, either ending inventory is zero or backorder is zero (or both). Is this a hard constraint that must be enforced, or is it simply a natural consequence of the optimal solution (since holding inventory and backordering simultaneously would be wasteful)?
+
+## Turn 28 - User Simulator
+
+This is a hard constraint that must be enforced.
+
+## Turn 29 - Generic Agent
+
+QUESTION: Regarding the backorder cost timing: you said the backorder cost of 35 Yuan per unit is charged for each month the unit remains unfulfilled. So if a unit is backordered at the end of January (i.e., January's demand is not fully met), the 35 Yuan cost is charged in January for that unit. If it is still unfulfilled at the end of February, another 35 Yuan is charged in February. Is this correct, meaning the backorder cost in month t is 35 × (backorder quantity at the end of month t)?
+
+## Turn 29 - User Simulator
+
+Yes, that is correct. The backorder cost in month t is 35 × (backorder quantity at the end of month t).
+
+## Turn 30 - Generic Agent
+
+QUESTION: Regarding the revenue: since all backorders must be cleared by the end of June, every unit of demand from January through June will eventually be sold. Does this mean total revenue is simply 300 × (20,000 + 40,000 + 42,000 + 35,000 + 19,000 + 18,500) = 300 × 174,500, a fixed constant, and therefore the objective is effectively to minimize total costs?
+
+## Turn 30 - User Simulator
+
+Yes, that is correct. Since all backorders must be cleared by the end of June, every unit of demand from January through June will eventually be sold. Total revenue is a fixed constant of 300 × 174,500, and therefore the objective is effectively to minimize total costs.

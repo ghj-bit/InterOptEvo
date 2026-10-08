@@ -1,0 +1,64 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "project1_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "For project (1), can you invest in it at the beginning of any of the three years, or only at the beginning of the first year?",
+      "rationale": "The agent explicitly asked whether project (1) can be invested at the beginning of any of the three years, directly covering the hidden timing flexibility."
+    },
+    {
+      "slot_id": "H2",
+      "name": "project1_reinvestment_rule",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For project (1), is the 20% annual profit paid each year for all three years, and does the invested principal remain available (i.e., is it not locked up) so it can be reinvested in later years?",
+      "rationale": "The agent explicitly asked whether project (1) principal and profit remain available for reinvestment in later years."
+    },
+    {
+      "slot_id": "H3",
+      "name": "project2_recovery_timing",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask when project (2) funds are recovered; the transcript only confirms the return amount, not the recovery timing."
+    },
+    {
+      "slot_id": "H4",
+      "name": "project3_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "For projects (3) and (4), which can be recovered at the end of the third year, can you invest in them at the beginning of any of the three years, or only at the beginning of the first year?",
+      "rationale": "The agent asked about project (3) investment timing, and the user clarified it is only at the beginning of the second year."
+    },
+    {
+      "slot_id": "H5",
+      "name": "project4_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "For projects (3) and (4), which can be recovered at the end of the third year, can you invest in them at the beginning of any of the three years, or only at the beginning of the first year?",
+      "rationale": "The agent asked about project (4) investment timing, and the user clarified it is only at the beginning of the third year."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Project (2) funds are recovered at the end of the third year, as implied by the READY_TO_MODEL summary listing its total return at end of year 3.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked when project (2) is recovered; the user did not confirm end-of-year-3 recovery, and the hidden fact is end of year 2."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H3"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H3, project (2) recovery timing, remained unresolved and was silently assumed as end of year 3."
+  },
+  "summary": "The agent recovered most hidden timing and reinvestment facts through targeted questions, but missed the project (2) recovery timing and then silently assumed it in the final model, making the stop premature."
+}

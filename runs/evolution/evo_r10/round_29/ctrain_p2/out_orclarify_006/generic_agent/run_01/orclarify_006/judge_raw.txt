@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, including whether Product I can be produced in Q2."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Should the delay compensation be charged on the shortfall (required minus delivered) for each quarter, and does that shortfall persist into the next quarter (i.e., you must make up the delayed units later, and you pay compensation for each quarter the units remain undelivered)?",
+      "rationale": "The agent explicitly asked whether delayed units must be made up later, covering the requirement that contract reservations must eventually be delivered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about the Q2 production restriction for Product I and proceeded without confirming this hidden constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent stopped after repeated redundant questions without ever resolving the P1 hidden slot about Product I not being producible in Q2."
+  },
+  "summary": "The agent recovered the backlogging/delivery requirement but missed the Product I Q2 production restriction, then wasted many turns repeating the same delay-compensation question instead of probing remaining hidden constraints."
+}

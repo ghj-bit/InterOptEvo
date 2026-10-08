@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the model allow selecting any of the seven listed foods (salmon, beef, pork, okra, carrots, celery, cabbage) in any nonnegative amounts, or are the three meats (salmon, beef, pork) excluded from the dinner and only the four vegetables (okra, carrots, celery, cabbage) may be chosen?",
+      "rationale": "The agent explicitly asked about the protein selection rule, and the user confirmed exactly one protein source must be included."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the model allow selecting any of the seven listed foods (salmon, beef, pork, okra, carrots, celery, cabbage) in any nonnegative amounts, or are the three meats (salmon, beef, pork) excluded from the dinner and only the four vegetables (okra, carrots, celery, cabbage) may be chosen?",
+      "rationale": "The agent's question elicited the user's confirmation that at least two kinds of vegetables must be selected, and turn 3 further clarified that each chosen vegetable must be positive."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Quantities are continuous and 'included' means strictly greater than zero, with no minimum practical portion size.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The user simulator deferred this point in turns 7-9, so the agent adopted the continuous reading as a default without confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent resolved the P0/P1 hidden slots (protein selection rule and minimum vegetable types) before entering READY_TO_MODEL; the remaining deferred quantity-discreteness issue is a minor boundary detail."
+  },
+  "summary": "The agent successfully recovered the key hidden constraints through targeted questions and clarified the protein and vegetable selection rules, though it adopted a continuous-quantity default after the user deferred that point."
+}

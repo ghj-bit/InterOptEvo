@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the goal of this plan — minimize the total cost of the tables ordered, or is there another objective (such as meeting a specific target number of tables, or balancing orders across suppliers)?",
+      "rationale": "The agent explicitly asked about the optimization objective and offered minimize total cost as an option."
+    },
+    {
+      "slot_id": "H2",
+      "name": "A_requires_min_B_tables",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether ordering from Supplier A requires ordering at least 30 tables from Supplier B, nor did it mark this as an assumption."
+    },
+    {
+      "slot_id": "H3",
+      "name": "B_requires_C_order",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether ordering from Supplier B requires also ordering from Supplier C, nor did it mark this as an assumption."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no conditional requirement that ordering from Supplier A forces at least 30 tables from Supplier B.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the A-to-B conditional constraint and then stated 'No other constraints' in its READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "There is no conditional requirement that ordering from Supplier B implies ordering from Supplier C.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the B-to-C conditional constraint and then stated 'No other constraints' in its READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2", "H3"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 conditional supplier-link constraints H2 and H3 remained unresolved and were silently assumed absent."
+  },
+  "summary": "The agent correctly recovered the objective and basic bounds, but stopped prematurely after missing both P1 conditional supplier-link constraints, silently assuming no A-to-B minimum or B-to-C ordering requirement."
+}

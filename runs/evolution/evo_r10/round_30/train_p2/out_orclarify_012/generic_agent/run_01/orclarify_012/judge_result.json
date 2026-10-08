@@ -1,0 +1,73 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "demand_fulfillment_required",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the market demand for each container type a minimum that must be met (i.e., you must produce at least the listed demand), or is it a maximum you may not exceed, or an exact target you must hit precisely?",
+      "rationale": "The agent explicitly asked whether demand must be fully met, exactly targeting the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_cost_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of this production plan — minimize total cost (fixed setup costs plus variable production costs), maximize profit (with selling prices given), or something else?",
+      "rationale": "The agent explicitly asked about the objective and named both variable and fixed cost components."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Integer production quantities are required.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about integrality in turn 7, but the user simulator did not confirm it; the agent then stated it would model with integer variables as the natural reading."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Both P0 hidden slots were resolved before READY_TO_MODEL; the only unresolved issue was integrality, which is not a listed P0/P1 hidden slot."
+  },
+  "summary": "The agent asked clear, targeted questions that resolved both P0 hidden slots and many related modeling details before stopping. The only notable issue is an unconfirmed integrality assumption, but it does not affect the P0/P1 stopping judgment.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 6.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Product I has any quarter-specific production restriction, including the hidden Q2 prohibition."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "If a unit reserved in an earlier quarter is never delivered by the end of quarter 4, is it simply charged delay compensation for all quarters it was late (up to 4 quarters), with no additional penalty or requirement to eventually fulfill it?",
+      "rationale": "The agent explicitly asked whether all reserved units must eventually be delivered, directly targeting the hidden requirement that contract reservations are firm and late delivery is allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2, unless otherwise restricted.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, so the hidden Q2 prohibition remained unconfirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent stopped after repeated low-value questions without ever resolving the P1 hidden slot H1 about Product I not being producible in Q2."
+  },
+  "summary": "The agent recovered the contract-delivery requirement but missed the Product I Q2 production restriction, and it wasted many turns repeating an already-answered holding-cost question before stopping."
+}

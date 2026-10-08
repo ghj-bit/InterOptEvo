@@ -69,3 +69,171 @@ QUESTION: Are there any other constraints on the number of jets that can be allo
 ## Turn 9 - User Simulator
 
 I need to confirm internally whether there are any other constraints on the number of jets that can be allocated to training in a given year, such as a maximum cap, or if the only upper bound is the total production available that year.
+
+## Turn 10 - Generic Agent
+
+QUESTION: Is the total number of trained pilots by the end of year 2 simply the sum of pilots trained in year 1 plus pilots trained in year 2, or is there any attrition, graduation rate, or other factor that reduces the number of pilots actually available?
+
+## Turn 10 - User Simulator
+
+I need to confirm internally whether the total number of trained pilots by the end of year 2 is simply the sum of pilots trained in year 1 plus pilots trained in year 2, or if there is any attrition, graduation rate, or other factor that reduces the number of pilots actually available.
+
+## Turn 11 - Generic Agent
+
+QUESTION: Is the objective to maximize the total number of trained pilots by the end of year 2, or is the total number of trained pilots simply a computed output given the training allocations?
+
+## Turn 11 - User Simulator
+
+The objective is to maximize the total number of trained pilots by the end of year 2.
+
+## Turn 12 - Generic Agent
+
+QUESTION: When a jet is allocated to training in a given year, does it still count toward that year's total production available for other uses, or is it removed from the production count entirely?
+
+## Turn 12 - User Simulator
+
+I need to confirm internally whether a jet allocated to training in a given year still counts toward that year's total production available for other uses, or if it is removed from the production count entirely.
+
+## Turn 13 - Generic Agent
+
+QUESTION: Is there any constraint that limits the total number of jets that can be allocated to training across both years combined, or is each year's training allocation independent with only the per-year minimum of 1 and the per-year production as the upper bound?
+
+## Turn 13 - User Simulator
+
+I need to confirm internally whether there is any constraint that limits the total number of jets that can be allocated to training across both years combined, or if each year's training allocation is independent with only the per-year minimum of 1 and the per-year production as the upper bound.
+
+## Turn 14 - Generic Agent
+
+QUESTION: Are the jets allocated to training in year 1 and year 2 drawn from the same cumulative pool of all jets produced so far, or does each year's training allocation draw only from that year's new production?
+
+## Turn 14 - User Simulator
+
+I need to confirm internally whether the jets allocated to training in year 1 and year 2 are drawn from the same cumulative pool of all jets produced so far, or if each year's training allocation draws only from that year's new production.
+
+## Turn 15 - Generic Agent
+
+QUESTION: Is the total number of trained pilots by the end of year 2 simply 5 times the sum of training jets allocated in year 1 and year 2, or is there any other factor that affects the pilot count?
+
+## Turn 15 - User Simulator
+
+I need to confirm internally whether the total number of trained pilots by the end of year 2 is simply 5 times the sum of training jets allocated in year 1 and year 2, or if there is any other factor that affects the pilot count.
+
+## Turn 16 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in year 2 must be at least as large as in year 1, or can the training allocation decrease from year 1 to year 2?
+
+## Turn 16 - User Simulator
+
+I need to confirm internally whether there is any constraint that the number of jets allocated to training in year 2 must be at least as large as in year 1, or if the training allocation can decrease from year 1 to year 2.
+
+## Turn 17 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year cannot exceed the total production in that year, or could training jets be drawn from a separate budget independent of production?
+
+## Turn 17 - User Simulator
+
+I
+
+## Turn 18 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year cannot exceed the total production in that year, or could training jets be drawn from a separate budget independent of production?
+
+## Turn 18 - User Simulator
+
+I need to confirm internally whether there is any constraint that the number of jets allocated to training in a given year cannot exceed the total production in that year, or if training jets could be drawn from a separate budget independent of production.
+
+## Turn 19 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or can the training allocation vary freely between years subject only to the minimum of 1 and the production cap?
+
+## Turn 19 - User Simulator
+
+I need to confirm internally whether there is any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or if the training allocation can vary freely between years subject only to the minimum of 1 and the production cap.
+
+## Turn 20 - Generic Agent
+
+QUESTION: Is there any constraint that the total number of jets allocated to training across both years combined cannot exceed some fixed limit, or is the only constraint the per-year production cap and the per-year minimum of 1?
+
+## Turn 20 - User Simulator
+
+I
+
+## Turn 21 - Generic Agent
+
+QUESTION: Is there any constraint that the total number of jets allocated to training across both years combined cannot exceed some fixed limit, or is the only constraint the per-year production cap and the per-year minimum of 1?
+
+## Turn 21 - User Simulator
+
+I need to confirm internally whether there is any constraint that the total number of jets allocated to training across both years combined cannot exceed some fixed limit, or if the only constraints are the per-year production cap and the per-year minimum of 1.
+
+## Turn 22 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year must be an integer, or can it be a fractional value?
+
+## Turn 22 - User Simulator
+
+I
+
+## Turn 23 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year must be an integer, or can it be a fractional value?
+
+## Turn 23 - User Simulator
+
+I need to confirm internally whether the number of jets allocated to training in a given year must be an integer, or if it can be a fractional value.
+
+## Turn 24 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or can the training allocation vary freely between years subject only to the minimum of 1 and the production cap?
+
+## Turn 24 - User Simulator
+
+I
+
+## Turn 25 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or can the training allocation vary freely between years subject only to the minimum of 1 and the production cap?
+
+## Turn 25 - User Simulator
+
+I need to confirm internally whether there is any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or if the training allocation can vary freely between years subject only to the minimum of 1 and the production cap.
+
+## Turn 26 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year must be at least 2, or is the minimum of 1 the only lower bound?
+
+## Turn 26 - User Simulator
+
+I
+
+## Turn 27 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year must be at least 2, or is the minimum of 1 the only lower bound?
+
+## Turn 27 - User Simulator
+
+I
+
+## Turn 28 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in a given year must be at least 2, or is the minimum of 1 the only lower bound?
+
+## Turn 28 - User Simulator
+
+I need to confirm internally whether there is any constraint that the number of jets allocated to training in a given year must be at least 2, or if the minimum of 1 is the only lower bound.
+
+## Turn 29 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or can the training allocation vary freely between years subject only to the minimum of 1 and the production cap?
+
+## Turn 29 - User Simulator
+
+I
+
+## Turn 30 - Generic Agent
+
+QUESTION: Is there any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or can the training allocation vary freely between years subject only to the minimum of 1 and the production cap?
+
+## Turn 30 - User Simulator
+
+I need to confirm internally whether there is any constraint that the number of jets allocated to training in year 1 must be less than or equal to the number allocated in year 2, or if the training allocation can vary freely between years subject only to the minimum of 1 and the production cap.

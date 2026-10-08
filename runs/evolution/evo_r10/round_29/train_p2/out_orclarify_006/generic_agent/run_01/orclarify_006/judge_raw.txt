@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Product I has any quarter-specific production restriction, such as being prohibited in Q2. The READY_TO_MODEL summary also omits this constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For each product and quarter, is the contract reservation a minimum delivery requirement (i.e., you must deliver at least that many units to the customer in that quarter, with any shortfall incurring the delay compensation), or is it an exact delivery target that must be met precisely?",
+      "rationale": "The agent asked about the reservation delivery semantics and shortfall compensation, which is related to fulfillment, but did not explicitly ask whether all reservations must eventually be fulfilled or whether late delivery/backlogging is required."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, and the READY_TO_MODEL summary lists no such constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Contract reservations are minimum quarterly delivery requirements with per-quarter shortfall penalties, and there is no separate requirement that all reservations must eventually be fulfilled through late delivery.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about minimum versus exact delivery and shortfall compensation, but did not confirm whether unmet reservations must still be delivered later or whether late delivery/backlogging is required."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while two P1 hidden slots remained unresolved: the Product I Q2 production prohibition and the requirement that all contract reservations be fulfilled, including late delivery semantics."
+  },
+  "summary": "The agent asked many detailed clarifying questions about costs, inventory, capacity, and delivery timing, but missed the Product I Q2 production restriction and did not fully resolve whether all contract reservations must eventually be delivered. It then stopped with these P1 issues unresolved."
+}
