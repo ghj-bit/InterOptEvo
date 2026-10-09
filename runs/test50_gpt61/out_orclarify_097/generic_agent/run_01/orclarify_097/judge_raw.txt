@@ -1,0 +1,61 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_A_demand_cap",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Should the plan maximize total profit while allowing production to be below the stated market-demand limits?",
+      "rationale": "The agent touched on market-demand limits generally, but did not explicitly ask whether production of product A is capped by its market demand of 100 tons."
+    },
+    {
+      "slot_id": "H2",
+      "name": "product_B_demand_cap",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Should the plan maximize total profit while allowing production to be below the stated market-demand limits?",
+      "rationale": "The agent touched on market-demand limits generally, but did not explicitly ask whether production of product B is capped by its market demand of 200 tons."
+    },
+    {
+      "slot_id": "H3",
+      "name": "mixing_process_sequence",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the production recipe—can each ton of product A or B be made from an arbitrary blend of raw materials A–D totaling one ton, with no processing loss?",
+      "rationale": "The agent asked about the production recipe and blend structure, and the follow-up turns clarified the two-stage A-B-D intermediate then C process."
+    },
+    {
+      "slot_id": "H4",
+      "name": "objective_function",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Should the plan maximize total profit while allowing production to be below the stated market-demand limits?",
+      "rationale": "The agent explicitly asked whether the plan should maximize total profit, covering the optimization objective."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Production of product A is capped by its market demand of 100 tons.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked generally about allowing production below market-demand limits and did not explicitly confirm that product A production cannot exceed 100 tons."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Production of product B is capped by its market demand of 200 tons.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked generally about allowing production below market-demand limits and did not explicitly confirm that product B production cannot exceed 200 tons."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 hidden slots H3 and H4 were resolved before READY_TO_MODEL; the remaining unresolved demand-cap details are only P2."
+  },
+  "summary": "The agent recovered the critical P0 process and objective facts through targeted questions, but only partially addressed the P2 demand-cap slots and then silently assumed those caps in its final model."
+}

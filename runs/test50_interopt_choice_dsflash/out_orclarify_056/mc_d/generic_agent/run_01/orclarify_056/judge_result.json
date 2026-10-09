@@ -1,0 +1,90 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "sales_only_in_following_month",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Can grain purchased in a month be sold in that same month, or only in the following month?",
+      "rationale": "The agent directly asked whether grain purchased in a month can be sold in the same month or only in the following month, matching the hidden slot's key meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "immediate_payment_on_delivery",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Does the available cash/funds limit how much grain can be purchased in each month?",
+      "rationale": "The agent asked about cash/funds limiting purchases, which touches cash flow, but did not ask specifically whether payment is due upon delivery or in the purchase month."
+    },
+    {
+      "slot_id": "H3",
+      "name": "ending_inventory_target",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the business allowed to end the quarter with more than 2000 dan in inventory?",
+      "rationale": "The agent asked whether ending inventory must be exactly 2000 dan or can be more, and later confirmed it is a strict rule, covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Payment for purchases is effectively constrained by available cash at the time of purchase, without confirming that payment is due upon delivery in the purchase month.",
+      "where_it_appeared": "clarification_turn",
+      "silent_reason": "The agent asked only whether funds limit monthly purchases and never confirmed the timing of payment relative to delivery."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The conversation ended without a READY_TO_MODEL or equivalent final modeling state, and H2 was only partially resolved."
+  },
+  "summary": "The agent recovered the sales-timing and ending-inventory constraints but only partially addressed payment timing, then became stuck repeatedly asking the same unresolved profit-valuation question without reaching a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8333333333333334,
+    "earned_weight": 5.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 5.0,
+        "total_weight": 6.0,
+        "score": 0.8333333333333334
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "all_unresolved_slots": [
+      "H2"
+    ]
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

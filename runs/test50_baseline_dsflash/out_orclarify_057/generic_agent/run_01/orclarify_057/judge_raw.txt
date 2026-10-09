@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "objective_minimizes_waste_area",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Should the cutting plan minimize the total amount of standard roll material used (for example, total square meters or total length consumed), or is there another objective such as minimizing waste or cost?",
+      "rationale": "The agent explicitly asked about the optimization objective and included minimizing waste as an option, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "strict_demand_fulfillment",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether order quantities must be fulfilled exactly or whether overproduction/partial fulfillment is allowed before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The orders must be fulfilled exactly according to their width and length requirements, with no overproduction or partial fulfillment.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether demand fulfillment is strict or whether overproduction is allowed, but treated exact fulfillment as confirmed in the READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent resolved the P0 objective slot but stopped at READY_TO_MODEL without resolving the P1 strict-demand-fulfillment slot."
+  },
+  "summary": "The agent asked clear questions and correctly recovered the waste-minimization objective, but it failed to clarify whether order quantities must be met exactly, leaving a P1 hidden slot unresolved before modeling."
+}

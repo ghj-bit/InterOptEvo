@@ -1,0 +1,81 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "cost_definition",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the cost of the raw pipes themselves part of the total cost to minimize?",
+      "rationale": "The agent explicitly asked whether raw pipe cost is included in total cost, directly targeting the ambiguity in the objective function."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_pieces_per_pipe",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any limit on the number of pieces cut from a single raw pipe, despite this being a hidden constraint that affects feasible cutting patterns."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No explicit limit on the number of pieces per raw pipe was assumed; the agent proceeded without confirming the at-most-5-pieces constraint.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a maximum pieces-per-pipe limit, and the READY_TO_MODEL summary omits any mention of such a constraint, effectively assuming none exists."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H2 (max pieces per pipe) remained unresolved and was not even mentioned as an assumption."
+  },
+  "summary": "The agent clarified many important details, including cost definition, pattern usage ranking, and leftover rules, but failed to ask about the maximum number of pieces per raw pipe, a P1 constraint that materially affects feasible cutting patterns. It stopped prematurely with this hidden slot unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "all_unresolved_slots": [
+      "H2"
+    ]
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

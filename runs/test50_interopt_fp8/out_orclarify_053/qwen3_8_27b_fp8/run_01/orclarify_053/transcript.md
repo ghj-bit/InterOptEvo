@@ -1,0 +1,9 @@
+## Turn 1 - Generic Agent
+
+READY_TO_MODEL
+
+Formulatable confidence: 1.000
+
+Confidence rationale: The request provides a complete set of decision variables (binary selection for each child), a clear objective function (minimize total cost), and all necessary constraints including capacity limits, mandatory inclusions, and logical dependencies. No silent assumptions are required to define the feasible region or operational logic.
+
+Summary: Minimize the total cost of selecting children for a trip. Decision variables are binary for Harry, Hermione, Ron, Fred, George, and Ginny. Constraints: 1) Total selected children between 3 and 4. 2) Ginny is always selected. 3) If George is selected, Fred must be selected. Costs: Harry $1200, Hermione $1650, Ron $750, Fred $800, George $800, Ginny $1500.

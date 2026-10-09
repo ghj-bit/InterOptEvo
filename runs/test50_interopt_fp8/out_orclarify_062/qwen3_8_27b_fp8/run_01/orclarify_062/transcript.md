@@ -1,0 +1,9 @@
+## Turn 1 - Generic Agent
+
+READY_TO_MODEL
+
+Formulatable confidence: 1.000
+
+Confidence rationale: The request defines a clear 0-1 knapsack problem. The decision variables (which restaurants to buy), the objective (maximize annual revenue), the hard constraint (total cost <= 6 million), and all necessary parameters (revenues and costs for A, B, C, D) are explicitly provided. There are no missing operational details or ambiguous business rules.
+
+Summary: Maximize the sum of annual revenues from a subset of four restaurants (A, B, C, D) subject to the constraint that the sum of their acquisition costs does not exceed 6 million. Revenue and cost data are provided for all four options.

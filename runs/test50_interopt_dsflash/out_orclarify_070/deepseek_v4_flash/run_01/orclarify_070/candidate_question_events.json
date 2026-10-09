@@ -1,0 +1,479 @@
+[
+  {
+    "turn": 1,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Are the travel distances directional, meaning the cost from city A to city B may differ from city B to city A, or should the matrix be treated as symmetric?\",\n      \"why_it_matters\": \"This determines whether the problem is an asymmetric or symmetric traveling salesman problem, which changes the decision variables, constraints, and feasible tour set.\",\n      \"answerability\": \"The user can inspect the provided matrix and confirm whether the asymmetric entries are intentional or a data error.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Which city must the traveling salesman start from and return to?\",\n      \"why_it_matters\": \"The required starting city fixes the return point and can change the optimal tour and total distance, especially if travel costs are asymmetric.\",\n      \"answerability\": \"The user can name one of the four cities as the required start and return location.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Must the salesman visit every listed city exactly once, or is it acceptable to skip some cities?\",\n      \"why_it_matters\": \"This changes whether the formulation requires all cities to be included in the tour or allows a subset-selection routing problem.\",\n      \"answerability\": \"The user can confirm whether the route must cover all four cities.\",\n      \"overask_risk\": \"The phrase 'visit multiple cities' and the standard TSP framing strongly imply all cities must be visited, so this may be redundant.\",\n      \"selection_score\": 0.4\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The matrix contains an asymmetric entry (city 4 to city 1 is 15 while city 1 to city 4 is 12), which is the most fundamental formulation-changing ambiguity because it determines whether the model is a symmetric or asymmetric TSP. The starting city is also important, but the directional-cost question must be resolved first because it affects how the starting-city requirement is modeled.\",\n  \"public_question\": \"Are the travel distances directional, meaning the cost from city A to city B may differ from city B to city A, or should the matrix be treated as symmetric?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Are the travel distances directional, meaning the cost from city A to city B may differ from city B to city A, or should the matrix be treated as symmetric?",
+        "why_it_matters": "This determines whether the problem is an asymmetric or symmetric traveling salesman problem, which changes the decision variables, constraints, and feasible tour set.",
+        "answerability": "The user can inspect the provided matrix and confirm whether the asymmetric entries are intentional or a data error.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Which city must the traveling salesman start from and return to?",
+        "why_it_matters": "The required starting city fixes the return point and can change the optimal tour and total distance, especially if travel costs are asymmetric.",
+        "answerability": "The user can name one of the four cities as the required start and return location.",
+        "overask_risk": "",
+        "selection_score": 0.9
+      },
+      {
+        "id": "Q3",
+        "question": "Must the salesman visit every listed city exactly once, or is it acceptable to skip some cities?",
+        "why_it_matters": "This changes whether the formulation requires all cities to be included in the tour or allows a subset-selection routing problem.",
+        "answerability": "The user can confirm whether the route must cover all four cities.",
+        "overask_risk": "The phrase 'visit multiple cities' and the standard TSP framing strongly imply all cities must be visited, so this may be redundant.",
+        "selection_score": 0.4
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The matrix contains an asymmetric entry (city 4 to city 1 is 15 while city 1 to city 4 is 12), which is the most fundamental formulation-changing ambiguity because it determines whether the model is a symmetric or asymmetric TSP. The starting city is also important, but the directional-cost question must be resolved first because it affects how the starting-city requirement is modeled.",
+    "public_question": "Are the travel distances directional, meaning the cost from city A to city B may differ from city B to city A, or should the matrix be treated as symmetric?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Are the travel distances directional, meaning the cost from city A to city B may differ from city B to city A, or should the matrix be treated as symmetric?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Are the travel distances directional, meaning the cost from city A to city B may differ from city B to city A, or should the matrix be treated as symmetric?"
+    ]
+  },
+  {
+    "turn": 2,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"For the asymmetric pair where city 1 to city 4 is 12 but city 4 to city 1 is 15, which value should be used in the symmetric matrix?\",\n      \"why_it_matters\": \"The chosen value changes the distance matrix and can change the optimal tour and total distance.\",\n      \"answerability\": \"The user can specify whether to use 12, 15, or another rule for this pair.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Should all asymmetric entries be symmetrized by taking the smaller of the two directional distances?\",\n      \"why_it_matters\": \"A uniform symmetrization rule determines the final distance matrix used in the optimization model.\",\n      \"answerability\": \"The user can confirm whether the smaller value is the intended rule.\",\n      \"overask_risk\": \"This may be too broad if the user wants a different rule for specific entries.\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Which city must the traveling salesman start from and return to?\",\n      \"why_it_matters\": \"The required starting city fixes the return point and can change the optimal tour and total distance.\",\n      \"answerability\": \"The user can name one of the four cities as the required start and return location.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.8\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The user confirmed the matrix should be symmetric, but the provided data contains an asymmetric pair. Resolving which value to use is necessary before the distance matrix is fully specified and the model can be formulated.\",\n  \"public_question\": \"For the asymmetric pair where city 1 to city 4 is 12 but city 4 to city 1 is 15, which value should be used in the symmetric matrix?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "For the asymmetric pair where city 1 to city 4 is 12 but city 4 to city 1 is 15, which value should be used in the symmetric matrix?",
+        "why_it_matters": "The chosen value changes the distance matrix and can change the optimal tour and total distance.",
+        "answerability": "The user can specify whether to use 12, 15, or another rule for this pair.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Should all asymmetric entries be symmetrized by taking the smaller of the two directional distances?",
+        "why_it_matters": "A uniform symmetrization rule determines the final distance matrix used in the optimization model.",
+        "answerability": "The user can confirm whether the smaller value is the intended rule.",
+        "overask_risk": "This may be too broad if the user wants a different rule for specific entries.",
+        "selection_score": 0.85
+      },
+      {
+        "id": "Q3",
+        "question": "Which city must the traveling salesman start from and return to?",
+        "why_it_matters": "The required starting city fixes the return point and can change the optimal tour and total distance.",
+        "answerability": "The user can name one of the four cities as the required start and return location.",
+        "overask_risk": "",
+        "selection_score": 0.8
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The user confirmed the matrix should be symmetric, but the provided data contains an asymmetric pair. Resolving which value to use is necessary before the distance matrix is fully specified and the model can be formulated.",
+    "public_question": "For the asymmetric pair where city 1 to city 4 is 12 but city 4 to city 1 is 15, which value should be used in the symmetric matrix?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: For the asymmetric pair where city 1 to city 4 is 12 but city 4 to city 1 is 15, which value should be used in the symmetric matrix?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "For the asymmetric pair where city 1 to city 4 is 12 but city 4 to city 1 is 15, which value should be used in the symmetric matrix?"
+    ]
+  },
+  {
+    "turn": 3,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?\",\n      \"why_it_matters\": \"The chosen value for the 1–4 pair directly changes the distance matrix, the optimal tour, and the minimized total distance.\",\n      \"answerability\": \"The user can approve or reject a concrete default value, which is easier than resolving the underlying data conflict.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Which city must the traveling salesman start from and return to?\",\n      \"why_it_matters\": \"The required starting city fixes the return point and can change the optimal tour and total distance.\",\n      \"answerability\": \"The user can name one of the four cities as the required start and return location.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Should the route visit all four cities exactly once before returning to the start?\",\n      \"why_it_matters\": \"This determines whether the model is a full-coverage TSP or a subset-selection routing problem.\",\n      \"answerability\": \"The user can confirm whether all four cities must be included.\",\n      \"overask_risk\": \"The standard TSP framing strongly implies all cities must be visited, so this may be redundant.\",\n      \"selection_score\": 0.4\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The 1–4 distance conflict is the only remaining data gap that prevents a fully specified distance matrix. Since the user cannot resolve it internally, proposing a concrete default value lets the user approve a workable assumption and unblocks the formulation.\",\n  \"public_question\": \"Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?",
+        "why_it_matters": "The chosen value for the 1–4 pair directly changes the distance matrix, the optimal tour, and the minimized total distance.",
+        "answerability": "The user can approve or reject a concrete default value, which is easier than resolving the underlying data conflict.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Which city must the traveling salesman start from and return to?",
+        "why_it_matters": "The required starting city fixes the return point and can change the optimal tour and total distance.",
+        "answerability": "The user can name one of the four cities as the required start and return location.",
+        "overask_risk": "",
+        "selection_score": 0.85
+      },
+      {
+        "id": "Q3",
+        "question": "Should the route visit all four cities exactly once before returning to the start?",
+        "why_it_matters": "This determines whether the model is a full-coverage TSP or a subset-selection routing problem.",
+        "answerability": "The user can confirm whether all four cities must be included.",
+        "overask_risk": "The standard TSP framing strongly implies all cities must be visited, so this may be redundant.",
+        "selection_score": 0.4
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The 1–4 distance conflict is the only remaining data gap that prevents a fully specified distance matrix. Since the user cannot resolve it internally, proposing a concrete default value lets the user approve a workable assumption and unblocks the formulation.",
+    "public_question": "Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?"
+    ]
+  },
+  {
+    "turn": 4,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Must the route start at a specific city, or can the salesman start at any city?\",\n      \"why_it_matters\": \"Fixing the start city constrains the feasible tours and can change the optimal route and total distance; allowing any start makes the start city a decision variable.\",\n      \"answerability\": \"The user can state whether a particular city is required as the start or whether any city is acceptable.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Should the route visit all four cities exactly once before returning to the start?\",\n      \"why_it_matters\": \"This determines whether the model is a full-coverage TSP or a subset-selection routing problem.\",\n      \"answerability\": \"The user can confirm whether all four cities must be included.\",\n      \"overask_risk\": \"The standard TSP framing strongly implies all cities must be visited, so this may be redundant.\",\n      \"selection_score\": 0.4\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?\",\n      \"why_it_matters\": \"The chosen value for the 1–4 pair directly changes the distance matrix, the optimal tour, and the minimized total distance.\",\n      \"answerability\": \"The user can approve or reject a concrete default value, which is easier than resolving the underlying data conflict.\",\n      \"overask_risk\": \"The user has already twice indicated this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.\",\n      \"selection_score\": 0.3\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The 1–4 distance conflict has been raised twice and the user cannot resolve it, so re-asking is unproductive. The start-city requirement is a separate, answerable formulation-changing ambiguity that has not yet been addressed and can be resolved now.\",\n  \"public_question\": \"Must the route start at a specific city, or can the salesman start at any city?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Must the route start at a specific city, or can the salesman start at any city?",
+        "why_it_matters": "Fixing the start city constrains the feasible tours and can change the optimal route and total distance; allowing any start makes the start city a decision variable.",
+        "answerability": "The user can state whether a particular city is required as the start or whether any city is acceptable.",
+        "overask_risk": "",
+        "selection_score": 0.9
+      },
+      {
+        "id": "Q2",
+        "question": "Should the route visit all four cities exactly once before returning to the start?",
+        "why_it_matters": "This determines whether the model is a full-coverage TSP or a subset-selection routing problem.",
+        "answerability": "The user can confirm whether all four cities must be included.",
+        "overask_risk": "The standard TSP framing strongly implies all cities must be visited, so this may be redundant.",
+        "selection_score": 0.4
+      },
+      {
+        "id": "Q3",
+        "question": "Since the 1–4 distance cannot be confirmed internally, should we proceed by using the smaller value 12 for the symmetric distance between city 1 and city 4?",
+        "why_it_matters": "The chosen value for the 1–4 pair directly changes the distance matrix, the optimal tour, and the minimized total distance.",
+        "answerability": "The user can approve or reject a concrete default value, which is easier than resolving the underlying data conflict.",
+        "overask_risk": "The user has already twice indicated this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.",
+        "selection_score": 0.3
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The 1–4 distance conflict has been raised twice and the user cannot resolve it, so re-asking is unproductive. The start-city requirement is a separate, answerable formulation-changing ambiguity that has not yet been addressed and can be resolved now.",
+    "public_question": "Must the route start at a specific city, or can the salesman start at any city?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Must the route start at a specific city, or can the salesman start at any city?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Must the route start at a specific city, or can the salesman start at any city?"
+    ]
+  },
+  {
+    "turn": 5,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Since the starting city is not fixed and the 1–4 distance is unresolved, should we proceed with a model that treats the start city as free and uses a placeholder for the 1–4 distance to be updated once confirmed?\",\n      \"why_it_matters\": \"This determines whether we can build a parameterized model now and swap in the confirmed 1–4 value later, rather than blocking the formulation entirely.\",\n      \"answerability\": \"The user can confirm whether a parameterized model with a placeholder is acceptable as a working approach.\",\n      \"overask_risk\": \"The user may still be unable to approve any assumption about the 1–4 value.\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Should the route visit all four cities exactly once before returning to the start?\",\n      \"why_it_matters\": \"This determines whether the model is a full-coverage TSP or a subset-selection routing problem.\",\n      \"answerability\": \"The user can confirm whether all four cities must be included.\",\n      \"overask_risk\": \"The standard TSP framing strongly implies all cities must be visited, so this may be redundant.\",\n      \"selection_score\": 0.4\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"For the symmetric distance between city 1 and city 4, should we use 12, 15, or some other value?\",\n      \"why_it_matters\": \"The chosen value changes the optimal tour and total distance.\",\n      \"answerability\": \"The user can specify the intended value once internal confirmation is available.\",\n      \"overask_risk\": \"The user has already indicated this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.\",\n      \"selection_score\": 0.3\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The 1–4 distance cannot be resolved by the user, and the start city is now confirmed free. The most productive next step is to confirm whether a parameterized model with a placeholder for the unresolved 1–4 distance is acceptable, which unblocks formulation without forcing an unconfirmed assumption.\",\n  \"public_question\": \"Since the starting city is not fixed and the 1–4 distance is unresolved, should we proceed with a model that treats the start city as free and uses a placeholder for the 1–4 distance to be updated once confirmed?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Since the starting city is not fixed and the 1–4 distance is unresolved, should we proceed with a model that treats the start city as free and uses a placeholder for the 1–4 distance to be updated once confirmed?",
+        "why_it_matters": "This determines whether we can build a parameterized model now and swap in the confirmed 1–4 value later, rather than blocking the formulation entirely.",
+        "answerability": "The user can confirm whether a parameterized model with a placeholder is acceptable as a working approach.",
+        "overask_risk": "The user may still be unable to approve any assumption about the 1–4 value.",
+        "selection_score": 0.85
+      },
+      {
+        "id": "Q2",
+        "question": "Should the route visit all four cities exactly once before returning to the start?",
+        "why_it_matters": "This determines whether the model is a full-coverage TSP or a subset-selection routing problem.",
+        "answerability": "The user can confirm whether all four cities must be included.",
+        "overask_risk": "The standard TSP framing strongly implies all cities must be visited, so this may be redundant.",
+        "selection_score": 0.4
+      },
+      {
+        "id": "Q3",
+        "question": "For the symmetric distance between city 1 and city 4, should we use 12, 15, or some other value?",
+        "why_it_matters": "The chosen value changes the optimal tour and total distance.",
+        "answerability": "The user can specify the intended value once internal confirmation is available.",
+        "overask_risk": "The user has already indicated this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.",
+        "selection_score": 0.3
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The 1–4 distance cannot be resolved by the user, and the start city is now confirmed free. The most productive next step is to confirm whether a parameterized model with a placeholder for the unresolved 1–4 distance is acceptable, which unblocks formulation without forcing an unconfirmed assumption.",
+    "public_question": "Since the starting city is not fixed and the 1–4 distance is unresolved, should we proceed with a model that treats the start city as free and uses a placeholder for the 1–4 distance to be updated once confirmed?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Since the starting city is not fixed and the 1–4 distance is unresolved, should we proceed with a model that treats the start city as free and uses a placeholder for the 1–4 distance to be updated once confirmed?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Since the starting city is not fixed and the 1–4 distance is unresolved, should we proceed with a model that treats the start city as free and uses a placeholder for the 1–4 distance to be updated once confirmed?"
+    ]
+  },
+  {
+    "turn": 6,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Should the route visit all four cities exactly once before returning to the start?\",\n      \"why_it_matters\": \"This determines whether the model is a full-coverage TSP requiring every city to be visited, or a subset-selection routing problem where some cities may be skipped.\",\n      \"answerability\": \"The user can confirm whether all four cities must be included in the tour.\",\n      \"overask_risk\": \"The standard TSP framing strongly implies all cities must be visited, so this may be redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Since the 1–4 distance cannot be confirmed internally, should we proceed with a parameterized model where the 1–4 distance is a placeholder to be updated once confirmed?\",\n      \"why_it_matters\": \"This determines whether we can build the model now with a symbolic parameter for the unresolved pair, rather than blocking formulation.\",\n      \"answerability\": \"The user has already indicated this is a reasonable way to proceed, so they can confirm it.\",\n      \"overask_risk\": \"The user has effectively already agreed to this approach, so re-asking may be redundant.\",\n      \"selection_score\": 0.4\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Should the route be allowed to start at any city, or must it start at a specific city?\",\n      \"why_it_matters\": \"Fixing or freeing the start city changes the feasible tour set and the optimal route.\",\n      \"answerability\": \"The user can state whether any city is acceptable as the start.\",\n      \"overask_risk\": \"The user has already confirmed the starting city is free, so this is redundant.\",\n      \"selection_score\": 0.2\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The 1–4 distance and free start city have both been addressed as far as the user can resolve them, and the user has accepted a parameterized approach. The remaining unaddressed formulation-changing ambiguity is whether all four cities must be visited exactly once, which determines the feasible region.\",\n  \"public_question\": \"Should the route visit all four cities exactly once before returning to the start?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Should the route visit all four cities exactly once before returning to the start?",
+        "why_it_matters": "This determines whether the model is a full-coverage TSP requiring every city to be visited, or a subset-selection routing problem where some cities may be skipped.",
+        "answerability": "The user can confirm whether all four cities must be included in the tour.",
+        "overask_risk": "The standard TSP framing strongly implies all cities must be visited, so this may be redundant.",
+        "selection_score": 0.5
+      },
+      {
+        "id": "Q2",
+        "question": "Since the 1–4 distance cannot be confirmed internally, should we proceed with a parameterized model where the 1–4 distance is a placeholder to be updated once confirmed?",
+        "why_it_matters": "This determines whether we can build the model now with a symbolic parameter for the unresolved pair, rather than blocking formulation.",
+        "answerability": "The user has already indicated this is a reasonable way to proceed, so they can confirm it.",
+        "overask_risk": "The user has effectively already agreed to this approach, so re-asking may be redundant.",
+        "selection_score": 0.4
+      },
+      {
+        "id": "Q3",
+        "question": "Should the route be allowed to start at any city, or must it start at a specific city?",
+        "why_it_matters": "Fixing or freeing the start city changes the feasible tour set and the optimal route.",
+        "answerability": "The user can state whether any city is acceptable as the start.",
+        "overask_risk": "The user has already confirmed the starting city is free, so this is redundant.",
+        "selection_score": 0.2
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The 1–4 distance and free start city have both been addressed as far as the user can resolve them, and the user has accepted a parameterized approach. The remaining unaddressed formulation-changing ambiguity is whether all four cities must be visited exactly once, which determines the feasible region.",
+    "public_question": "Should the route visit all four cities exactly once before returning to the start?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Should the route visit all four cities exactly once before returning to the start?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Should the route visit all four cities exactly once before returning to the start?"
+    ]
+  },
+  {
+    "turn": 7,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?\",\n      \"why_it_matters\": \"The required set of visited cities determines the feasible tours and whether the model is a full four-city TSP or a smaller routing problem over a subset of cities.\",\n      \"answerability\": \"The user can state whether the tour must cover all four cities or only two additional cities.\",\n      \"overask_risk\": \"The user has indicated this point needs internal confirmation, so they may not be able to resolve it now.\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"For the symmetric distance between city 1 and city 4, should we use 12, 15, or some other value?\",\n      \"why_it_matters\": \"The chosen value changes the optimal tour and total distance.\",\n      \"answerability\": \"The user can specify the intended value once internal confirmation is available.\",\n      \"overask_risk\": \"The user has repeatedly said this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.\",\n      \"selection_score\": 0.3\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Since the 1–4 distance cannot be confirmed internally, should we proceed with a parameterized model where the 1–4 distance is a placeholder to be updated once confirmed?\",\n      \"why_it_matters\": \"This determines whether we can build the model now with a symbolic parameter for the unresolved pair.\",\n      \"answerability\": \"The user has already indicated this is a reasonable way to proceed.\",\n      \"overask_risk\": \"The user has effectively already agreed to this approach, so re-asking is redundant.\",\n      \"selection_score\": 0.2\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The 1–4 distance is already handled via a parameterized placeholder the user accepted. The remaining formulation-changing ambiguity is the required set of visited cities, which determines the feasible region and must be clarified before the model can be finalized.\",\n  \"public_question\": \"Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?",
+        "why_it_matters": "The required set of visited cities determines the feasible tours and whether the model is a full four-city TSP or a smaller routing problem over a subset of cities.",
+        "answerability": "The user can state whether the tour must cover all four cities or only two additional cities.",
+        "overask_risk": "The user has indicated this point needs internal confirmation, so they may not be able to resolve it now.",
+        "selection_score": 0.9
+      },
+      {
+        "id": "Q2",
+        "question": "For the symmetric distance between city 1 and city 4, should we use 12, 15, or some other value?",
+        "why_it_matters": "The chosen value changes the optimal tour and total distance.",
+        "answerability": "The user can specify the intended value once internal confirmation is available.",
+        "overask_risk": "The user has repeatedly said this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.",
+        "selection_score": 0.3
+      },
+      {
+        "id": "Q3",
+        "question": "Since the 1–4 distance cannot be confirmed internally, should we proceed with a parameterized model where the 1–4 distance is a placeholder to be updated once confirmed?",
+        "why_it_matters": "This determines whether we can build the model now with a symbolic parameter for the unresolved pair.",
+        "answerability": "The user has already indicated this is a reasonable way to proceed.",
+        "overask_risk": "The user has effectively already agreed to this approach, so re-asking is redundant.",
+        "selection_score": 0.2
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The 1–4 distance is already handled via a parameterized placeholder the user accepted. The remaining formulation-changing ambiguity is the required set of visited cities, which determines the feasible region and must be clarified before the model can be finalized.",
+    "public_question": "Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?"
+    ]
+  },
+  {
+    "turn": 8,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Since the visit requirement cannot be resolved internally, should we proceed with a parameterized model that can represent either visiting all four cities or visiting only two other cities, to be finalized once confirmed?\",\n      \"why_it_matters\": \"This determines whether we can build a flexible model now rather than blocking on the unresolved visit requirement, which changes the feasible route set.\",\n      \"answerability\": \"The user can confirm whether a parameterized model covering both interpretations is an acceptable way to proceed.\",\n      \"overask_risk\": \"The user may still be unable to approve either interpretation.\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?\",\n      \"why_it_matters\": \"The number of required cities changes the feasible route set and the optimal tour.\",\n      \"answerability\": \"The user can state which interpretation applies once internal confirmation is available.\",\n      \"overask_risk\": \"The user has already indicated this needs internal confirmation, so re-asking is likely unproductive.\",\n      \"selection_score\": 0.3\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Which value should be used as the symmetric distance between city 1 and city 4: 12, 15, or another confirmed value?\",\n      \"why_it_matters\": \"The chosen 1–4 distance can change the total distance and the optimal route.\",\n      \"answerability\": \"The user can specify the intended value once internal confirmation is available.\",\n      \"overask_risk\": \"The user has repeatedly said this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.\",\n      \"selection_score\": 0.3\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Both the visit requirement and the 1–4 distance are unresolved and the user cannot decide them. The most productive next step is to confirm whether a parameterized model that accommodates the unresolved visit requirement is acceptable, mirroring the placeholder approach already accepted for the 1–4 distance.\",\n  \"public_question\": \"Since the visit requirement cannot be resolved internally, should we proceed with a parameterized model that can represent either visiting all four cities or visiting only two other cities, to be finalized once confirmed?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Since the visit requirement cannot be resolved internally, should we proceed with a parameterized model that can represent either visiting all four cities or visiting only two other cities, to be finalized once confirmed?",
+        "why_it_matters": "This determines whether we can build a flexible model now rather than blocking on the unresolved visit requirement, which changes the feasible route set.",
+        "answerability": "The user can confirm whether a parameterized model covering both interpretations is an acceptable way to proceed.",
+        "overask_risk": "The user may still be unable to approve either interpretation.",
+        "selection_score": 0.85
+      },
+      {
+        "id": "Q2",
+        "question": "Should the route visit all four cities exactly once, or only two other cities before returning to the starting city?",
+        "why_it_matters": "The number of required cities changes the feasible route set and the optimal tour.",
+        "answerability": "The user can state which interpretation applies once internal confirmation is available.",
+        "overask_risk": "The user has already indicated this needs internal confirmation, so re-asking is likely unproductive.",
+        "selection_score": 0.3
+      },
+      {
+        "id": "Q3",
+        "question": "Which value should be used as the symmetric distance between city 1 and city 4: 12, 15, or another confirmed value?",
+        "why_it_matters": "The chosen 1–4 distance can change the total distance and the optimal route.",
+        "answerability": "The user can specify the intended value once internal confirmation is available.",
+        "overask_risk": "The user has repeatedly said this cannot be decided and needs internal confirmation, so re-asking is likely unproductive.",
+        "selection_score": 0.3
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "Both the visit requirement and the 1–4 distance are unresolved and the user cannot decide them. The most productive next step is to confirm whether a parameterized model that accommodates the unresolved visit requirement is acceptable, mirroring the placeholder approach already accepted for the 1–4 distance.",
+    "public_question": "Since the visit requirement cannot be resolved internally, should we proceed with a parameterized model that can represent either visiting all four cities or visiting only two other cities, to be finalized once confirmed?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Since the visit requirement cannot be resolved internally, should we proceed with a parameterized model that can represent either visiting all four cities or visiting only two other cities, to be finalized once confirmed?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Since the visit requirement cannot be resolved internally, should we proceed with a parameterized model that can represent either visiting all four cities or visiting only two other cities, to be finalized once confirmed?"
+    ]
+  },
+  {
+    "turn": 9,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"formulatable_confidence\": 0.55,\n  \"confidence_rationale\": \"The core structure is clear: a symmetric traveling salesman problem with a free starting city, minimizing total round-trip distance. Two business facts remain unresolved and the user cannot confirm them: (1) whether the tour must cover all four cities exactly once or only two other cities before returning, and (2) the symmetric distance for the 1–4 pair (12 vs 15). The user has accepted a parameterized approach for both, so a model can be built with the visit requirement and the 1–4 distance as parameters to be finalized once internal confirmation is available. Because these parameters change the feasible region and objective, the model cannot be uniquely instantiated yet, hence moderate confidence.\",\n  \"summary\": \"Formulate a symmetric traveling salesman problem over cities 1–4 with a free starting city and a required return to that start, minimizing total round-trip distance. The distance matrix is symmetric except for the 1–4 pair, which is left as a parameter (candidate values 12 or 15) pending internal confirmation. The required set of visited cities is also left as a parameter, representing either all four cities exactly once or only two other cities before returning, pending internal confirmation. All other distances are taken as given.\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "READY_TO_MODEL",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [],
+    "candidate_questions_complete": false,
+    "selected_question_id": "",
+    "selection_rationale": "",
+    "public_question": "",
+    "formulatable_confidence": 0.55,
+    "confidence_parse_ok": true,
+    "confidence_rationale": "The core structure is clear: a symmetric traveling salesman problem with a free starting city, minimizing total round-trip distance. Two business facts remain unresolved and the user cannot confirm them: (1) whether the tour must cover all four cities exactly once or only two other cities before returning, and (2) the symmetric distance for the 1–4 pair (12 vs 15). The user has accepted a parameterized approach for both, so a model can be built with the visit requirement and the 1–4 distance as parameters to be finalized once internal confirmation is available. Because these parameters change the feasible region and objective, the model cannot be uniquely instantiated yet, hence moderate confidence.",
+    "summary": "Formulate a symmetric traveling salesman problem over cities 1–4 with a free starting city and a required return to that start, minimizing total round-trip distance. The distance matrix is symmetric except for the 1–4 pair, which is left as a parameter (candidate values 12 or 15) pending internal confirmation. The required set of visited cities is also left as a parameter, representing either all four cities exactly once or only two other cities before returning, pending internal confirmation. All other distances are taken as given.",
+    "public_text": "READY_TO_MODEL\n\nFormulatable confidence: 0.550\n\nConfidence rationale: The core structure is clear: a symmetric traveling salesman problem with a free starting city, minimizing total round-trip distance. Two business facts remain unresolved and the user cannot confirm them: (1) whether the tour must cover all four cities exactly once or only two other cities before returning, and (2) the symmetric distance for the 1–4 pair (12 vs 15). The user has accepted a parameterized approach for both, so a model can be built with the visit requirement and the 1–4 distance as parameters to be finalized once internal confirmation is available. Because these parameters change the feasible region and objective, the model cannot be uniquely instantiated yet, hence moderate confidence.\n\nSummary: Formulate a symmetric traveling salesman problem over cities 1–4 with a free starting city and a required return to that start, minimizing total round-trip distance. The distance matrix is symmetric except for the 1–4 pair, which is left as a parameter (candidate values 12 or 15) pending internal confirmation. The required set of visited cities is also left as a parameter, representing either all four cities exactly once or only two other cities before returning, pending internal confirmation. All other distances are taken as given.",
+    "entered_user_context": false,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "ready_to_model",
+    "detector_question_count": 0,
+    "detector_atomic_questions": []
+  }
+]

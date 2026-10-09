@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "sales_only_in_following_month",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Can grain be sold in the same month it is purchased, and is there any limit on how much can be sold in a month?",
+      "rationale": "The agent directly asked whether grain can be sold in the same month it is purchased, which targets the sale-timing restriction."
+    },
+    {
+      "slot_id": "H2",
+      "name": "immediate_payment_on_delivery",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 24 generic_agent",
+      "evidence_quote": "Are purchases paid for in cash at the time of purchase in the same month, so that the funds available for purchases in a month equal the initial funds plus sales revenue received up to that month minus purchase costs paid up to that month?",
+      "rationale": "The agent explicitly asked whether purchases are paid in cash at the time of purchase in the same month, covering the immediate-payment requirement."
+    },
+    {
+      "slot_id": "H3",
+      "name": "ending_inventory_target",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 18 generic_agent",
+      "evidence_quote": "Is the 2000 dan ending inventory requirement a hard constraint that must be met exactly, or is it a minimum that could be exceeded?",
+      "rationale": "The agent asked whether the 2000 dan ending inventory is a hard exact constraint or a minimum, directly resolving the terminal inventory requirement."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Sales revenue from a month is not available to fund purchases until the following month.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about same-month sales revenue availability in turns 25 and 26, but the user simulator deferred the point; the agent then modeled it as unavailable without confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were resolved before READY_TO_MODEL; remaining parked items concern cash-timing and valuation details rather than the core P0/P1 slots."
+  },
+  "summary": "The agent recovered the key hidden constraints on sale timing, payment timing, and ending inventory, and stopped appropriately after resolving the P0/P1 slots, though it silently assumed a cash-timing detail that had been deferred."
+}

@@ -1,0 +1,535 @@
+[
+  {
+    "turn": 1,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Are drivers and crew members separate staff categories that must each independently meet the required number in each time period, or is the required number a combined total of drivers and crew members?\",\n      \"why_it_matters\": \"If they are separate categories, the model needs distinct decision variables and separate coverage constraints for drivers and crew; if combined, a single staffing variable per shift suffices, fundamentally changing the formulation and the minimum total headcount.\",\n      \"answerability\": \"The business user knows whether drivers and crew are distinct roles with their own staffing requirements or a single pooled workforce.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"What shift patterns are allowed for drivers and crew members, including start times, shift lengths, and whether a shift can cover multiple time periods?\",\n      \"why_it_matters\": \"Allowed shift patterns define the feasible coverage combinations and directly determine the minimum total staffing, so different rules produce entirely different feasible regions and objectives.\",\n      \"answerability\": \"The business user can describe the operational shift rules used for scheduling staff.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Must the number of drivers and crew members on duty exactly equal the required number in each time period, or can it be greater than the required number?\",\n      \"why_it_matters\": \"Exact matching is a much more restrictive constraint that may force higher total staffing, while minimum coverage allows overstaffing and changes the feasible region and optimal solution.\",\n      \"answerability\": \"The business user can state whether overstaffing is permitted or whether staffing must match the table exactly.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.85\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The distinction between separate driver/crew categories and a combined staffing count is the most fundamental ambiguity: it determines the decision variables and constraint structure before any shift or coverage rules can be meaningfully applied. Shift patterns and exact-vs-minimum coverage are also important, but they presuppose knowing what is being staffed.\",\n  \"public_question\": \"Are drivers and crew members separate staff categories that must each independently meet the required number in each time period, or is the required number a combined total of drivers and crew members?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Are drivers and crew members separate staff categories that must each independently meet the required number in each time period, or is the required number a combined total of drivers and crew members?",
+        "why_it_matters": "If they are separate categories, the model needs distinct decision variables and separate coverage constraints for drivers and crew; if combined, a single staffing variable per shift suffices, fundamentally changing the formulation and the minimum total headcount.",
+        "answerability": "The business user knows whether drivers and crew are distinct roles with their own staffing requirements or a single pooled workforce.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "What shift patterns are allowed for drivers and crew members, including start times, shift lengths, and whether a shift can cover multiple time periods?",
+        "why_it_matters": "Allowed shift patterns define the feasible coverage combinations and directly determine the minimum total staffing, so different rules produce entirely different feasible regions and objectives.",
+        "answerability": "The business user can describe the operational shift rules used for scheduling staff.",
+        "overask_risk": "",
+        "selection_score": 0.9
+      },
+      {
+        "id": "Q3",
+        "question": "Must the number of drivers and crew members on duty exactly equal the required number in each time period, or can it be greater than the required number?",
+        "why_it_matters": "Exact matching is a much more restrictive constraint that may force higher total staffing, while minimum coverage allows overstaffing and changes the feasible region and optimal solution.",
+        "answerability": "The business user can state whether overstaffing is permitted or whether staffing must match the table exactly.",
+        "overask_risk": "",
+        "selection_score": 0.85
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The distinction between separate driver/crew categories and a combined staffing count is the most fundamental ambiguity: it determines the decision variables and constraint structure before any shift or coverage rules can be meaningfully applied. Shift patterns and exact-vs-minimum coverage are also important, but they presuppose knowing what is being staffed.",
+    "public_question": "Are drivers and crew members separate staff categories that must each independently meet the required number in each time period, or is the required number a combined total of drivers and crew members?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Are drivers and crew members separate staff categories that must each independently meet the required number in each time period, or is the required number a combined total of drivers and crew members?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Are drivers and crew members separate staff categories that must each independently meet the required number in each time period, or is the required number a combined total of drivers and crew members?"
+    ]
+  },
+  {
+    "turn": 2,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What shift lengths and start times are allowed for drivers and crew members?\",\n      \"why_it_matters\": \"The set of permissible shift patterns defines the decision variables and the feasible coverage combinations, directly determining the minimum total staffing required.\",\n      \"answerability\": \"The business user knows the operational shift rules used for scheduling staff.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Can a driver or crew member work across multiple time periods, and if so, what is the maximum number of consecutive hours they can work?\",\n      \"why_it_matters\": \"Whether one person can cover multiple periods changes the coverage constraints and the total headcount needed.\",\n      \"answerability\": \"The business user can state the maximum consecutive working hours permitted.\",\n      \"overask_risk\": \"This overlaps with the shift-length question, since shift length often already encodes maximum consecutive hours.\",\n      \"selection_score\": 0.8\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Must the required number of staff be on duty at every moment within each time period, or is it sufficient to meet the requirement on average over the period?\",\n      \"why_it_matters\": \"Instant-by-instant coverage is a stricter constraint that can require more staff than average coverage, changing the feasible region and optimal solution.\",\n      \"answerability\": \"The business user can state whether coverage must be continuous or can be averaged within a period.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.85\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The allowed shift lengths and start times are the most fundamental remaining gap: they define the decision variables and feasible coverage patterns on which all other staffing rules depend. Without this, no meaningful formulation of the staffing plan is possible.\",\n  \"public_question\": \"What shift lengths and start times are allowed for drivers and crew members?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "What shift lengths and start times are allowed for drivers and crew members?",
+        "why_it_matters": "The set of permissible shift patterns defines the decision variables and the feasible coverage combinations, directly determining the minimum total staffing required.",
+        "answerability": "The business user knows the operational shift rules used for scheduling staff.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Can a driver or crew member work across multiple time periods, and if so, what is the maximum number of consecutive hours they can work?",
+        "why_it_matters": "Whether one person can cover multiple periods changes the coverage constraints and the total headcount needed.",
+        "answerability": "The business user can state the maximum consecutive working hours permitted.",
+        "overask_risk": "This overlaps with the shift-length question, since shift length often already encodes maximum consecutive hours.",
+        "selection_score": 0.8
+      },
+      {
+        "id": "Q3",
+        "question": "Must the required number of staff be on duty at every moment within each time period, or is it sufficient to meet the requirement on average over the period?",
+        "why_it_matters": "Instant-by-instant coverage is a stricter constraint that can require more staff than average coverage, changing the feasible region and optimal solution.",
+        "answerability": "The business user can state whether coverage must be continuous or can be averaged within a period.",
+        "overask_risk": "",
+        "selection_score": 0.85
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The allowed shift lengths and start times are the most fundamental remaining gap: they define the decision variables and feasible coverage patterns on which all other staffing rules depend. Without this, no meaningful formulation of the staffing plan is possible.",
+    "public_question": "What shift lengths and start times are allowed for drivers and crew members?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: What shift lengths and start times are allowed for drivers and crew members?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "What shift lengths and start times are allowed for drivers and crew members?"
+    ]
+  },
+  {
+    "turn": 3,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Are drivers and crew members interchangeable in terms of cost and work rules, or do they have different costs or constraints that affect the staffing plan?\",\n      \"why_it_matters\": \"If drivers and crew members have different costs or work rules, minimizing total headcount may not minimize total cost, which would change the objective function and possibly the constraints.\",\n      \"answerability\": \"The business user knows whether the two roles are treated identically for scheduling and cost purposes.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are shifts longer than 8 hours or overtime allowed, or must all shifts be exactly 8 hours?\",\n      \"why_it_matters\": \"Allowing overtime or longer shifts could reduce the number of distinct staff needed and changes the feasible shift set and coverage constraints.\",\n      \"answerability\": \"The business user can state whether overtime or extended shifts are permitted under labor rules.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Does the staffing plan need to be cyclic to cover a full 24-hour cycle repeatedly, or is it for a single day?\",\n      \"why_it_matters\": \"A cyclic requirement imposes additional constraints linking the end of the day back to the start, which can change the feasible region and minimum staffing.\",\n      \"answerability\": \"The business user can state whether the schedule repeats daily or is planned for one day only.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.8\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective is stated as minimizing total number of drivers and crew members, but if the two roles differ in cost or work rules, the true objective may be cost rather than headcount. This is the most formulation-critical remaining ambiguity because it can change the objective function itself.\",\n  \"public_question\": \"Are drivers and crew members interchangeable in terms of cost and work rules, or do they have different costs or constraints that affect the staffing plan?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Are drivers and crew members interchangeable in terms of cost and work rules, or do they have different costs or constraints that affect the staffing plan?",
+        "why_it_matters": "If drivers and crew members have different costs or work rules, minimizing total headcount may not minimize total cost, which would change the objective function and possibly the constraints.",
+        "answerability": "The business user knows whether the two roles are treated identically for scheduling and cost purposes.",
+        "overask_risk": "",
+        "selection_score": 0.9
+      },
+      {
+        "id": "Q2",
+        "question": "Are shifts longer than 8 hours or overtime allowed, or must all shifts be exactly 8 hours?",
+        "why_it_matters": "Allowing overtime or longer shifts could reduce the number of distinct staff needed and changes the feasible shift set and coverage constraints.",
+        "answerability": "The business user can state whether overtime or extended shifts are permitted under labor rules.",
+        "overask_risk": "",
+        "selection_score": 0.85
+      },
+      {
+        "id": "Q3",
+        "question": "Does the staffing plan need to be cyclic to cover a full 24-hour cycle repeatedly, or is it for a single day?",
+        "why_it_matters": "A cyclic requirement imposes additional constraints linking the end of the day back to the start, which can change the feasible region and minimum staffing.",
+        "answerability": "The business user can state whether the schedule repeats daily or is planned for one day only.",
+        "overask_risk": "",
+        "selection_score": 0.8
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The objective is stated as minimizing total number of drivers and crew members, but if the two roles differ in cost or work rules, the true objective may be cost rather than headcount. This is the most formulation-critical remaining ambiguity because it can change the objective function itself.",
+    "public_question": "Are drivers and crew members interchangeable in terms of cost and work rules, or do they have different costs or constraints that affect the staffing plan?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Are drivers and crew members interchangeable in terms of cost and work rules, or do they have different costs or constraints that affect the staffing plan?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Are drivers and crew members interchangeable in terms of cost and work rules, or do they have different costs or constraints that affect the staffing plan?"
+    ]
+  },
+  {
+    "turn": 4,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Should the staffing plan ensure at least the required number in each time period, or must it match the required number exactly?\",\n      \"why_it_matters\": \"If exact matching is required, the coverage constraints become equalities, which can make the problem infeasible or force a different shift assignment; if minimums are allowed, the constraints are lower bounds and the objective can freely minimize total staff.\",\n      \"answerability\": \"The business user can state whether overstaffing is acceptable or whether staffing must equal the table values exactly.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Can a single person's 8-hour shift be counted toward coverage in every time period it overlaps, or must staff be dedicated to one period?\",\n      \"why_it_matters\": \"Whether an 8-hour shift covers all overlapping periods determines how shift variables contribute to coverage constraints and thus the minimum total headcount.\",\n      \"answerability\": \"The business user can confirm that a working shift provides coverage throughout its duration.\",\n      \"overask_risk\": \"This is largely implied by the 8-hour continuous shift definition, so it may be redundant.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is the schedule planned for a single day, or must it repeat cyclically across days?\",\n      \"why_it_matters\": \"A cyclic requirement adds constraints linking the end of the day back to the start, potentially changing the feasible region and minimum staffing.\",\n      \"answerability\": \"The business user can state whether the schedule repeats daily or covers one day only.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.75\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Whether the required numbers are minimums or exact targets is the most formulation-critical remaining ambiguity: it determines whether coverage constraints are inequalities or equalities, which directly affects feasibility and the optimal objective value.\",\n  \"public_question\": \"Should the staffing plan ensure at least the required number in each time period, or must it match the required number exactly?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Should the staffing plan ensure at least the required number in each time period, or must it match the required number exactly?",
+        "why_it_matters": "If exact matching is required, the coverage constraints become equalities, which can make the problem infeasible or force a different shift assignment; if minimums are allowed, the constraints are lower bounds and the objective can freely minimize total staff.",
+        "answerability": "The business user can state whether overstaffing is acceptable or whether staffing must equal the table values exactly.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Can a single person's 8-hour shift be counted toward coverage in every time period it overlaps, or must staff be dedicated to one period?",
+        "why_it_matters": "Whether an 8-hour shift covers all overlapping periods determines how shift variables contribute to coverage constraints and thus the minimum total headcount.",
+        "answerability": "The business user can confirm that a working shift provides coverage throughout its duration.",
+        "overask_risk": "This is largely implied by the 8-hour continuous shift definition, so it may be redundant.",
+        "selection_score": 0.7
+      },
+      {
+        "id": "Q3",
+        "question": "Is the schedule planned for a single day, or must it repeat cyclically across days?",
+        "why_it_matters": "A cyclic requirement adds constraints linking the end of the day back to the start, potentially changing the feasible region and minimum staffing.",
+        "answerability": "The business user can state whether the schedule repeats daily or covers one day only.",
+        "overask_risk": "",
+        "selection_score": 0.75
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "Whether the required numbers are minimums or exact targets is the most formulation-critical remaining ambiguity: it determines whether coverage constraints are inequalities or equalities, which directly affects feasibility and the optimal objective value.",
+    "public_question": "Should the staffing plan ensure at least the required number in each time period, or must it match the required number exactly?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Should the staffing plan ensure at least the required number in each time period, or must it match the required number exactly?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Should the staffing plan ensure at least the required number in each time period, or must it match the required number exactly?"
+    ]
+  },
+  {
+    "turn": 5,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Can shifts start only at the beginning of the six listed time periods, or can they start at any hour of the day?\",\n      \"why_it_matters\": \"The set of allowed shift start times defines the decision variables and the feasible coverage combinations; allowing arbitrary start times expands the feasible set and can reduce the minimum total staff required.\",\n      \"answerability\": \"The business user can state whether shift start times are restricted to the listed period boundaries or are flexible.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Is the schedule planned for a single day, or must it repeat cyclically across days?\",\n      \"why_it_matters\": \"A cyclic requirement adds constraints linking the end of the day back to the start, potentially changing the feasible region and minimum staffing.\",\n      \"answerability\": \"The business user can state whether the schedule repeats daily or covers one day only.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.75\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any limit on the total number of staff that can be hired or scheduled?\",\n      \"why_it_matters\": \"A hiring cap would add an upper-bound constraint that could make the problem infeasible or change the optimal solution.\",\n      \"answerability\": \"The business user can state whether any workforce size limit exists.\",\n      \"overask_risk\": \"This is likely irrelevant since the objective already minimizes total staff, so a cap would rarely bind.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The allowed shift start times are the most formulation-critical remaining ambiguity: they define the decision variables and feasible coverage patterns, and different answers change the minimum total staffing. The other candidates are either lower-impact or likely non-binding.\",\n  \"public_question\": \"Can shifts start only at the beginning of the six listed time periods, or can they start at any hour of the day?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Can shifts start only at the beginning of the six listed time periods, or can they start at any hour of the day?",
+        "why_it_matters": "The set of allowed shift start times defines the decision variables and the feasible coverage combinations; allowing arbitrary start times expands the feasible set and can reduce the minimum total staff required.",
+        "answerability": "The business user can state whether shift start times are restricted to the listed period boundaries or are flexible.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Is the schedule planned for a single day, or must it repeat cyclically across days?",
+        "why_it_matters": "A cyclic requirement adds constraints linking the end of the day back to the start, potentially changing the feasible region and minimum staffing.",
+        "answerability": "The business user can state whether the schedule repeats daily or covers one day only.",
+        "overask_risk": "",
+        "selection_score": 0.75
+      },
+      {
+        "id": "Q3",
+        "question": "Is there any limit on the total number of staff that can be hired or scheduled?",
+        "why_it_matters": "A hiring cap would add an upper-bound constraint that could make the problem infeasible or change the optimal solution.",
+        "answerability": "The business user can state whether any workforce size limit exists.",
+        "overask_risk": "This is likely irrelevant since the objective already minimizes total staff, so a cap would rarely bind.",
+        "selection_score": 0.5
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The allowed shift start times are the most formulation-critical remaining ambiguity: they define the decision variables and feasible coverage patterns, and different answers change the minimum total staffing. The other candidates are either lower-impact or likely non-binding.",
+    "public_question": "Can shifts start only at the beginning of the six listed time periods, or can they start at any hour of the day?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Can shifts start only at the beginning of the six listed time periods, or can they start at any hour of the day?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Can shifts start only at the beginning of the six listed time periods, or can they start at any hour of the day?"
+    ]
+  },
+  {
+    "turn": 6,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Does the staffing plan need to cover a repeating 24-hour daily cycle, or only a single one-day horizon?\",\n      \"why_it_matters\": \"A cyclic horizon requires coverage to wrap around midnight and repeat daily, while a single-day horizon may treat overnight shifts and end-of-day coverage differently, changing the feasible region and minimum staffing.\",\n      \"answerability\": \"The business user can state whether the schedule repeats every day or covers just one day.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"For shifts that start at 22:00 or 2:00 and extend past midnight, should their coverage count toward the time periods on the following day?\",\n      \"why_it_matters\": \"How overnight shifts are attributed to periods across midnight determines the coverage constraints and the total staff needed.\",\n      \"answerability\": \"The business user can clarify how overnight shift coverage is counted.\",\n      \"overask_risk\": \"This is largely subsumed by the cyclic-vs-single-day question.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any restriction that a person cannot work two consecutive shifts, or any minimum rest between shifts?\",\n      \"why_it_matters\": \"Rest or consecutive-shift rules would add constraints linking shift assignments and could change the minimum total staffing.\",\n      \"answerability\": \"The business user can state whether rest rules apply.\",\n      \"overask_risk\": \"This may be beyond the scope of a single-period staffing plan and could be over-asking.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Whether the horizon is a repeating 24-hour cycle or a single day is the most formulation-critical remaining ambiguity: it determines how overnight shifts crossing midnight are counted and whether coverage must wrap around, directly affecting the feasible region and minimum staffing.\",\n  \"public_question\": \"Does the staffing plan need to cover a repeating 24-hour daily cycle, or only a single one-day horizon?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Does the staffing plan need to cover a repeating 24-hour daily cycle, or only a single one-day horizon?",
+        "why_it_matters": "A cyclic horizon requires coverage to wrap around midnight and repeat daily, while a single-day horizon may treat overnight shifts and end-of-day coverage differently, changing the feasible region and minimum staffing.",
+        "answerability": "The business user can state whether the schedule repeats every day or covers just one day.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "For shifts that start at 22:00 or 2:00 and extend past midnight, should their coverage count toward the time periods on the following day?",
+        "why_it_matters": "How overnight shifts are attributed to periods across midnight determines the coverage constraints and the total staff needed.",
+        "answerability": "The business user can clarify how overnight shift coverage is counted.",
+        "overask_risk": "This is largely subsumed by the cyclic-vs-single-day question.",
+        "selection_score": 0.7
+      },
+      {
+        "id": "Q3",
+        "question": "Is there any restriction that a person cannot work two consecutive shifts, or any minimum rest between shifts?",
+        "why_it_matters": "Rest or consecutive-shift rules would add constraints linking shift assignments and could change the minimum total staffing.",
+        "answerability": "The business user can state whether rest rules apply.",
+        "overask_risk": "This may be beyond the scope of a single-period staffing plan and could be over-asking.",
+        "selection_score": 0.5
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "Whether the horizon is a repeating 24-hour cycle or a single day is the most formulation-critical remaining ambiguity: it determines how overnight shifts crossing midnight are counted and whether coverage must wrap around, directly affecting the feasible region and minimum staffing.",
+    "public_question": "Does the staffing plan need to cover a repeating 24-hour daily cycle, or only a single one-day horizon?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Does the staffing plan need to cover a repeating 24-hour daily cycle, or only a single one-day horizon?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Does the staffing plan need to cover a repeating 24-hour daily cycle, or only a single one-day horizon?"
+    ]
+  },
+  {
+    "turn": 7,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Can a driver or crew member work more than one shift in the same 24-hour cycle, or is each person limited to exactly one 8-hour shift per day?\",\n      \"why_it_matters\": \"If multiple shifts per worker are allowed, the model must track individual workers across shifts and the objective counts people rather than shift assignments; if each person works exactly one shift, the total headcount equals the total number of shift assignments, fundamentally changing the decision variables and objective.\",\n      \"answerability\": \"The business user can state whether staff are limited to one shift per day or may take multiple shifts.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Can shifts overlap in time, or must the staffing plan assign workers to non-overlapping shifts?\",\n      \"why_it_matters\": \"Overlapping shifts change how coverage requirements can be met and whether excess staffing in one period can help cover adjacent periods, altering the feasible region.\",\n      \"answerability\": \"The business user can state whether overlapping shift assignments are permitted.\",\n      \"overask_risk\": \"This is partly implied by the fixed 8-hour shift structure, so it may be less critical.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any work rules limiting consecutive hours, required rest between shifts, or maximum daily or weekly hours for drivers and crew members?\",\n      \"why_it_matters\": \"Such rules can prohibit otherwise feasible shift combinations and change the minimum staffing level.\",\n      \"answerability\": \"The business user can state whether such labor rules apply.\",\n      \"overask_risk\": \"This may be beyond the scope of the current staffing plan and could be over-asking.\",\n      \"selection_score\": 0.6\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Whether a worker can take multiple shifts per day is the most formulation-critical remaining ambiguity: it determines whether the objective counts distinct people or shift assignments, which changes the decision variables and the entire structure of the model.\",\n  \"public_question\": \"Can a driver or crew member work more than one shift in the same 24-hour cycle, or is each person limited to exactly one 8-hour shift per day?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Can a driver or crew member work more than one shift in the same 24-hour cycle, or is each person limited to exactly one 8-hour shift per day?",
+        "why_it_matters": "If multiple shifts per worker are allowed, the model must track individual workers across shifts and the objective counts people rather than shift assignments; if each person works exactly one shift, the total headcount equals the total number of shift assignments, fundamentally changing the decision variables and objective.",
+        "answerability": "The business user can state whether staff are limited to one shift per day or may take multiple shifts.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "Can shifts overlap in time, or must the staffing plan assign workers to non-overlapping shifts?",
+        "why_it_matters": "Overlapping shifts change how coverage requirements can be met and whether excess staffing in one period can help cover adjacent periods, altering the feasible region.",
+        "answerability": "The business user can state whether overlapping shift assignments are permitted.",
+        "overask_risk": "This is partly implied by the fixed 8-hour shift structure, so it may be less critical.",
+        "selection_score": 0.7
+      },
+      {
+        "id": "Q3",
+        "question": "Are there any work rules limiting consecutive hours, required rest between shifts, or maximum daily or weekly hours for drivers and crew members?",
+        "why_it_matters": "Such rules can prohibit otherwise feasible shift combinations and change the minimum staffing level.",
+        "answerability": "The business user can state whether such labor rules apply.",
+        "overask_risk": "This may be beyond the scope of the current staffing plan and could be over-asking.",
+        "selection_score": 0.6
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "Whether a worker can take multiple shifts per day is the most formulation-critical remaining ambiguity: it determines whether the objective counts distinct people or shift assignments, which changes the decision variables and the entire structure of the model.",
+    "public_question": "Can a driver or crew member work more than one shift in the same 24-hour cycle, or is each person limited to exactly one 8-hour shift per day?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Can a driver or crew member work more than one shift in the same 24-hour cycle, or is each person limited to exactly one 8-hour shift per day?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Can a driver or crew member work more than one shift in the same 24-hour cycle, or is each person limited to exactly one 8-hour shift per day?"
+    ]
+  },
+  {
+    "turn": 8,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Since the one-shift-per-day rule still needs internal confirmation, should I proceed for now assuming each driver or crew member works exactly one 8-hour shift per 24-hour cycle?\",\n      \"why_it_matters\": \"This assumption determines whether the objective counts distinct people or shift assignments and whether coverage constraints are on shift counts or worker counts, fundamentally changing the model structure.\",\n      \"answerability\": \"The business user can confirm whether to proceed with this working assumption while internal confirmation is pending.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"If a person could work multiple shifts, would they be counted once or once per shift in the total staffing number?\",\n      \"why_it_matters\": \"This determines whether the objective is total distinct headcount or total shift assignments, changing the objective function and constraints.\",\n      \"answerability\": \"The business user can state how staffing is counted.\",\n      \"overask_risk\": \"This presupposes the unresolved rule and may be premature.\",\n      \"selection_score\": 0.6\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any labor rules limiting consecutive hours or requiring rest between shifts that would apply regardless of the one-shift-per-day decision?\",\n      \"why_it_matters\": \"Such rules could prohibit otherwise feasible shift combinations and change the minimum staffing.\",\n      \"answerability\": \"The business user can state whether such rules apply.\",\n      \"overask_risk\": \"Likely beyond the scope of the current staffing plan.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The one-shift-per-day rule is the single remaining formulation-critical ambiguity and is still pending internal confirmation. Asking whether to proceed with a stated working assumption lets the model move forward without silently embedding an unconfirmed rule.\",\n  \"public_question\": \"Since the one-shift-per-day rule still needs internal confirmation, should I proceed for now assuming each driver or crew member works exactly one 8-hour shift per 24-hour cycle?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Since the one-shift-per-day rule still needs internal confirmation, should I proceed for now assuming each driver or crew member works exactly one 8-hour shift per 24-hour cycle?",
+        "why_it_matters": "This assumption determines whether the objective counts distinct people or shift assignments and whether coverage constraints are on shift counts or worker counts, fundamentally changing the model structure.",
+        "answerability": "The business user can confirm whether to proceed with this working assumption while internal confirmation is pending.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "If a person could work multiple shifts, would they be counted once or once per shift in the total staffing number?",
+        "why_it_matters": "This determines whether the objective is total distinct headcount or total shift assignments, changing the objective function and constraints.",
+        "answerability": "The business user can state how staffing is counted.",
+        "overask_risk": "This presupposes the unresolved rule and may be premature.",
+        "selection_score": 0.6
+      },
+      {
+        "id": "Q3",
+        "question": "Are there any labor rules limiting consecutive hours or requiring rest between shifts that would apply regardless of the one-shift-per-day decision?",
+        "why_it_matters": "Such rules could prohibit otherwise feasible shift combinations and change the minimum staffing.",
+        "answerability": "The business user can state whether such rules apply.",
+        "overask_risk": "Likely beyond the scope of the current staffing plan.",
+        "selection_score": 0.5
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "The one-shift-per-day rule is the single remaining formulation-critical ambiguity and is still pending internal confirmation. Asking whether to proceed with a stated working assumption lets the model move forward without silently embedding an unconfirmed rule.",
+    "public_question": "Since the one-shift-per-day rule still needs internal confirmation, should I proceed for now assuming each driver or crew member works exactly one 8-hour shift per 24-hour cycle?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Since the one-shift-per-day rule still needs internal confirmation, should I proceed for now assuming each driver or crew member works exactly one 8-hour shift per 24-hour cycle?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Since the one-shift-per-day rule still needs internal confirmation, should I proceed for now assuming each driver or crew member works exactly one 8-hour shift per 24-hour cycle?"
+    ]
+  },
+  {
+    "turn": 9,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Can shifts that start at 22:00 or 2:00 cross midnight and continue into the next day, or must all shifts fit within the same calendar day?\",\n      \"why_it_matters\": \"If overnight shifts are disallowed or handled differently, the feasible shift set changes, which directly affects the coverage constraints and the minimum total staffing required.\",\n      \"answerability\": \"The business user can state whether overnight shifts crossing midnight are permitted in the repeating daily cycle.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"For a shift starting at 22:00, does its coverage count toward the 22:00-2:00 and 2:00-6:00 periods on the same cycle?\",\n      \"why_it_matters\": \"How overnight shift coverage is attributed to periods across midnight determines the coverage constraints and total staff needed.\",\n      \"answerability\": \"The business user can clarify how overnight coverage is counted.\",\n      \"overask_risk\": \"This is largely subsumed by the midnight-crossing question.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any labor rules limiting consecutive hours or requiring rest between shifts that would apply to the staffing plan?\",\n      \"why_it_matters\": \"Such rules could prohibit otherwise feasible shift combinations and change the minimum staffing.\",\n      \"answerability\": \"The business user can state whether such rules apply.\",\n      \"overask_risk\": \"Likely beyond the scope of the current staffing plan.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Whether overnight shifts may cross midnight is the most formulation-critical remaining ambiguity: it determines the feasible shift set and how coverage maps onto the repeating daily cycle, directly affecting the minimum total staffing.\",\n  \"public_question\": \"Can shifts that start at 22:00 or 2:00 cross midnight and continue into the next day, or must all shifts fit within the same calendar day?\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "ASK",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [
+      {
+        "id": "Q1",
+        "question": "Can shifts that start at 22:00 or 2:00 cross midnight and continue into the next day, or must all shifts fit within the same calendar day?",
+        "why_it_matters": "If overnight shifts are disallowed or handled differently, the feasible shift set changes, which directly affects the coverage constraints and the minimum total staffing required.",
+        "answerability": "The business user can state whether overnight shifts crossing midnight are permitted in the repeating daily cycle.",
+        "overask_risk": "",
+        "selection_score": 0.95
+      },
+      {
+        "id": "Q2",
+        "question": "For a shift starting at 22:00, does its coverage count toward the 22:00-2:00 and 2:00-6:00 periods on the same cycle?",
+        "why_it_matters": "How overnight shift coverage is attributed to periods across midnight determines the coverage constraints and total staff needed.",
+        "answerability": "The business user can clarify how overnight coverage is counted.",
+        "overask_risk": "This is largely subsumed by the midnight-crossing question.",
+        "selection_score": 0.7
+      },
+      {
+        "id": "Q3",
+        "question": "Are there any labor rules limiting consecutive hours or requiring rest between shifts that would apply to the staffing plan?",
+        "why_it_matters": "Such rules could prohibit otherwise feasible shift combinations and change the minimum staffing.",
+        "answerability": "The business user can state whether such rules apply.",
+        "overask_risk": "Likely beyond the scope of the current staffing plan.",
+        "selection_score": 0.5
+      }
+    ],
+    "candidate_questions_complete": true,
+    "selected_question_id": "Q1",
+    "selection_rationale": "Whether overnight shifts may cross midnight is the most formulation-critical remaining ambiguity: it determines the feasible shift set and how coverage maps onto the repeating daily cycle, directly affecting the minimum total staffing.",
+    "public_question": "Can shifts that start at 22:00 or 2:00 cross midnight and continue into the next day, or must all shifts fit within the same calendar day?",
+    "formulatable_confidence": null,
+    "confidence_parse_ok": false,
+    "confidence_rationale": "",
+    "summary": "",
+    "public_text": "QUESTION: Can shifts that start at 22:00 or 2:00 cross midnight and continue into the next day, or must all shifts fit within the same calendar day?",
+    "entered_user_context": true,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "question",
+    "detector_question_count": 1,
+    "detector_atomic_questions": [
+      "Can shifts that start at 22:00 or 2:00 cross midnight and continue into the next day, or must all shifts fit within the same calendar day?"
+    ]
+  },
+  {
+    "turn": 10,
+    "retry_count": 0,
+    "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"formulatable_confidence\": 0.9,\n  \"confidence_rationale\": \"The request is sufficiently specified for a unique formulation. The required numbers are combined totals of drivers and crew (treated identically), coverage must be at least the required number in each period, shifts are exactly 8 continuous hours starting only at the six listed period boundaries, each person works exactly one shift per 24-hour cycle, the horizon is a repeating daily cycle, and shifts may cross midnight. The only residual uncertainty is the pending internal confirmation of the one-shift-per-day rule, which the user explicitly agreed to assume for now; this is a documented working assumption rather than a silent one.\",\n  \"summary\": \"Minimize the total number of drivers and crew members (treated as one interchangeable pool) assigned to 8-hour shifts. Decision variables: number of staff starting a shift at each of the six period boundaries (6:00, 10:00, 14:00, 18:00, 22:00, 2:00), each working exactly one 8-hour shift per repeating 24-hour cycle. Coverage constraints: for each of the six time periods, the total staff whose shift overlaps that period must be at least the required number (60, 70, 60, 50, 20, 30 respectively). Shifts may cross midnight and are counted toward the periods they overlap on the repeating cycle. Variables are non-negative integers. Working assumption pending internal confirmation: each person works exactly one 8-hour shift per 24-hour cycle.\"\n}",
+    "parse_ok": true,
+    "parse_error": "",
+    "action": "READY_TO_MODEL",
+    "or_dimension_audit": [],
+    "audit_complete": false,
+    "selected_dimension_id": "",
+    "candidate_questions": [],
+    "candidate_questions_complete": false,
+    "selected_question_id": "",
+    "selection_rationale": "",
+    "public_question": "",
+    "formulatable_confidence": 0.9,
+    "confidence_parse_ok": true,
+    "confidence_rationale": "The request is sufficiently specified for a unique formulation. The required numbers are combined totals of drivers and crew (treated identically), coverage must be at least the required number in each period, shifts are exactly 8 continuous hours starting only at the six listed period boundaries, each person works exactly one shift per 24-hour cycle, the horizon is a repeating daily cycle, and shifts may cross midnight. The only residual uncertainty is the pending internal confirmation of the one-shift-per-day rule, which the user explicitly agreed to assume for now; this is a documented working assumption rather than a silent one.",
+    "summary": "Minimize the total number of drivers and crew members (treated as one interchangeable pool) assigned to 8-hour shifts. Decision variables: number of staff starting a shift at each of the six period boundaries (6:00, 10:00, 14:00, 18:00, 22:00, 2:00), each working exactly one 8-hour shift per repeating 24-hour cycle. Coverage constraints: for each of the six time periods, the total staff whose shift overlaps that period must be at least the required number (60, 70, 60, 50, 20, 30 respectively). Shifts may cross midnight and are counted toward the periods they overlap on the repeating cycle. Variables are non-negative integers. Working assumption pending internal confirmation: each person works exactly one 8-hour shift per 24-hour cycle.",
+    "public_text": "READY_TO_MODEL\n\nFormulatable confidence: 0.900\n\nConfidence rationale: The request is sufficiently specified for a unique formulation. The required numbers are combined totals of drivers and crew (treated identically), coverage must be at least the required number in each period, shifts are exactly 8 continuous hours starting only at the six listed period boundaries, each person works exactly one shift per 24-hour cycle, the horizon is a repeating daily cycle, and shifts may cross midnight. The only residual uncertainty is the pending internal confirmation of the one-shift-per-day rule, which the user explicitly agreed to assume for now; this is a documented working assumption rather than a silent one.\n\nSummary: Minimize the total number of drivers and crew members (treated as one interchangeable pool) assigned to 8-hour shifts. Decision variables: number of staff starting a shift at each of the six period boundaries (6:00, 10:00, 14:00, 18:00, 22:00, 2:00), each working exactly one 8-hour shift per repeating 24-hour cycle. Coverage constraints: for each of the six time periods, the total staff whose shift overlaps that period must be at least the required number (60, 70, 60, 50, 20, 30 respectively). Shifts may cross midnight and are counted toward the periods they overlap on the repeating cycle. Variables are non-negative integers. Working assumption pending internal confirmation: each person works exactly one 8-hour shift per 24-hour cycle.",
+    "entered_user_context": false,
+    "entered_transcript": true,
+    "audit_entered_user_context": false,
+    "audit_entered_judge_context": false,
+    "accepted": true,
+    "detector_action": "ready_to_model",
+    "detector_question_count": 0,
+    "detector_atomic_questions": []
+  }
+]

@@ -1,0 +1,117 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_A_demand_cap",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether production of product A is capped by its market demand; it only silently included P_A <= 100 in the final model."
+    },
+    {
+      "slot_id": "H2",
+      "name": "product_B_demand_cap",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether production of product B is capped by its market demand; it only silently included P_B <= 200 in the final model."
+    },
+    {
+      "slot_id": "H3",
+      "name": "mixing_process_sequence",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about the required two-stage mixing process where A, B, and D are mixed first and then C is added; it treated all raw materials as simultaneously blendable."
+    },
+    {
+      "slot_id": "H4",
+      "name": "objective_function",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective you want the production plan to optimize—maximize total profit, maximize total revenue, or something else?",
+      "rationale": "The agent explicitly asked about the optimization objective and received confirmation to maximize profit."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Production of product A is capped by market demand at 100 tons.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether product A production is limited by market demand, but included P_A <= 100 as a confirmed constraint in the READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Production of product B is capped by market demand at 200 tons.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether product B production is limited by market demand, but included P_B <= 200 as a confirmed constraint in the READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "All raw materials A, B, C, and D can be mixed simultaneously in any proportion, with no required two-stage mixing sequence.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the required mixing order or two-stage process, but modeled all raw materials as directly blendable into each product."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H3"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while the P0 mixing-process-sequence slot H3 remained unresolved and was silently assumed away."
+  },
+  "summary": "The agent confirmed the objective but failed to ask about the critical two-stage mixing process and never clarified the demand caps, instead silently assuming them in the final model. It stopped prematurely with a P0 hidden slot unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.375,
+    "earned_weight": 3.0,
+    "total_weight": 8.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 3,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 6.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H3"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 4,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H3"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

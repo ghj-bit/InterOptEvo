@@ -1,0 +1,340 @@
+# Case facts for Judge
+
+## Initial brief shown to Generic Agent
+Visible unit IDs: U1, U7, U10, U11, U12, U13, U2, U3, U4, U5, U6
+I need help creating a delivery plan for a logistics provider servicing customers in a city's central business district, where all customer demands must be met, at most 5 trucks can be used, and the total demand of customers on a single route must not exceed the truck capacity of 200 units. Each customer has a hard time window; service can only begin within that window, so if a vehicle arrives early, it must wait, and late arrival is not permitted. The objective is to minimize the total distance traveled by all vehicles.
+
+There are 20 customers requiring delivery service.
+
+Central Depot (Depot 0): Coordinates: (40, 50). Operating Time Window: [0, 1236] minutes.
+
+| Customer ID | Coordinates (X, Y) | Demand (units) | Time Window (minutes) | Service Duration (minutes) |
+| :--- | :--- | :--- |:--- | :--- |
+| 1 | (45, 68) | 10 | [912, 967] | 90 |
+| 2 | (45, 70) | 30 | [825, 870] | 90 |
+| 3 | (42, 66) | 10 | [65, 146] | 90 |
+| 4 | (42, 68) | 10 | [727, 782] | 90 |
+| 5 | (42, 65) | 10 | [15, 67] | 90 |
+| 6 | (40, 69) | 20 | [621, 702] | 90 |
+| 7 | (40, 66) | 20 | [170, 225] | 90 |
+| 8 | (38, 68) | 20 | [255, 324] | 90 |
+| 9 | (38, 70) | 10 | [534, 605] | 90 |
+| 10 | (35, 66) | 10 | [357, 410] | 90 |
+| 11 | (35, 69) | 10 | [448, 505] | 90 |
+| 12 | (25, 85) | 20 | [652, 721] | 90 |
+| 13 | (22, 75) | 30 | [30, 92] | 90 |
+| 14 | (22, 85) | 10 | [567, 620] | 90 |
+| 15 | (20, 80) | 40 | [384, 429] | 90 |
+| 16 | (20, 85) | 40 | [475, 528] | 90 |
+| 17 | (18, 75) | 20 | [99, 148] | 90 |
+| 18 | (15, 75) | 20 | [179, 254] | 90 |
+| 19 | (15, 80) | 10 | [278, 345] | 90 |
+| 20 | (30, 50) | 10 | [10, 73] | 90 |
+
+Maximum number of available trucks: 5. Truck capacity: 200 units.
+
+Fixed service time per customer: 90 minutes.
+
+## Problem units
+- U1 (context): I need help creating a delivery plan for a logistics provider servicing customers in a city's central business district.
+- U2 (data): There are 20 customers requiring delivery service.
+- U3 (data): Central Depot (Depot 0): Coordinates: (40, 50). Operating Time Window: [0, 1236] minutes.
+- U4 (data): | Customer ID | Coordinates (X, Y) | Demand (units) | Time Window (minutes) | Service Duration (minutes) |
+| :--- | :--- | :--- |:--- | :--- |
+| 1 | (45, 68) | 10 | [912, 967] | 90 |
+| 2 | (45, 70) | 30 | [825, 870] | 90 |
+| 3 | (42, 66) | 10 | [65, 146] | 90 |
+| 4 | (42, 68) | 10 | [727, 782] | 90 |
+| 5 | (42, 65) | 10 | [15, 67] | 90 |
+| 6 | (40, 69) | 20 | [621, 702] | 90 |
+| 7 | (40, 66) | 20 | [170, 225] | 90 |
+| 8 | (38, 68) | 20 | [255, 324] | 90 |
+| 9 | (38, 70) | 10 | [534, 605] | 90 |
+| 10 | (35, 66) | 10 | [357, 410] | 90 |
+| 11 | (35, 69) | 10 | [448, 505] | 90 |
+| 12 | (25, 85) | 20 | [652, 721] | 90 |
+| 13 | (22, 75) | 30 | [30, 92] | 90 |
+| 14 | (22, 85) | 10 | [567, 620] | 90 |
+| 15 | (20, 80) | 40 | [384, 429] | 90 |
+| 16 | (20, 85) | 40 | [475, 528] | 90 |
+| 17 | (18, 75) | 20 | [99, 148] | 90 |
+| 18 | (15, 75) | 20 | [179, 254] | 90 |
+| 19 | (15, 80) | 10 | [278, 345] | 90 |
+| 20 | (30, 50) | 10 | [10, 73] | 90 |
+- U5 (data): Maximum number of available trucks: 5. Truck capacity: 200 units.
+- U6 (data): Fixed service time per customer: 90 minutes.
+- U7 (constraint): All customer demands must be met.
+- U8 (constraint): Each customer must be served by exactly one vehicle.
+- U9 (constraint): Vehicles must start from the depot and return to the depot.
+- U10 (constraint): At most 5 trucks can be used.
+- U11 (constraint): The total demand of customers on a single route must not exceed the truck capacity of 200 units.
+- U12 (constraint): Each customer has a hard time window; service can only begin within that window. If a vehicle arrives early, it must wait; late arrival is not permitted.
+- U13 (objective): Minimize the total distance traveled by all vehicles.
+
+## Hidden slot scoring rules
+## H1: single_vehicle_per_customer
+- Severity: P1
+- Severity reason: Without this clarification, the agent may assume split deliveries are permitted, leading to a fundamentally different problem (Split Delivery VRP) that could yield lower-cost solutions but violates the real business rule.
+- Problem unit ID: U8
+- Semantic hit rule: The agent's question must explicitly ask whether a customer's demand can be split across multiple vehicles or if each customer must be serviced by exactly one vehicle.
+- Reference acceptable questions:
+  - Does each customer need to be served entirely by a single truck, or can their demand be split across multiple vehicles?
+  - Can a customer's delivery be split between two different trucks, or must one truck handle their whole order?
+- Failure modes:
+  - Assuming split deliveries are allowed and modeling with capacity constraints allowing demand splitting.
+  - Building routes where a single customer is visited by multiple vehicles.
+
+## H2: depot_return_requirement
+- Severity: P1
+- Severity reason: Without this, the agent may assume vehicles do not need to return to the depot (Open VRP), removing return‑trip costs and potentially underestimating total distance while violating operational rules.
+- Problem unit ID: U9
+- Semantic hit rule: The agent's question must explicitly ask whether vehicles must return to the depot or if routes can be open.
+- Reference acceptable questions:
+  - Do the trucks need to return to the depot at the end of their routes, or can they finish at any customer?
+  - Is returning to the depot mandatory after completing all deliveries?
+- Failure modes:
+  - Assuming vehicles do not have to return to the depot and modelling routes that end at the last customer.
+  - Assuming the depot return is optional or can be ignored in distance calculation.
+
+
+# Full Transcript
+
+## Turn 1 - Generic Agent
+
+QUESTION: What is the speed of the trucks, or the travel time per unit of distance, so I can convert the Euclidean distances between locations into minutes for the time-window feasibility checks?
+
+## Turn 1 - User Simulator
+
+That point still needs internal confirmation. The original request and the data provided do not specify a truck speed or a travel-time-per-unit-of-distance conversion factor.
+
+## Turn 2 - Generic Agent
+
+QUESTION: Should I assume a travel speed of 1 unit of distance per minute (so travel time in minutes equals the Euclidean distance between two points), or do you have a different conversion factor in mind?
+
+## Turn 2 - User Simulator
+
+That point still needs internal confirmation. The business facts provided do not specify a travel speed or a conversion factor between distance and time.
+
+## Turn 3 - Generic Agent
+
+QUESTION: Do the trucks need to return to the central depot after completing their route, or is the objective to minimize distance only for the outbound delivery portion?
+
+## Turn 3 - User Simulator
+
+The trucks must return to the central depot after completing their routes.
+
+## Turn 4 - Generic Agent
+
+QUESTION: Since the travel speed is not specified, should I model the travel time between two points as equal to the Euclidean distance between them (i.e., 1 unit of distance takes 1 minute), or is there a different speed or scaling factor you would like me to use?
+
+## Turn 4 - User Simulator
+
+That point still needs internal confirmation. The business facts provided do not specify a travel speed or a scaling factor for converting distance to time.
+
+## Turn 5 - Generic Agent
+
+QUESTION: Are the coordinates in the table measured in the same units as the distance objective, so that I can compute travel distance directly as the Euclidean distance between coordinate pairs?
+
+## Turn 5 - User Simulator
+
+That point still needs internal confirmation. The business facts provided do not specify the units of the coordinates or confirm that the distance objective is measured in the same units as the coordinate system.
+
+## Turn 6 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 6 - User Simulator
+
+That point still needs internal confirmation. The business facts provided do not specify a travel speed, scaling factor, or formula for converting distance to time.
+
+## Turn 7 - Generic Agent
+
+QUESTION: Is the depot open for the entire planning horizon from 0 to 1236 minutes, meaning trucks can depart at any time within that window and must return by 1236 minutes?
+
+## Turn 7 - User Simulator
+
+Yes, the depot operating time window is [0, 1236] minutes, meaning trucks can depart at any time within that window and must return by 1236 minutes.
+
+## Turn 8 - Generic Agent
+
+QUESTION: Since the travel speed is not specified, should I assume that travel time between two points equals the Euclidean distance between them (i.e., 1 unit of distance takes 1 minute), or is there a different conversion you would like me to use?
+
+## Turn 8 - User Simulator
+
+That point still needs internal confirmation. The business facts provided do not specify a travel speed or a conversion factor for converting distance to time.
+
+## Turn 9 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 9 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 10 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 10 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 11 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 11 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 12 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 12 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 13 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 13 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 14 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 14 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 15 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 15 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 16 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 16 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 17 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 17 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 18 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 18 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 19 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 19 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 20 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 20 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 21 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 21 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 22 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 22 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 23 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 23 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 24 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 24 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 25 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 25 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 26 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 26 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 27 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 27 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 28 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 28 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 29 - Generic Agent
+
+QUESTION: Are the trucks allowed to wait at the depot before departing, or must they leave the depot immediately at time 0?
+
+## Turn 29 - User Simulator
+
+That point still needs internal confirmation.
+
+## Turn 30 - Generic Agent
+
+QUESTION: Can you confirm whether the travel time between two locations is calculated as the Euclidean distance between their coordinates (in minutes), or is there a different formula or scaling factor used to convert distance to time?
+
+## Turn 30 - User Simulator
+
+That point still needs internal confirmation.

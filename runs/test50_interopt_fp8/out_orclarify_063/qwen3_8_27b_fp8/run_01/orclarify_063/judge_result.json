@@ -1,0 +1,83 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "first_yes_atomic_question": 1,
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the primary goal of this plan: minimize the total number of trips, minimize total pollution, or simply find any feasible plan that meets the constraints?",
+      "rationale": "The agent explicitly asked about the optimization objective and included minimizing total pollution as an option."
+    },
+    {
+      "slot_id": "H2",
+      "name": "demand_inequality",
+      "severity": "P2",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether the 1000-unit produce requirement is an exact target or a minimum; it only silently assumed 'at least' in the READY_TO_MODEL summary."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The required produce volume of 1000 units is a minimum ('at least') rather than an exact equality target.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked the user to confirm whether the produce requirement was exactly 1000 units or at least 1000 units; it stated this interpretation only in its own READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The only unresolved hidden slot is H2, which is P2 severity; the P0 objective slot was resolved before READY_TO_MODEL."
+  },
+  "summary": "The agent correctly clarified the P0 objective and asked a reasonable follow-up about trip limits, but it silently assumed the produce requirement was an inequality rather than confirming this minor P2 detail.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 3.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 1.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_exact_applicable": true,
+    "core_slot_count": 1,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [
+      "H2"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Core exact uses P0/P1 only; all-slot exact uses P0/P1/P2. P2-only cases are not applicable to core exact."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

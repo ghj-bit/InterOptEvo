@@ -1,0 +1,102 @@
+[
+  {
+    "turn": 1,
+    "agent_response": "QUESTION: What is the objective — maximize total revenue from packages sold, or something else such as clearing as much inventory as possible?",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"What is the objective — maximize total revenue from packages sold, or something else such as clearing as much inventory as possible?\"\n  ],\n  \"rationale\": \"The response asks for a single policy choice regarding the optimization objective, which constitutes one semantically independent question.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "What is the objective — maximize total revenue from packages sold, or something else such as clearing as much inventory as possible?"
+      ],
+      "rationale": "The response asks for a single policy choice regarding the optimization objective, which constitutes one semantically independent question."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 2,
+    "agent_response": "QUESTION: Can the number of packages sold be fractional (e.g., 20.5), or must they be whole numbers?",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Can the number of packages sold be fractional (e.g., 20.5), or must they be whole numbers?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question asking for a specific constraint on the data type of the variable.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Can the number of packages sold be fractional (e.g., 20.5), or must they be whole numbers?"
+      ],
+      "rationale": "The response contains a single clarification question asking for a specific constraint on the data type of the variable."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 3,
+    "agent_response": "QUESTION: For the inventory limits — is it acceptable to leave shirts or pants unused (not sold in any package), or must all 200 shirts and 100 pants be used?",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"For the inventory limits — is it acceptable to leave shirts or pants unused (not sold in any package), or must all 200 shirts and 100 pants be used?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question regarding whether inventory items must be fully utilized or can be left unused.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "For the inventory limits — is it acceptable to leave shirts or pants unused (not sold in any package), or must all 200 shirts and 100 pants be used?"
+      ],
+      "rationale": "The response asks a single clarification question regarding whether inventory items must be fully utilized or can be left unused."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 4,
+    "agent_response": "QUESTION: Are the minimums of 20 A packages and 10 B packages hard requirements that must always be met, or just targets you'd like to hit if possible?",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Are the minimums of 20 A packages and 10 B packages hard requirements that must always be met, or just targets you'd like to hit if possible?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question asking for a policy choice regarding the nature of the minimums (hard requirement vs. target).\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Are the minimums of 20 A packages and 10 B packages hard requirements that must always be met, or just targets you'd like to hit if possible?"
+      ],
+      "rationale": "The response contains a single clarification question asking for a policy choice regarding the nature of the minimums (hard requirement vs. target)."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 5,
+    "agent_response": "QUESTION: Is there any upper limit on how many A or B packages can be sold (beyond the inventory constraints), or can you sell as many as the inventory allows?",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Is there any upper limit on how many A or B packages can be sold (beyond the inventory constraints), or can you sell as many as the inventory allows?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question regarding sales limits, presenting a binary choice (limit exists vs. no limit) which constitutes one independent query.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Is there any upper limit on how many A or B packages can be sold (beyond the inventory constraints), or can you sell as many as the inventory allows?"
+      ],
+      "rationale": "The response asks a single clarification question regarding sales limits, presenting a binary choice (limit exists vs. no limit) which constitutes one independent query."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 6,
+    "agent_response": "READY_TO_MODEL\n\nConfirmed understanding:\n\n- **Objective:** Maximize total revenue from packages A and B.\n- **Decision variables:** Number of package A sold (integer ≥ 0), number of package B sold (integer ≥ 0).\n- **Prices:** A = £30, B = £50.\n- **Resource use per package:** A uses 1 shirt + 2 pants; B uses 3 shirts + 1 pant.\n- **Inventory limits (maximums):** total shirts used ≤ 200; total pants used ≤ 100. Unused inventory is allowed.\n- **Minimum sales (hard):** A ≥ 20, B ≥ 10.\n- **No upper bounds** on package counts other than those implied by inventory.\n- **Integrality:** package counts must be whole numbers.\n\nModel:\n\nmaximize 30·A + 50·B\nsubject to\n  A + 3B ≤ 200        (shirts)\n  2A + B ≤ 100        (pants)\n  A ≥ 20\n  B ≥ 10\n  A, B integer ≥ 0",
+    "detector_raw": "{\n  \"action\": \"ready_to_model\",\n  \"question_count\": 0,\n  \"is_atomic\": true,\n  \"atomic_questions\": [],\n  \"rationale\": \"The response contains the stop action READY_TO_MODEL and presents a confirmed understanding and model formulation without asking any clarification questions.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "ready_to_model",
+      "question_count": 0,
+      "is_atomic": true,
+      "atomic_questions": [],
+      "rationale": "The response contains the stop action READY_TO_MODEL and presents a confirmed understanding and model formulation without asking any clarification questions."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  }
+]

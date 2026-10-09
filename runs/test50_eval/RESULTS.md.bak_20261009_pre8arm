@@ -1,0 +1,186 @@
+# test50 七臂评测 · 结果报告（终版 · 2026-10-09）
+
+- 一期两臂：2026-10-08 22:18–23:11；二期：2026-10-09 补跑 065/075（13:58）＋ D 臂（14:02–14:09）；三期：2026-10-09 晚 E 臂（16:32–16:42，含 081 守卫补跑）；四期：2026-10-09 晚 F/G 臂（Full InterOPT × qwen FP8 / deepseek-flash，17:30–18:01）
+- 题集：orclarify_051–100（干净 holdout，与 train 001–030 / val 031–050 零重叠，== splits["test"]）
+- 判分：同一判分器（deepseek-flash）；全部单遍 k=1、max_turns=30、并发 20。角色模型：A–F 的 simulator/detector = 本地 FP8（G 臂全角色 deepseek-flash，明细见 §五）
+- 协议：Open/FreeQA 自由问答（`experiments/evaluation_protocol/run_pipeline.py`）；公共参数：`pipeline_mode=passive_question_audit`、`detector_feedback_mode=none`、`retry_limit_behavior=pass_through`、`max_agent_retries=0`、`monitor_user_answers=false`、`limit=1`、`k=1`、`max_turns=30`、温度 agent 0.2 / user·detector·judge 0.0（各臂逐字段同，见 §五）
+
+## 一、臂总览（唯一变量对照）
+
+| 臂 | agent | prompt | 说明 |
+|---|---|---|---|
+| A | qwen3.8-27b-fp8（本地 27B） | r22 冠军策略 | 一期（策略基线） |
+| B | deepseek-flash（远端） | r22 冠军策略（逐字同 A） | 一期 + 09 日补 065/075 |
+| C | gpt-6.1-sol（远端 rightapi） | 仓库原生 baseline（无策略段） | 一期（runs/test50_gpt61） |
+| D | deepseek-flash（远端） | 仓库原生 baseline（逐字同 C） | 09 日新增（runs/test50_baseline_dsflash） |
+| E | qwen3.8-27b-fp8（本地 27B） | 随便问（runs/prompts_askanything） | **09 日晚新增**（runs/test50_eval/askanything_qwen） |
+| F | qwen3.8-27b-fp8（本地 27B） | Full InterOPT 原生 prompts（非 r27 非随便问） | **09 日晚新增**（runs/test50_interopt_fp8） |
+| G | deepseek-flash（远端；"v4-flash" = 该 id） | Full InterOPT 原生 prompts（逐字同 F） | **09 日晚新增**（runs/test50_interopt_dsflash） |
+
+## 二、聚合（七臂各 50/50）
+
+| 臂 | agent | prompt | Core | AllSlot | Silent | net | elig-修正 net |
+|---|---|---|---:|---:|---:|---:|---:|
+| A | qwen3.8-27b-fp8 | **r22 策略** | 0.7000 | 0.7200 | 0.3800 | **0.6720** | 0.6943 |
+| B | deepseek-flash | **r22 策略** | 0.7000 | 0.7000 | 0.3800 | **0.6620** | 0.6843 |
+| C | gpt-6.1-sol | 无策略 baseline | 0.5000 | 0.4600 | 0.6400 | **0.4160** | 0.4320 |
+| D | deepseek-flash | 无策略 baseline | 0.5000 | 0.4800 | 0.7800 | **0.4120** | 0.4280 |
+| E | qwen3.8-27b-fp8 | **随便问** | 0.4600 | 0.4600 | 0.5800 | **0.4020** | 0.4167 |
+| F | qwen3.8-27b-fp8 | **Full InterOPT** | 0.4000 | 0.3800 | 1.0000 | **0.2900** | 0.3028 |
+| G | deepseek-flash | **Full InterOPT** | 0.4800 | 0.4400 | 0.5000 | **0.4100** | 0.4253 |
+
+## 三、两两对照（逐题胜负 / Δnet）
+
+| 对照 | 变量 | 胜负 | Δnet | 结论 |
+|---|---|---|---|---|
+| B vs D | 同模型（dsflash）：策略 vs 无策略 | 19:3（平 28） | **+0.2500** | 策略是主增益 |
+| C vs D | 都无策略：gpt61 vs dsflash | 10:7（平 33） | +0.0040 | 换模型≈无差异 |
+| A vs B | 同策略（r22）：FP8 vs dsflash | 9:9（平 32） | +0.0100 | 换模型≈无差异 |
+| A vs D | 策略+模型全换 | 18:5（平 27） | +0.2600 | — |
+| E vs A | 同模型同判分：随便问 vs r22 | 6:18（平 26） | **−0.2700** | 重策略显著更优 |
+| E vs D | 随便问 vs 无策略 baseline | 9:9（平 32） | −0.0100 | 打平（噪声带内） |
+
+| F vs E | 同模型（qwen）：框架 vs 基础协议×随便问 | 7:18（平 25） | **−0.1120** | 框架对该模型负增益 |
+| G vs D | 同模型（dsflash）：框架 vs 无策略 | 11:8（平 31） | −0.0020 | 打平（噪声带内） |
+| G vs F | 同框架：deepseek-flash vs qwen | 17:4（平 29） | **+0.1200** | 框架内换模型差异显著 |
+
+**一句话**：本题集上 prompt（策略）是唯一主变量（≈+0.25）；三个模型之间的差异（±0.01 量级）在单遍噪声带内不可分辨。且**增益来自策略内容而非"被允许提问"**——最简的"随便问"落到 baseline 水平（E≈D），拿不到 r22 的增益。四期补测 Full InterOPT：框架×模型 =（qwen 0.29 | dsflash 0.41）vs 基础协议（0.402 | 0.412）——**框架在两种模型下都无超额增益，对弱模型为负增益**。
+
+## 四、行为指标（50 题）
+
+| 臂 | avg turns | 撞 30 轮上限 | 收尾 | 备注 |
+|---|---:|---:|---:|---|
+| A qwen+r22 | 13.12 | 10/50 | 40/50 READY | 散文式提问/打转 |
+| B dsflash+r22 | 10.44 | 0/50 | 50/50 READY | 最长 28 轮 |
+| C gpt61 baseline | 10.16 | 9/50 | appropriate 23 / premature 18 / no_stop 9 | 双峰 |
+| D dsflash baseline | 8.60 | 4/50 | appropriate 28 / premature 22 | 双峰（24 题顶格） |
+| E qwen+随便问 | 12.30 | 15/50 | appropriate 21 / premature 14 / no_stop 15 | 问得多但没问到点上（silent 0.58 居中） |
+| F qwen+InterOPT | 6.12 | 4/50 | appropriate 21 / premature 25 / no_stop 4 | 过度自信：18 题 ≤2 轮提前收尾，silent 1.00 |
+| G dsflash+InterOPT | 11.14 | 9/50 | appropriate 20 / premature 16 / no_stop 14 | 校准好于 F；5 题 gap_search_error 提前终止 |
+
+## 五、逐臂详细配置
+
+### A · champion_qwen（r22 策略 × 本地 FP8）
+- 驱动：`tools/test50_eval.py --arm qwen --concurrency 20`（一期运行版本 = 初版硬编码 r27_champion，sha256-16 `72e2dd809d691df6`）
+- agent 路由：`DEEPSEEK_BASE_URL=http://127.0.0.1:18770/v1` — `tools/cap_proxy.py`（sha256-16 `6a4c72dfb5d05f5a`）：judge→api.deepseek.com（thinking disabled，cap 16384）；其余→本地 FP8 `gpu6:18764`（qwen3.8-27b-fp8 vLLM，`chat_template_kwargs.enable_thinking=False`，cap 2048）
+- prompt：`runs/evolution/evo_r10/policies/r27_champion`（r22 冠军文本，== champion.md sha256-16 `d7faa8ee52067be4`；generic_agent_prompt.md sha256-16 `2de1f7a5c1ac431a`）
+- 角色 env：`GENERIC_AGENT_MODEL=qwen3.8-27b-fp8`、`USER_SIMULATOR_MODEL=DETECTOR_MODEL=qwen3.8-27b-fp8`、`JUDGE_MODEL=deepseek-flash`、`DEEPSEEK_API_KEY=x`（真实 key 由代理注入）
+- 运行：2026-10-08 22:18–22:31（一期），50/50
+- 产物：`runs/test50_eval/champion_qwen/`（summary.json 2026-10-08 22:31:51）
+- 结果：net 0.6720 / elig 0.6943
+
+### B · champion_dsflash（r22 策略 × deepseek-flash）
+- 驱动：`tools/test50_eval.py --arm ds --concurrency 20`（补跑时 `--concurrency 4`）
+- agent 路由：`DEEPSEEK_BASE_URL=http://127.0.0.1:18772/v1` — `tools/cap_proxy_dsagent.py`（sha256-16 `f2541ad0a0f4b213`）：judge→ds（16384）；**agent（model=deepseek-flash）→ds**（thinking disabled，2048）；其余→FP8（2048）
+- prompt：逐字同 A（r27_champion）
+- 补跑：065/075 一期未完成（FP8 确定性 EOS 空串，prompt_tokens 1497/1821）；2026-10-09 13:58 用守卫代理 `tools/cap_proxy_dsagent_fill.py`（sha256-16 `f56568f6a13862de`，仅空返回时 min_tokens=16 重解码）断点续跑 0.5 分钟补齐，守卫救援 4 回合；救援语义经 thinking 开 / nudge / min_tokens 三种扰动交叉验证一致
+- 运行：一期 2026-10-08 22:18–23:11；补跑 2026-10-09 13:58
+- 产物：`runs/test50_eval/champion_dsflash/`（summary.json 2026-10-09 13:58:32）
+- 结果：net 0.6620 / elig 0.6843
+
+### C · test50_gpt61（无策略 baseline × gpt-6.1-sol）
+- 驱动：`runs/test50_gpt61/launch.sh`（逐题一进程全并发，每题最多 3 次尝试，pipeline 自带 resume）
+- agent 路由：`DEEPSEEK_BASE_URL=http://127.0.0.1:18771/v1` — cap_proxy 18771 + `EXTRA_UPSTREAMS` 把 `gpt-6.1-sol` 转发 rightapi.ai；sim/detector→本地 FP8；judge→deepseek-flash
+- prompt：`experiments/evaluation_protocol/prompts`（仓库原生 upstream baseline，无 Interaction Strategy 段）
+- 特例：`LLM_TIMEOUT=600`（rightapi 实测有过 ~19 分钟整段 stall；不影响 judge 的 240s 显式超时）
+- 运行：2026-10-08（summary.json 20:47:56），50/50
+- 产物：`runs/test50_gpt61/`
+- 结果：net 0.4160 / elig 0.4320
+
+### D · test50_baseline_dsflash（无策略 baseline × deepseek-flash）
+- 驱动：`tools/test50_baseline_eval.py`（sha256-16 `3b8ea94bae428ce6`，独立新文件）
+- agent 路由：18772（同 B）；prompt 逐字同 C（原生 baseline）
+- 对拍：case 051 的 run_config 18 字段与 A/B/C 臂比对，仅路径类字段不同
+- 运行：2026-10-09 14:02–14:09（6.4 分钟），50/50；跑动期间 FP8 空返回守卫救援 10 回合
+- 产物：`runs/test50_baseline_dsflash/`
+- 结果：net 0.4120 / elig 0.4280
+
+### E · askanything_qwen（随便问策略 × 本地 FP8）
+- 驱动：`tools/test50_eval.py --arm qwen --prompts-dir runs/prompts_askanything --out-root runs/test50_eval/askanything_qwen`（`--prompts-dir` 为 2026-10-09 新增参数，加上后驱动 sha256-16 变为 `ddb97bb119e8e3ad`；默认行为不变，A/B 臂不受影响）
+- agent 路由：18770（同 A，cap_proxy 逐字段同）
+- prompt：`runs/prompts_askanything/`（generic_agent_prompt.md sha256-16 `9f58f0fe77b1a6c4`）——以上游 baseline 文件格式为底，`## Behavior` 正文替换为 OptMATH 参考线种子"Given the problem statement, you may ask any question you want to ask."（逐字），`QUESTION:` 格式与 `READY_TO_MODEL` 收尾两组协议行逐字保留；其余 4 个 prompt 文件软链至 `experiments/evaluation_protocol/prompts`（与 A–D 同源）
+- 角色 env：同 A（agent/sim/detector=qwen3.8-27b-fp8、judge=deepseek-flash）
+- run_config 逐字段核验（对拍 case 060）：`max_turns=30`、`k=1`、`limit=1`、`prompts_dir=…/runs/prompts_askanything`、温度 0.2/0/0/0、`detector_feedback_mode=none`、`retry_limit_behavior=pass_through`、`max_agent_retries=0`、`monitor_user_answers=false`、`pipeline_mode=passive_question_audit`
+- 运行：2026-10-09 16:32 起跑，8.2 分钟主跑完成（49/50）；081 卡 FP8 确定性空返回，16:41 经 18774 守卫代理（`cap_proxy_dsagent_fill.py` 新实例）救援 2 回合补齐；16:42 重算 50/50
+- 产物：`runs/test50_eval/askanything_qwen/`（summary.json 2026-10-09 16:42:29）
+- 结果：net 0.4020 / elig 0.4167
+
+### F · test50_interopt_fp8（Full InterOPT × 本地 FP8）
+- 框架：`experiments/open_interopt`（Full InterOPT 原生 prompts；上游 `run_pipeline.py` sha256-16 `c428dd6c222c2b9c` 未改；agent prompt `e85eb351a046940c`）
+- 驱动/包装：`tools/interopt_test50_eval.py`（运行版本 sha256-16 `f90342bb91368c2d`，参数化之前）+ `tools/run_interopt_fp8.py`（`d822af3bcb75af25`）
+- 路由：agent/simulator/detector/gap-search = qwen3.8-27b-fp8 经 18770（cap_proxy `6a4c72dfb5d05f5a`，FP8 侧 think 关）；judge = deepseek-flash。参数同公共（k=1、max_turns=30、并发 20、温度 0.2/0/0/0）
+- 运行：2026-10-09 17:30–17:50（20.1 分钟）50/50；051 冒烟经软链并入；098 空返回重试逃逸
+- 产物/报告：`runs/test50_interopt_fp8/`（单臂详版 RESULTS.md、summary.json、逐题全套产物、smoke_051/）
+
+### G · test50_interopt_dsflash（Full InterOPT × deepseek-flash）
+- 框架：同 F（原生 prompts，上游未改）
+- 驱动/包装：`tools/interopt_test50_eval.py`（参数化后 sha256-16 `6a41a1f29f87b33f`）+ `tools/run_interopt_dsflash.py`（`d95fadcd05453465`）
+- 路由：**全角色 = deepseek-flash** 经 18775 独立代理实例（`tools/cap_proxy_dsagent.py` `f2541ad0a0f4b213`：judge→DS 16384、model==deepseek-flash→DS 关 think 2048）；"deepseek-v4-flash" = DS 目录中的 `deepseek-flash`
+- 运行：2026-10-09 17:55–18:01（4.9 分钟）50/50；051 冒烟直接落规范路径
+- 产物/报告：`runs/test50_interopt_dsflash/`（单臂详版 RESULTS.md）
+
+## 六、逐题（net，七臂）
+
+| case | A qwen+r22 | B dsflash+r22 | C gpt61 base | D dsflash base | E qwen+随便问 | F interopt+fp8 | G interopt+ds |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| orclarify_051 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_052 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_053 | -0.30 | +1.00 | -0.30 | -0.30 | +1.00 | -0.30 | -0.30 |
+| orclarify_054 | +1.00 | +1.00 | +1.00 | +1.00 | +0.00 | +1.00 | +1.00 |
+| orclarify_055 | +1.00 | -0.20 | -0.20 | -0.20 | +1.00 | -0.20 | -0.20 |
+| orclarify_056 | +1.00 | +0.90 | +1.00 | -0.20 | +0.00 | -0.30 | +0.00 |
+| orclarify_057 | +1.00 | +1.00 | +0.00 | -0.10 | -0.20 | +0.00 | +0.00 |
+| orclarify_058 | -0.20 | -0.20 | -0.20 | -0.20 | -0.20 | -0.30 | -0.20 |
+| orclarify_059 | +1.00 | +1.00 | +1.00 | -0.10 | +1.00 | +1.00 | -0.10 |
+| orclarify_060 | +1.00 | +1.00 | -0.10 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_061 | +1.00 | +1.00 | +1.00 | -0.10 | -0.10 | -0.10 | -0.10 |
+| orclarify_062 | +1.00 | +1.00 | -0.10 | -0.10 | -0.20 | -0.20 | -0.20 |
+| orclarify_063 | +1.00 | +1.00 | +0.40 | +0.40 | -0.10 | +0.40 | +0.40 |
+| orclarify_064 | +0.50 | -0.10 | -0.10 | -0.10 | -0.10 | -0.10 | -0.10 |
+| orclarify_065 | -0.20 | +1.00 | -0.20 | -0.20 | -0.20 | -0.30 | +0.00 |
+| orclarify_066 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | -0.10 | +1.00 |
+| orclarify_067 | +1.00 | +1.00 | +1.00 | +1.00 | -0.10 | +1.00 | +1.00 |
+| orclarify_068 | -0.10 | +1.00 | +1.00 | +1.00 | +1.00 | +0.90 | +1.00 |
+| orclarify_069 | +0.90 | +1.00 | -0.10 | -0.10 | -0.10 | +1.00 | +1.00 |
+| orclarify_070 | -0.20 | +0.00 | -0.10 | -0.10 | -0.10 | -0.30 | +0.50 |
+| orclarify_071 | +1.00 | +1.00 | +0.00 | +1.00 | +0.00 | -0.20 | +1.00 |
+| orclarify_072 | -0.10 | -0.10 | -0.10 | -0.10 | -0.10 | -0.10 | -0.10 |
+| orclarify_073 | -0.20 | -0.10 | -0.20 | -0.20 | -0.20 | -0.20 | -0.20 |
+| orclarify_074 | -0.10 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_075 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_076 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +0.00 |
+| orclarify_077 | +1.00 | -0.20 | -0.30 | -0.30 | -0.30 | -0.40 | -0.20 |
+| orclarify_078 | +1.00 | -0.10 | -0.10 | -0.20 | +0.00 | -0.20 | +0.00 |
+| orclarify_079 | -0.10 | +1.00 | +1.00 | -0.10 | +0.00 | -0.10 | -0.10 |
+| orclarify_080 | +1.00 | +1.00 | -0.10 | -0.20 | -0.10 | -0.10 | +1.00 |
+| orclarify_081 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +0.00 |
+| orclarify_082 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | -0.10 | +1.00 |
+| orclarify_083 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_084 | +1.00 | +1.00 | -0.10 | +1.00 | +1.00 | -0.10 | +0.00 |
+| orclarify_085 | +0.00 | +0.00 | -0.10 | -0.10 | -0.20 | -0.20 | -0.20 |
+| orclarify_086 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_087 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | -0.10 | +1.00 |
+| orclarify_088 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_089 | +1.00 | +1.00 | -0.10 | -0.10 | -0.10 | -0.10 | -0.10 |
+| orclarify_090 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_091 | +1.00 | -0.10 | -0.10 | +1.00 | +1.00 | -0.10 | -0.10 |
+| orclarify_092 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_093 | +1.00 | -0.20 | -0.20 | -0.10 | -0.10 | -0.20 | -0.10 |
+| orclarify_094 | +0.00 | +1.00 | +0.00 | +1.00 | +0.00 | +1.00 | +0.00 |
+| orclarify_095 | +1.00 | +0.90 | +1.00 | -0.10 | -0.10 | -0.10 | +1.00 |
+| orclarify_096 | +1.00 | -0.10 | +0.00 | -0.10 | -0.10 | +0.00 | +0.00 |
+| orclarify_097 | -0.10 | -0.10 | +0.30 | -0.30 | -0.10 | -0.10 | +1.00 |
+| orclarify_098 | -0.10 | -0.10 | -0.10 | -0.10 | +1.00 | -0.10 | -0.10 |
+| orclarify_099 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 | +1.00 |
+| orclarify_100 | -0.10 | -0.10 | +0.00 | +1.00 | -0.10 | -0.10 | +0.00 |
+
+## 七、纪要
+
+- **补跑 065/075（B 臂）**：根因为本地 FP8 在 thinking-off 下对特定 (前缀,问句) 组合确定性吐 EOS（空串），非端点抽风；用守卫代理 `cap_proxy_dsagent_fill.py`（仅空返回时 min_tokens=16 重解码，正常请求零影响）0.5 分钟补齐；两题均 +1.0。一期报告留档 `RESULTS_20261008_一期两臂48题.md`。
+- **D 臂（09 日）**：证明"deepseek-flash baseline"缺失的对照。其提示词/协议与 C 臂逐字段一致（run_config 对拍仅路径类字段不同），仅 agent 模型不同。跑动期间同一 FP8 空返回机制触发 **10 个回合**、全部由守卫救援——无守卫时 D 臂也会像 B 臂 065/075 一样反复卡死。D 臂判分/产物与其余臂同口径（score_many）。
+- **E 臂（09 日晚）**：为"最简策略"对照而建。E vs A = 6:18（Δ−0.27，远超单遍噪声）；E vs D = 9:9（Δ−0.01，噪声带内）→ **"随便问"≈不配策略**；+0.25 的增益来自策略内容（槽覆盖/排序/收尾纪律），而非"被允许提问"这个形式。E 行为居中：avg 12.3 轮（D 8.6 / A 13.1）、撞上限 15/50（D 4 / A 10）、silent 0.58（D 0.78 / A 0.38）——问得比 baseline 多，但问不到点上。081 撞 FP8 空返回，守卫救援 2 回合（新实例 18774）补齐 50/50。
+- **判分饱和**：A/B 顶格（33/31 题 net=+1.0），C/D 双峰（23/24 题顶格），E 亦偏双峰——所有 <0.05 级差距不可分辨。
+- 口径注记：A vs E 除策略文本外还差一层文档骨架（演化 policy 文档 vs 上游格式）；若要"仅策略文本"的纯对照，需另加"上游格式 + r22 文本"臂。
+- **F 臂（Full InterOPT × 本地 FP8，09 日晚）**：把框架本身作为方法臂换进来（模型与 E 臂同）。行为=弱模型的 stop 校准缺陷被框架放大：avg 6.1 轮、18/50 题 ≤2 轮就自报 confidence≈1.0 提前收尾（premature 25/50）→ silent≈1 条/题（维度见 §二/§四）。接线：`tools/run_interopt_fp8.py` + 驱动参数化前版本；051 冒烟经软链并入；098 空返回重试逃逸（FP8 机制见既有条目）。
+- **G 臂（Full InterOPT × deepseek-flash，与 F 严格对齐只换模型）**："deepseek-v4-flash"在 DS 目录实为 `deepseek-flash`。行为校准显著更好（premature 16、silent 0.50、avg 11.1 轮）。**Caveat：5 题（056/076/081/086/094）因 Stage-1 `gap_search_error`（"gap 1 fields must all be non-empty"）提前终止**，按 no_stop 计分——框架健壮性留痕（F 臂同类错误：0 题）。
+- 配置细节与文件指纹：`EXPERIMENT_CONFIG.md`（§七 补跑、§八 D 臂、§九 E 臂）；本报告 §五 为七臂配置总览，F/G 详版见 `runs/test50_interopt_fp8/RESULTS.md` 与 `runs/test50_interopt_dsflash/RESULTS.md`。

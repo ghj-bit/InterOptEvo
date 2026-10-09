@@ -1,0 +1,48 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "binary_purchase_constraint",
+      "severity": "P1",
+      "hit": "partial",
+      "first_yes_atomic_question": null,
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Can each restaurant be purchased at most once, or can the same restaurant be purchased multiple times?",
+      "rationale": "The agent asked about at-most-once purchase multiplicity, which is related to the all-or-nothing purchase decision, but it did not explicitly ask whether fractional/partial purchase of a restaurant is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "conditional_exclusion_restaurant_D_and_A",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any dependency or restriction between purchasing Restaurant D and Restaurant A."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Purchases are binary 0-1 decisions for whole restaurants, with no fractional ownership.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed at-most-once purchasing, not whether partial/fractional purchase is allowed, yet the READY_TO_MODEL summary explicitly states binary purchase variables."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There are no conditional exclusions or dependencies among restaurants, so all restaurant choices are independent.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about restrictions such as not being able to buy both A and D, but the READY_TO_MODEL summary treats the problem as a standard 0-1 knapsack with only a budget constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while H1 was only partially addressed and H2 was never asked, leaving P1 hidden slots unresolved."
+  },
+  "summary": "The agent clarified several basic data and objective points but missed the conditional exclusion between Restaurants D and A and did not fully confirm the binary all-or-nothing purchase assumption before declaring READY_TO_MODEL."
+}

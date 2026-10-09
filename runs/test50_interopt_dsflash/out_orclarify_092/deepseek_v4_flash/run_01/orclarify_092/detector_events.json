@@ -1,0 +1,100 @@
+[
+  {
+    "turn": 1,
+    "agent_response": "QUESTION: What is the primary objective for this transportation plan: minimize total rental cost, minimize the number of vehicles used, or something else?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What is the primary objective for this transportation plan: minimize total rental cost, minimize the number of vehicles used, or something else?\",\n      \"why_it_matters\": \"The objective determines which feasible bus/minibus combinations are considered optimal; minimizing cost may favor different selections than minimizing vehicle count.\",\n      \"answerability\": \"The business user can state whether cost, vehicle count, or another criterion is the priority for the trip.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Does the limit of 9 available drivers impose a separate restriction beyond the rule that the total number of vehicles cannot exceed 9?\",\n      \"why_it_matters\": \"If driver availability is an independent constraint, it could further restrict feasible vehicle combinations or require additional modeling logic.\",\n      \"answerability\": \"The user can clarify whether the driver count is simply the reason for the vehicle limit or an additional operational restriction.\",\n      \"overask_risk\": \"The request already states both a driver limit of 9 and a total vehicle limit of 9, so this may be redundant if they are intended to be the same constraint.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Must every selected bus or minibus be fully staffed by one driver, and are drivers interchangeable between buses and minibuses?\",\n      \"why_it_matters\": \"This affects whether driver assignment needs to be modeled explicitly or whether a simple total vehicle limit is sufficient.\",\n      \"answerability\": \"The user can confirm whether each vehicle requires one driver and whether any driver can operate either vehicle type.\",\n      \"overask_risk\": \"This may be an implementation detail if the driver limit is already equivalent to the total vehicle limit.\",\n      \"selection_score\": 0.55\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective is the most fundamental missing formulation element: without knowing whether to minimize cost, vehicle count, or another criterion, the optimization model cannot be uniquely defined. The driver-limit question is secondary and may be redundant with the stated total vehicle limit.\",\n  \"public_question\": \"What is the primary objective for this transportation plan: minimize total rental cost, minimize the number of vehicles used, or something else?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"What is the primary objective for this transportation plan: minimize total rental cost, minimize the number of vehicles used, or something else?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about the primary objective of the transportation plan.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "What is the primary objective for this transportation plan: minimize total rental cost, minimize the number of vehicles used, or something else?"
+      ],
+      "rationale": "The response asks a single clarification question about the primary objective of the transportation plan."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 2,
+    "agent_response": "QUESTION: Does the limit of 9 available drivers mean the total number of buses and minibuses selected must be at most 9, or is it an additional constraint that could bind separately?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Does the limit of 9 available drivers mean the total number of buses and minibuses selected must be at most 9, or is it an additional constraint that could bind separately?\",\n      \"why_it_matters\": \"If drivers are a separate constraint, it could further restrict feasible vehicle combinations and change the optimal cost; if it is the same as the total vehicle limit, it is redundant.\",\n      \"answerability\": \"The business user can clarify whether the driver count is simply the reason for the vehicle cap or an independent operational restriction.\",\n      \"overask_risk\": \"The request already states both a driver limit of 9 and a total vehicle limit of 9, so this may be redundant if they are intended to be the same constraint.\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Must every selected bus or minibus be staffed by exactly one driver, and can any driver operate either vehicle type?\",\n      \"why_it_matters\": \"This determines whether driver assignment must be modeled explicitly or whether a simple total vehicle limit is sufficient.\",\n      \"answerability\": \"The user can confirm whether each vehicle requires one driver and whether drivers are interchangeable across vehicle types.\",\n      \"overask_risk\": \"This may be an implementation detail if the driver limit is already equivalent to the total vehicle limit.\",\n      \"selection_score\": 0.6\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are fractional or partially filled vehicles allowed, or must the number of buses and minibuses each be whole numbers?\",\n      \"why_it_matters\": \"This determines whether the model is an integer program or a continuous linear program, which can change the optimal solution and cost.\",\n      \"answerability\": \"The user can state whether vehicles must be rented as whole units.\",\n      \"overask_risk\": \"In practice vehicles are whole units, so this may be obvious and low value.\",\n      \"selection_score\": 0.4\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The driver limit is the most material remaining ambiguity: if it is a separate binding constraint, it changes the feasible region and optimal cost. The other candidates are either implementation details or likely obvious.\",\n  \"public_question\": \"Does the limit of 9 available drivers mean the total number of buses and minibuses selected must be at most 9, or is it an additional constraint that could bind separately?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Does the limit of 9 available drivers mean the total number of buses and minibuses selected must be at most 9, or is it an additional constraint that could bind separately?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question about how the driver limit constrains the selection.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Does the limit of 9 available drivers mean the total number of buses and minibuses selected must be at most 9, or is it an additional constraint that could bind separately?"
+      ],
+      "rationale": "The response contains a single clarification question about how the driver limit constrains the selection."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 3,
+    "agent_response": "QUESTION: Must the selected buses and minibuses provide at least 400 seats as a hard requirement, or is exceeding 400 seats acceptable?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Must the selected buses and minibuses provide at least 400 seats as a hard requirement, or is exceeding 400 seats acceptable?\",\n      \"why_it_matters\": \"If the capacity requirement is a hard minimum, the feasible set is restricted to combinations with at least 400 seats; if it is soft or can be exceeded, the model may allow cheaper combinations below 400 seats, changing the optimal cost.\",\n      \"answerability\": \"The business user can state whether 400 seats is a strict minimum or a target that may be exceeded.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Can fractional numbers of buses or minibuses be selected, or must the counts be whole vehicles?\",\n      \"why_it_matters\": \"Integer restrictions change the feasible region and may alter the minimum-cost solution, determining whether the model is an integer program or a continuous linear program.\",\n      \"answerability\": \"The user can confirm whether vehicles must be rented as whole units.\",\n      \"overask_risk\": \"In practice vehicles are whole units, so this may be obvious and low value.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any constraints on the mix of buses and minibuses, such as a minimum number of buses or a maximum number of minibuses?\",\n      \"why_it_matters\": \"Such constraints would further restrict the feasible region and could change the optimal cost.\",\n      \"answerability\": \"The user can state whether any mix requirements exist.\",\n      \"overask_risk\": \"The request already gives explicit limits on buses and minibuses, so additional mix constraints may not exist.\",\n      \"selection_score\": 0.4\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The capacity requirement is the most material remaining ambiguity: whether 400 seats is a hard minimum or a soft target directly changes the feasible region and the optimal cost. The integer question is likely obvious in practice, and mix constraints are not indicated.\",\n  \"public_question\": \"Must the selected buses and minibuses provide at least 400 seats as a hard requirement, or is exceeding 400 seats acceptable?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Must the selected buses and minibuses provide at least 400 seats as a hard requirement, or is exceeding 400 seats acceptable?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question about the seating requirement.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Must the selected buses and minibuses provide at least 400 seats as a hard requirement, or is exceeding 400 seats acceptable?"
+      ],
+      "rationale": "The response contains a single clarification question about the seating requirement."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 4,
+    "agent_response": "QUESTION: Are the 10 buses and 8 minibuses maximum numbers you may select, or must you use exactly those numbers?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Are the 10 buses and 8 minibuses maximum numbers you may select, or must you use exactly those numbers?\",\n      \"why_it_matters\": \"If exact fleet usage is required, the feasible set changes from an upper-bound selection to a fixed-size assignment, which can change the optimal cost and whether a feasible solution exists.\",\n      \"answerability\": \"The business user can state whether the listed vehicles are upper limits or a fixed fleet that must all be used.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Can fractional numbers of buses or minibuses be selected, or must the counts be whole vehicles?\",\n      \"why_it_matters\": \"Integer restrictions change the feasible region and may alter the minimum-cost solution, determining whether the model is an integer program or a continuous linear program.\",\n      \"answerability\": \"The user can confirm whether vehicles must be rented as whole units.\",\n      \"overask_risk\": \"In practice vehicles are whole units, so this may be obvious and low value.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any constraints on the mix of buses and minibuses, such as a minimum number of buses or a maximum number of minibuses?\",\n      \"why_it_matters\": \"Such constraints would further restrict the feasible region and could change the optimal cost.\",\n      \"answerability\": \"The user can state whether any mix requirements exist.\",\n      \"overask_risk\": \"The request already gives explicit limits on buses and minibuses, so additional mix constraints may not exist.\",\n      \"selection_score\": 0.4\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Whether the listed vehicles are upper bounds or a fixed fleet is the most material remaining ambiguity: it directly determines the feasible region and optimal cost. The integer question is likely obvious in practice, and mix constraints are not indicated.\",\n  \"public_question\": \"Are the 10 buses and 8 minibuses maximum numbers you may select, or must you use exactly those numbers?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Are the 10 buses and 8 minibuses maximum numbers you may select, or must you use exactly those numbers?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about whether the bus and minibus counts are maximum limits or exact requirements.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Are the 10 buses and 8 minibuses maximum numbers you may select, or must you use exactly those numbers?"
+      ],
+      "rationale": "The response asks a single clarification question about whether the bus and minibus counts are maximum limits or exact requirements."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 5,
+    "agent_response": "READY_TO_MODEL\n\nFormulatable confidence: 0.950\n\nConfidence rationale: The objective is confirmed as minimizing total rental cost. The capacity requirement is a hard minimum of 400 seats. The available buses and minibuses are upper bounds, not exact requirements. The total number of vehicles is limited to 9, which also captures the driver limit. Vehicle counts are naturally whole units. No material formulation-changing ambiguity remains.\n\nSummary: Minimize total rental cost by selecting whole numbers of buses and minibuses, subject to: total seats at least 400; at most 10 buses; at most 8 minibuses; total vehicles at most 9. Bus cost is £800 and minibus cost is £600.",
+    "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"formulatable_confidence\": 0.95,\n  \"confidence_rationale\": \"The objective is confirmed as minimizing total rental cost. The capacity requirement is a hard minimum of 400 seats. The available buses and minibuses are upper bounds, not exact requirements. The total number of vehicles is limited to 9, which also captures the driver limit. Vehicle counts are naturally whole units. No material formulation-changing ambiguity remains.\",\n  \"summary\": \"Minimize total rental cost by selecting whole numbers of buses and minibuses, subject to: total seats at least 400; at most 10 buses; at most 8 minibuses; total vehicles at most 9. Bus cost is £800 and minibus cost is £600.\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"ready_to_model\",\n  \"question_count\": 0,\n  \"is_atomic\": true,\n  \"atomic_questions\": [],\n  \"rationale\": \"The response is a clean stop with READY_TO_MODEL and contains no clarification questions.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "ready_to_model",
+      "question_count": 0,
+      "is_atomic": true,
+      "atomic_questions": [],
+      "rationale": "The response is a clean stop with READY_TO_MODEL and contains no clarification questions."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  }
+]

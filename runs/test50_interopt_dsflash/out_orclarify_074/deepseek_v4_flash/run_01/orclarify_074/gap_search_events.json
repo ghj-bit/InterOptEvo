@@ -1,0 +1,348 @@
+[
+  {
+    "turn": 1,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The request is a project scheduling problem with precedence constraints, but key business rules about resource limits, objective, and time boundaries are unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"objective\",\n      \"description\": \"The optimization objective is not stated, such as minimizing project duration, total cost, or another business goal.\",\n      \"direct_question\": \"What is the primary objective for this project schedule: minimize total completion time, minimize total cost, or something else?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Different objectives lead to different optimal schedules and formulations.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"It is unclear whether activities can be performed in parallel or if there is a limit on concurrent activities due to resources.\",\n      \"direct_question\": \"Are there any limits on how many activities can run at the same time, or can all eligible activities proceed in parallel?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Parallelism constraints affect the feasible schedule space and the optimal solution.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"The role of machine rental cost is ambiguous: whether it is incurred per day of project duration or per day of machine usage.\",\n      \"direct_question\": \"Is the machine rental cost of 5000 Euros per day charged for every day of the project, or only for days when the machine is actively used?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the cost objective depends on project duration or on activity scheduling.\"\n    },\n    {\n      \"gap_id\": \"G4\",\n      \"category\": \"time_boundary\",\n      \"description\": \"There is no stated deadline or time horizon for the project.\",\n      \"direct_question\": \"Is there a required project deadline or maximum allowed completion time that the schedule must meet?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"A deadline could make the problem infeasible or add a hard constraint.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The request is a project scheduling problem with precedence constraints, but key business rules about resource limits, objective, and time boundaries are unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "objective",
+          "description": "The optimization objective is not stated, such as minimizing project duration, total cost, or another business goal.",
+          "direct_question": "What is the primary objective for this project schedule: minimize total completion time, minimize total cost, or something else?",
+          "source_status": "not stated",
+          "why_material": "Different objectives lead to different optimal schedules and formulations."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "It is unclear whether activities can be performed in parallel or if there is a limit on concurrent activities due to resources.",
+          "direct_question": "Are there any limits on how many activities can run at the same time, or can all eligible activities proceed in parallel?",
+          "source_status": "not stated",
+          "why_material": "Parallelism constraints affect the feasible schedule space and the optimal solution."
+        },
+        {
+          "gap_id": "G3",
+          "category": "hard_soft_policy",
+          "description": "The role of machine rental cost is ambiguous: whether it is incurred per day of project duration or per day of machine usage.",
+          "direct_question": "Is the machine rental cost of 5000 Euros per day charged for every day of the project, or only for days when the machine is actively used?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the cost objective depends on project duration or on activity scheduling."
+        },
+        {
+          "gap_id": "G4",
+          "category": "time_boundary",
+          "description": "There is no stated deadline or time horizon for the project.",
+          "direct_question": "Is there a required project deadline or maximum allowed completion time that the schedule must meet?",
+          "source_status": "not stated",
+          "why_material": "A deadline could make the problem infeasible or add a hard constraint."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 2,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective is cost minimization, but the cost structure and resource constraints that determine total cost remain unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"objective\",\n      \"description\": \"It is unclear how work cost and machine rental cost combine into total cost, especially whether machine rental is incurred per project day or per machine-day.\",\n      \"direct_question\": \"How should total cost be calculated: is the 5000 Euro machine rental cost charged per project day, per machine used per day, or in some other way, and is the 1000 Euro work cost per activity-day?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Different cost definitions change whether the optimal schedule minimizes duration, resource usage, or a tradeoff between them.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"The number of machines available and whether activities require machines or can run in parallel is not specified.\",\n      \"direct_question\": \"How many machines are available, and does every activity require a machine while it is being worked on?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Machine capacity determines which activities can overlap and therefore changes the feasible schedule and total cost.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"decision_scope\",\n      \"description\": \"It is not stated whether activity durations are fixed or can be shortened by allocating more work or cost.\",\n      \"direct_question\": \"Are the given activity durations fixed, or can any activity be completed faster by spending more?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"If durations are fixed, the problem is scheduling only; if they can be compressed, the optimization must trade off crashing cost against rental time.\"\n    },\n    {\n      \"gap_id\": \"G4\",\n      \"category\": \"time_boundary\",\n      \"description\": \"The planning horizon and whether activities can start at any time or only at day boundaries is unspecified.\",\n      \"direct_question\": \"Can activities start at any point in time, or must they start at the beginning of a day, and is there a deadline for project completion?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Discrete versus continuous timing and any deadline affect the feasible schedule and the cost-minimizing solution.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective is cost minimization, but the cost structure and resource constraints that determine total cost remain unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "objective",
+          "description": "It is unclear how work cost and machine rental cost combine into total cost, especially whether machine rental is incurred per project day or per machine-day.",
+          "direct_question": "How should total cost be calculated: is the 5000 Euro machine rental cost charged per project day, per machine used per day, or in some other way, and is the 1000 Euro work cost per activity-day?",
+          "source_status": "not stated",
+          "why_material": "Different cost definitions change whether the optimal schedule minimizes duration, resource usage, or a tradeoff between them."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "The number of machines available and whether activities require machines or can run in parallel is not specified.",
+          "direct_question": "How many machines are available, and does every activity require a machine while it is being worked on?",
+          "source_status": "not stated",
+          "why_material": "Machine capacity determines which activities can overlap and therefore changes the feasible schedule and total cost."
+        },
+        {
+          "gap_id": "G3",
+          "category": "decision_scope",
+          "description": "It is not stated whether activity durations are fixed or can be shortened by allocating more work or cost.",
+          "direct_question": "Are the given activity durations fixed, or can any activity be completed faster by spending more?",
+          "source_status": "not stated",
+          "why_material": "If durations are fixed, the problem is scheduling only; if they can be compressed, the optimization must trade off crashing cost against rental time."
+        },
+        {
+          "gap_id": "G4",
+          "category": "time_boundary",
+          "description": "The planning horizon and whether activities can start at any time or only at day boundaries is unspecified.",
+          "direct_question": "Can activities start at any point in time, or must they start at the beginning of a day, and is there a deadline for project completion?",
+          "source_status": "not stated",
+          "why_material": "Discrete versus continuous timing and any deadline affect the feasible schedule and the cost-minimizing solution."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 3,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective and cost components are confirmed, but the machine rental period definition and resource constraints remain unresolved.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"time_boundary\",\n      \"description\": \"The machine rental period is not defined relative to project activities or completion.\",\n      \"direct_question\": \"Does the machine rental period start at the beginning of the project and end when all activities are completed, or is it tied to specific activities?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"The rental period determines the fixed cost component and whether project duration directly affects total cost.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"It is unclear whether activities require the machine and whether machine capacity limits concurrent activities.\",\n      \"direct_question\": \"Do all activities require the machine, and can multiple activities use the machine simultaneously or is there a limit on concurrent machine usage?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Machine capacity constraints could force sequencing or delays, changing the feasible schedule and total cost.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective and cost components are confirmed, but the machine rental period definition and resource constraints remain unresolved.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "time_boundary",
+          "description": "The machine rental period is not defined relative to project activities or completion.",
+          "direct_question": "Does the machine rental period start at the beginning of the project and end when all activities are completed, or is it tied to specific activities?",
+          "source_status": "not stated",
+          "why_material": "The rental period determines the fixed cost component and whether project duration directly affects total cost."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "It is unclear whether activities require the machine and whether machine capacity limits concurrent activities.",
+          "direct_question": "Do all activities require the machine, and can multiple activities use the machine simultaneously or is there a limit on concurrent machine usage?",
+          "source_status": "not stated",
+          "why_material": "Machine capacity constraints could force sequencing or delays, changing the feasible schedule and total cost."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 4,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The machine rental window is tied to activities A through B, but it is unclear whether the rental cost is fixed by that window or depends on scheduling choices, and whether resource constraints exist.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"Whether the machine rental period is fixed from the start of A to the end of B regardless of schedule, or whether the schedule can shift A and B to reduce rental days.\",\n      \"direct_question\": \"Is the machine rental period fixed as the time from the start of activity A to the end of activity B, or can the schedule shift activities A and B to shorten that rental period?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"If the rental window is fixed, it is a constant cost; if it depends on scheduling, it becomes a variable cost that can change the optimal schedule.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether there are any resource constraints, such as a limit on the number of activities that can run simultaneously or machine availability beyond the rental window.\",\n      \"direct_question\": \"Are there any limits on how many activities can be performed at the same time, or any other resource constraints besides the machine rental period?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Resource constraints can force serialization or delay activities, changing the feasible schedule and total cost.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"time_boundary\",\n      \"description\": \"Whether activities can be split or interrupted, or must run continuously once started.\",\n      \"direct_question\": \"Can activities be paused and resumed later, or must each activity run continuously from start to finish once it begins?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Allowing preemption can change the optimal schedule and cost by enabling better alignment with the rental window.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The machine rental window is tied to activities A through B, but it is unclear whether the rental cost is fixed by that window or depends on scheduling choices, and whether resource constraints exist.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "hard_soft_policy",
+          "description": "Whether the machine rental period is fixed from the start of A to the end of B regardless of schedule, or whether the schedule can shift A and B to reduce rental days.",
+          "direct_question": "Is the machine rental period fixed as the time from the start of activity A to the end of activity B, or can the schedule shift activities A and B to shorten that rental period?",
+          "source_status": "partially answered",
+          "why_material": "If the rental window is fixed, it is a constant cost; if it depends on scheduling, it becomes a variable cost that can change the optimal schedule."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether there are any resource constraints, such as a limit on the number of activities that can run simultaneously or machine availability beyond the rental window.",
+          "direct_question": "Are there any limits on how many activities can be performed at the same time, or any other resource constraints besides the machine rental period?",
+          "source_status": "not stated",
+          "why_material": "Resource constraints can force serialization or delay activities, changing the feasible schedule and total cost."
+        },
+        {
+          "gap_id": "G3",
+          "category": "time_boundary",
+          "description": "Whether activities can be split or interrupted, or must run continuously once started.",
+          "direct_question": "Can activities be paused and resumed later, or must each activity run continuously from start to finish once it begins?",
+          "source_status": "not stated",
+          "why_material": "Allowing preemption can change the optimal schedule and cost by enabling better alignment with the rental window."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 5,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective and cost structure are clear, but the machine rental period's dependency on activity A and B scheduling remains structurally uncertain.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"time_boundary\",\n      \"description\": \"Whether the machine rental period is exactly from the start of activity A to the end of activity B, or if it can be adjusted based on scheduling.\",\n      \"direct_question\": \"Is the machine rental period defined as the time from the start of activity A to the end of activity B, and can this period be shortened by scheduling A and B closer together?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"The rental period directly affects total cost, so its definition changes the optimization objective and constraints.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective and cost structure are clear, but the machine rental period's dependency on activity A and B scheduling remains structurally uncertain.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "time_boundary",
+          "description": "Whether the machine rental period is exactly from the start of activity A to the end of activity B, or if it can be adjusted based on scheduling.",
+          "direct_question": "Is the machine rental period defined as the time from the start of activity A to the end of activity B, and can this period be shortened by scheduling A and B closer together?",
+          "source_status": "partially answered",
+          "why_material": "The rental period directly affects total cost, so its definition changes the optimization objective and constraints."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 6,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective and cost mechanics are clear, but the scheduling environment and resource constraints remain unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether activities can be scheduled in parallel or must be performed sequentially.\",\n      \"direct_question\": \"Can multiple activities be performed at the same time, or must all activities be done one after another?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Parallel scheduling can shorten the machine rental period and change the optimal cost, while sequential scheduling imposes a fixed order.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether there are any resource limits, such as a maximum number of activities that can run simultaneously.\",\n      \"direct_question\": \"Are there any limits on how many activities can be worked on at the same time, such as a maximum number of workers or machines?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Resource limits can restrict parallel scheduling and affect the feasible set of schedules and total cost.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"time_boundary\",\n      \"description\": \"Whether activities can start at any time or must align to whole-day boundaries.\",\n      \"direct_question\": \"Can activities start at any time during a day, or must they start at the beginning of a day?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Continuous versus discrete start times can change the optimal schedule and cost calculation.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective and cost mechanics are clear, but the scheduling environment and resource constraints remain unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "feasible_rule",
+          "description": "Whether activities can be scheduled in parallel or must be performed sequentially.",
+          "direct_question": "Can multiple activities be performed at the same time, or must all activities be done one after another?",
+          "source_status": "not stated",
+          "why_material": "Parallel scheduling can shorten the machine rental period and change the optimal cost, while sequential scheduling imposes a fixed order."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether there are any resource limits, such as a maximum number of activities that can run simultaneously.",
+          "direct_question": "Are there any limits on how many activities can be worked on at the same time, such as a maximum number of workers or machines?",
+          "source_status": "not stated",
+          "why_material": "Resource limits can restrict parallel scheduling and affect the feasible set of schedules and total cost."
+        },
+        {
+          "gap_id": "G3",
+          "category": "time_boundary",
+          "description": "Whether activities can start at any time or must align to whole-day boundaries.",
+          "direct_question": "Can activities start at any time during a day, or must they start at the beginning of a day?",
+          "source_status": "not stated",
+          "why_material": "Continuous versus discrete start times can change the optimal schedule and cost calculation."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 7,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective and cost mechanics are clear, but the resource constraints and scheduling rules that determine feasible overlap and rental duration remain unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"capacity\",\n      \"description\": \"Whether there is any limit on how many activities can run concurrently or on available machines/workers.\",\n      \"direct_question\": \"Are there any limits on how many activities can be performed at the same time, such as a maximum number of concurrent activities or a fixed number of machines or workers?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Concurrency limits can force serialization or delay activities, changing the optimal schedule and total cost.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"time_boundary\",\n      \"description\": \"Whether activities can start at any time or must align to whole-day boundaries.\",\n      \"direct_question\": \"Can activities start at any time during a day, or must they start and finish on whole-day boundaries?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Continuous versus discrete timing affects feasible overlaps and the minimum rental period.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"Whether there is a deadline or maximum allowed project duration.\",\n      \"direct_question\": \"Is there a required project deadline or maximum allowed completion time that the schedule must meet?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"A deadline can make cost minimization infeasible or force a different tradeoff between duration and cost.\"\n    },\n    {\n      \"gap_id\": \"G4\",\n      \"category\": \"decision_scope\",\n      \"description\": \"Whether activity durations are fixed or can be shortened by paying more.\",\n      \"direct_question\": \"Are the given activity durations fixed, or can any activity be completed faster at an additional cost?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Crashing options would add duration-cost tradeoffs and change the optimal schedule.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective and cost mechanics are clear, but the resource constraints and scheduling rules that determine feasible overlap and rental duration remain unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "capacity",
+          "description": "Whether there is any limit on how many activities can run concurrently or on available machines/workers.",
+          "direct_question": "Are there any limits on how many activities can be performed at the same time, such as a maximum number of concurrent activities or a fixed number of machines or workers?",
+          "source_status": "not stated",
+          "why_material": "Concurrency limits can force serialization or delay activities, changing the optimal schedule and total cost."
+        },
+        {
+          "gap_id": "G2",
+          "category": "time_boundary",
+          "description": "Whether activities can start at any time or must align to whole-day boundaries.",
+          "direct_question": "Can activities start at any time during a day, or must they start and finish on whole-day boundaries?",
+          "source_status": "not stated",
+          "why_material": "Continuous versus discrete timing affects feasible overlaps and the minimum rental period."
+        },
+        {
+          "gap_id": "G3",
+          "category": "hard_soft_policy",
+          "description": "Whether there is a deadline or maximum allowed project duration.",
+          "direct_question": "Is there a required project deadline or maximum allowed completion time that the schedule must meet?",
+          "source_status": "not stated",
+          "why_material": "A deadline can make cost minimization infeasible or force a different tradeoff between duration and cost."
+        },
+        {
+          "gap_id": "G4",
+          "category": "decision_scope",
+          "description": "Whether activity durations are fixed or can be shortened by paying more.",
+          "direct_question": "Are the given activity durations fixed, or can any activity be completed faster at an additional cost?",
+          "source_status": "not stated",
+          "why_material": "Crashing options would add duration-cost tradeoffs and change the optimal schedule."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 8,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective, cost structure, machine rental period, and concurrency rules are confirmed, but the treatment of activity durations and work cost remains structurally uncertain.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"It is unclear whether activity durations are fixed or can be shortened by paying the 1000 Euro per activity-day work cost.\",\n      \"direct_question\": \"Are the given activity durations fixed, or can activities be shortened by paying the 1000 Euro per activity-day work cost?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"If durations are fixed, the problem is a precedence-constrained scheduling problem; if they can be shortened, the model must trade off crashing costs against machine rental time.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective, cost structure, machine rental period, and concurrency rules are confirmed, but the treatment of activity durations and work cost remains structurally uncertain.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "hard_soft_policy",
+          "description": "It is unclear whether activity durations are fixed or can be shortened by paying the 1000 Euro per activity-day work cost.",
+          "direct_question": "Are the given activity durations fixed, or can activities be shortened by paying the 1000 Euro per activity-day work cost?",
+          "source_status": "not stated",
+          "why_material": "If durations are fixed, the problem is a precedence-constrained scheduling problem; if they can be shortened, the model must trade off crashing costs against machine rental time."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 9,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective, cost structure, machine rental period, concurrency limits, and fixed durations are confirmed; no material business gap remains for modeling.\",\n  \"ready_to_model\": true,\n  \"gaps\": []\n}",
+    "result": {
+      "search_summary": "The objective, cost structure, machine rental period, concurrency limits, and fixed durations are confirmed; no material business gap remains for modeling.",
+      "ready_to_model": true,
+      "ready_to_model_raw": true,
+      "gaps": []
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  }
+]

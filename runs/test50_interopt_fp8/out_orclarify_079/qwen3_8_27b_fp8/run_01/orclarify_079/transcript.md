@@ -1,0 +1,9 @@
+## Turn 1 - Generic Agent
+
+READY_TO_MODEL
+
+Formulatable confidence: 1.000
+
+Confidence rationale: The request explicitly defines the decision variables (production quantities for tables, chairs, and bookshelves), the objective function (maximizing total profit calculated from provided selling prices and manufacturing costs), and all constraints (warehouse space limit, minimum production requirements for specific items, and total production capacity). All necessary parameters are provided, and no silent assumptions are required to define the feasible region or operational logic.
+
+Summary: Maximize total profit by determining the production quantities of tables, chairs, and bookshelves. Profit per unit is $80 for tables, $30 for chairs, and $60 for bookshelves. Constraints include: total space usage (5x + 2y + 3z) <= 500 sq m, total items (x + y + z) <= 200, minimum tables (x) >= 10, and minimum bookshelves (z) >= 20. All variables are non-negative integers.

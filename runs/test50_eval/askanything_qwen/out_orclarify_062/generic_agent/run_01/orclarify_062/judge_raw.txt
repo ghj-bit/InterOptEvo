@@ -1,0 +1,43 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "binary_purchase_constraint",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Can you purchase a restaurant more than once, or is each restaurant available for purchase only once?",
+      "rationale": "The agent asked about purchasing a restaurant more than once, which touches on the all-or-nothing nature of each restaurant, but it did not explicitly ask whether fractional/partial ownership is allowed versus whole-restaurant binary purchase."
+    },
+    {
+      "slot_id": "H2",
+      "name": "conditional_exclusion_restaurant_D_and_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any dependency or restriction between Restaurant D and Restaurant A, nor did it explicitly mark such a restriction as an assumption needing confirmation."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each restaurant purchase is a binary all-or-nothing decision.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed that each restaurant can be purchased at most once, not that fractional or partial purchase is disallowed; it then treated the decision as binary in the READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There are no conditional restrictions between purchasing Restaurant D and Restaurant A.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about any dependency between Restaurant D and Restaurant A, and the READY_TO_MODEL summary omits any such constraint while treating restaurant choices as independent."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 binary-purchase slot was only partially addressed and the P1 conditional exclusion between D and A was never addressed."
+  },
+  "summary": "The agent clarified revenue/cost interpretation and single-purchase availability, but it did not fully resolve whether purchases are binary versus fractional and completely missed the conditional exclusion between Restaurants D and A before declaring READY_TO_MODEL."
+}

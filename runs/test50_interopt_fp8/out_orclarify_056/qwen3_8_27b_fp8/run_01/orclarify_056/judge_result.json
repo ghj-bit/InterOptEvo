@@ -1,0 +1,110 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "sales_only_in_following_month",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether grain can be sold in the same month as purchase or must be held until the following month. Q1 concerned cash timing, not sale timing relative to purchase."
+    },
+    {
+      "slot_id": "H2",
+      "name": "immediate_payment_on_delivery",
+      "severity": "P1",
+      "hit": "partial",
+      "first_yes_atomic_question": null,
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Can the revenue from selling grain in a specific month be used to pay for grain purchases in that same month, or must purchases be funded strictly by the initial funds and sales from prior months?",
+      "rationale": "The agent touched cash-flow timing for purchases, which is related to payment timing, but did not ask whether payment is due upon delivery or in the purchase month."
+    },
+    {
+      "slot_id": "H3",
+      "name": "ending_inventory_target",
+      "severity": "P1",
+      "hit": "partial",
+      "first_yes_atomic_question": null,
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "For the profit calculation at the end of the quarter, is any grain remaining in the warehouse valued at the Month 3 selling price, or is it considered to have zero value?",
+      "rationale": "The agent asked about valuation of ending inventory, which is related to terminal inventory, but did not ask whether there is a required ending inventory level or target of 2000 dan."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Grain can be sold in the same month it is purchased, with no restriction that sales must occur in the following month.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about sale timing relative to purchase month, and the READY_TO_MODEL summary includes Sale_t for t=1,2,3 without any lag constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Payment for purchases is due in the purchase month and funded by initial funds plus prior sales, but the agent did not confirm the delivery/payment timing rule.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked about whether same-month sales revenue can fund purchases; it did not confirm that payment is required upon delivery in the purchase month."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Ending inventory must be exactly 2000 dan, and it is valued at the Month 3 selling price in the objective.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about valuation of ending inventory, not whether there was a required ending inventory level; the user volunteered the 2000 dan requirement, and the agent then treated it as confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while P1 hidden slots H1, H2, and H3 were not fully resolved; H1 was never asked, and H2/H3 were only partially addressed."
+  },
+  "summary": "The agent asked several useful clarifying questions about cash flow, capacity timing, storage costs, quantity limits, and ending inventory valuation, but it missed the sale-timing restriction and did not fully confirm payment timing or the required ending inventory level before declaring READY_TO_MODEL.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.3333333333333333,
+    "earned_weight": 2.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 6.0,
+        "score": 0.3333333333333333
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_exact_applicable": true,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Core exact uses P0/P1 only; all-slot exact uses P0/P1/P2. P2-only cases are not applicable to core exact."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

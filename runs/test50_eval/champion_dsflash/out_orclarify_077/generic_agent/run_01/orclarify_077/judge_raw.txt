@@ -1,0 +1,70 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective — minimize total cost (setup plus processing), and is every part required to be processed exactly once on exactly one machine?",
+      "rationale": "The agent explicitly asked about the objective and whether it includes setup plus processing costs."
+    },
+    {
+      "slot_id": "H2",
+      "name": "exactly_one_piece_per_part",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "is every part required to be processed exactly once on exactly one machine?",
+      "rationale": "The agent explicitly asked whether each part must be processed exactly once, covering the required quantity per part type."
+    },
+    {
+      "slot_id": "H3",
+      "name": "reverse_conditional_part1_part2",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "is this a one-way implication only, or does it also require the reverse (i.e., part 2 on B or C forces part 1 on A)?",
+      "rationale": "The agent explicitly asked about the reverse conditional relationship between part 1 and part 2."
+    },
+    {
+      "slot_id": "H4",
+      "name": "part3_on_machine_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a mandatory machine assignment for part 3."
+    },
+    {
+      "slot_id": "H5",
+      "name": "part5_on_machine_C",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a mandatory machine assignment for part 5."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H4",
+      "agent_assumption": "Part 3 has no fixed machine assignment and can be assigned to any machine.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about part 3's machine requirement, but the final model omits any constraint fixing part 3 to machine A."
+    },
+    {
+      "related_slot": "H5",
+      "agent_assumption": "Part 5 has no fixed machine assignment and can be assigned to any machine.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about part 5's machine requirement, but the final model omits any constraint fixing part 5 to machine C."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H4", "H5"],
+    "rationale": "The agent stopped at READY_TO_MODEL while P1 hidden slots H4 and H5 remained unresolved and were silently omitted from the model."
+  },
+  "summary": "The agent recovered the core objective and quantity assumptions and clarified several constraints, but failed to ask about the fixed machine assignments for parts 3 and 5, leading to a materially incomplete model."
+}

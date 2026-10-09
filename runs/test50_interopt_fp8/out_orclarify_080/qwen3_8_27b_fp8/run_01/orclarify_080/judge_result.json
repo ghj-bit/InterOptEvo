@@ -1,0 +1,82 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exactly_one_method_per_task",
+      "severity": "P0",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether exactly one method must be chosen per task or whether methods can be mixed/split. The READY_TO_MODEL summary silently assumes 'Each task chooses one of two methods.'"
+    },
+    {
+      "slot_id": "H2",
+      "name": "objective_minimize_total_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "first_yes_atomic_question": 1,
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total weekly cost (wages plus any fixed setup costs), or is there a different objective such as maximizing profit or minimizing labor hours?",
+      "rationale": "The agent explicitly asked about the objective and whether it is minimizing total weekly cost including fixed setup costs."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each task must choose exactly one method, with no splitting or mixing of methods for a task.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about method exclusivity or cardinality per task; it assumed the one-method-per-task structure in the READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P0 hidden slot H1 (exactly one method per task) remained unresolved and was silently assumed."
+  },
+  "summary": "The agent clarified the objective and many modeling details, but failed to ask about the P0 method-exclusivity rule and silently assumed exactly one method per task, making the stop premature.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 3.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 6.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_exact_applicable": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Core exact uses P0/P1 only; all-slot exact uses P0/P1/P2. P2-only cases are not applicable to core exact."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

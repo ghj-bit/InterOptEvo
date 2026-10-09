@@ -1,0 +1,95 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unknown_typeB_capacity_limit",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Type B equipment has a capacity limit or what that limit is; it only asked about Type A capacity and then silently treated Type B as unlimited."
+    },
+    {
+      "slot_id": "H2",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never explicitly asked whether the objective is profit maximization or another goal; it silently assumed profit maximization in the READY_TO_MODEL summary."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Type B equipment has no processing capacity limitation.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about Type B capacity and did not mark it as an assumption needing confirmation; it simply omitted any Type B capacity constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The objective is to maximize daily profit.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the objective function and did not explicitly confirm profit maximization before modeling."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL without resolving the P0 objective slot or the P1 Type B capacity slot."
+  },
+  "summary": "The agent asked several useful clarifying questions about constraints and data, but missed the P0 objective confirmation and the P1 Type B capacity limit, then silently assumed both in its READY_TO_MODEL summary.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 0.0,
+        "total_weight": 3.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

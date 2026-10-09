@@ -1,0 +1,96 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "idle_time_no_cost",
+      "severity": "P2",
+      "hit": "partial",
+      "first_yes_atomic_question": null,
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the machine and craftsman time costs variable costs that should be subtracted from the revenue of each batch to determine profit, or are they fixed weekly overheads that remain constant regardless of production volume?",
+      "rationale": "The agent asked whether time costs are variable or fixed overheads, which is related to idle-time costing, but it did not explicitly ask whether unused/idle machine or craftsman time incurs a cost."
+    },
+    {
+      "slot_id": "H2",
+      "name": "fractional_batches_allowed",
+      "severity": "P2",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether batches may be fractional or must be integer before stopping."
+    },
+    {
+      "slot_id": "H3",
+      "name": "all_batches_sold",
+      "severity": "P2",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether all produced batches are sold or whether there is any demand limit before stopping."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Variables are non-negative integers representing batches of X and Y.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed whether fractional batches are allowed, but assumed integer batch quantities in the READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "All produced batches can be treated as sold, with no demand constraints.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed that all produced batches are sold or that there is no demand cap, but omitted any demand/inventory constraints."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "No P0 or P1 hidden slots remained unresolved when the agent stopped; the only unresolved slots are P2 boundary/assumption details."
+  },
+  "summary": "The agent clarified the cost treatment but stopped after one question, leaving several P2 assumptions unconfirmed, especially integer batches and no demand limits. Since no P0/P1 slots were unresolved, the stop is appropriate, though the model includes silent assumptions.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.16666666666666666,
+    "earned_weight": 0.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 3.0,
+        "score": 0.16666666666666666
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_exact_applicable": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Core exact uses P0/P1 only; all-slot exact uses P0/P1/P2. P2-only cases are not applicable to core exact."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

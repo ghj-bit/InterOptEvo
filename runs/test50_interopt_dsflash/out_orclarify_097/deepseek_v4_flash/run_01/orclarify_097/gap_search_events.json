@@ -1,0 +1,1196 @@
+[
+  {
+    "turn": 1,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective and several key business rules are unstated, including whether production must meet demand, whether blending is allowed, and whether D's limit is a hard cap.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"objective\",\n      \"description\": \"The business objective is not specified, such as maximizing profit, minimizing cost, or meeting demand at minimum cost.\",\n      \"direct_question\": \"What is the objective for the production plan: maximize profit, minimize cost, or another goal?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Different objectives lead to different optimal production plans and formulations.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"It is unclear whether the market demand quantities are maximum sales limits or minimum production requirements.\",\n      \"direct_question\": \"Are the market demand quantities for products A and B maximum amounts that can be sold, minimum amounts that must be produced, or exact targets?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether demand is an upper bound, lower bound, or equality constraint in the model.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"entity_relation\",\n      \"description\": \"The production process is not described, including whether raw materials can be blended and whether each product is made from a single raw material or a mix.\",\n      \"direct_question\": \"Can raw materials be blended to produce each product, or must each product be produced from a single raw material?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Blending changes the feasible sulfur-content constraints and the set of possible production recipes.\"\n    },\n    {\n      \"gap_id\": \"G4\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"The 50-ton limit on raw material D is stated as a maximum supply, but it is unclear whether this is a hard constraint or a soft target.\",\n      \"direct_question\": \"Is the 50-ton maximum supply of raw material D a hard constraint that cannot be exceeded, or a soft limit?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A hard versus soft limit changes feasibility and may require penalty terms or different constraint handling.\"\n    },\n    {\n      \"gap_id\": \"G5\",\n      \"category\": \"time_boundary\",\n      \"description\": \"The planning horizon and whether production, purchasing, and demand occur in a single period or multiple periods are not specified.\",\n      \"direct_question\": \"Is this a single-period production plan, or does it cover multiple time periods with inventory or scheduling considerations?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Multi-period planning would introduce inventory, timing, and dynamic constraints absent from a single-period model.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective and several key business rules are unstated, including whether production must meet demand, whether blending is allowed, and whether D's limit is a hard cap.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "objective",
+          "description": "The business objective is not specified, such as maximizing profit, minimizing cost, or meeting demand at minimum cost.",
+          "direct_question": "What is the objective for the production plan: maximize profit, minimize cost, or another goal?",
+          "source_status": "not stated",
+          "why_material": "Different objectives lead to different optimal production plans and formulations."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "It is unclear whether the market demand quantities are maximum sales limits or minimum production requirements.",
+          "direct_question": "Are the market demand quantities for products A and B maximum amounts that can be sold, minimum amounts that must be produced, or exact targets?",
+          "source_status": "not stated",
+          "why_material": "This determines whether demand is an upper bound, lower bound, or equality constraint in the model."
+        },
+        {
+          "gap_id": "G3",
+          "category": "entity_relation",
+          "description": "The production process is not described, including whether raw materials can be blended and whether each product is made from a single raw material or a mix.",
+          "direct_question": "Can raw materials be blended to produce each product, or must each product be produced from a single raw material?",
+          "source_status": "not stated",
+          "why_material": "Blending changes the feasible sulfur-content constraints and the set of possible production recipes."
+        },
+        {
+          "gap_id": "G4",
+          "category": "hard_soft_policy",
+          "description": "The 50-ton limit on raw material D is stated as a maximum supply, but it is unclear whether this is a hard constraint or a soft target.",
+          "direct_question": "Is the 50-ton maximum supply of raw material D a hard constraint that cannot be exceeded, or a soft limit?",
+          "source_status": "partially answered",
+          "why_material": "A hard versus soft limit changes feasibility and may require penalty terms or different constraint handling."
+        },
+        {
+          "gap_id": "G5",
+          "category": "time_boundary",
+          "description": "The planning horizon and whether production, purchasing, and demand occur in a single period or multiple periods are not specified.",
+          "direct_question": "Is this a single-period production plan, or does it cover multiple time periods with inventory or scheduling considerations?",
+          "source_status": "not stated",
+          "why_material": "Multi-period planning would introduce inventory, timing, and dynamic constraints absent from a single-period model."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 2,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The two-stage blending structure is confirmed, but the exact material flows, capacity limits, and whether demand is a hard cap or target remain unresolved.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"The exact two-stage blending structure is unclear: whether the A/B/D mixture is a shared intermediate used for both products or separate intermediates, and how C is added in the second stage.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared versus separate intermediate changes the mass-balance constraints and whether the first-stage blend composition is a common decision variable.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"decision_scope\",\n      \"description\": \"It is not stated whether the 50-ton limit on raw material D applies to total D purchased/used across both products or separately per product or per stage.\",\n      \"direct_question\": \"Does the 50-ton maximum for raw material D apply to the total amount of D used across the entire production plan, or is it a separate limit for each product or each blending stage?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"The scope of the D limit determines whether it is one global constraint or multiple independent constraints, directly affecting feasible production levels.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"Market demand for products A and B is given as 100 and 200 tons, but it is unclear whether these are maximum sales limits, minimum required production targets, or exact quantities that must be met.\",\n      \"direct_question\": \"Are the market demand figures of 100 tons for product A and 200 tons for product B maximum amounts that can be sold, minimum amounts that must be produced, or exact production targets?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Whether demand is a cap, a floor, or an equality changes the feasible region and the objective from maximizing profit to possibly satisfying demand at minimum cost.\"\n    },\n    {\n      \"gap_id\": \"G4\",\n      \"category\": \"capacity_service_rule\",\n      \"description\": \"No capacity limits are given for the mixing tank or the second-stage blending, so it is unknown whether production is constrained by equipment capacity beyond raw material availability.\",\n      \"direct_question\": \"Are there any capacity limits on the mixing tank or the final blending process that would restrict how much intermediate or final product can be produced?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Unstated capacity limits could impose additional upper bounds on production quantities and alter the optimal plan.\"\n    },\n    {\n      \"gap_id\": \"G5\",\n      \"category\": \"objective\",\n      \"description\": \"The objective is not explicitly stated; it is unclear whether the goal is to maximize profit, minimize cost, maximize production volume, or meet demand at minimum cost.\",\n      \"direct_question\": \"What is the primary objective for the production plan: maximize total profit, minimize total cost, maximize total production, or something else?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"The objective function determines what the optimization is optimizing and can lead to entirely different optimal plans.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The two-stage blending structure is confirmed, but the exact material flows, capacity limits, and whether demand is a hard cap or target remain unresolved.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "The exact two-stage blending structure is unclear: whether the A/B/D mixture is a shared intermediate used for both products or separate intermediates, and how C is added in the second stage.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared versus separate intermediate changes the mass-balance constraints and whether the first-stage blend composition is a common decision variable."
+        },
+        {
+          "gap_id": "G2",
+          "category": "decision_scope",
+          "description": "It is not stated whether the 50-ton limit on raw material D applies to total D purchased/used across both products or separately per product or per stage.",
+          "direct_question": "Does the 50-ton maximum for raw material D apply to the total amount of D used across the entire production plan, or is it a separate limit for each product or each blending stage?",
+          "source_status": "not stated",
+          "why_material": "The scope of the D limit determines whether it is one global constraint or multiple independent constraints, directly affecting feasible production levels."
+        },
+        {
+          "gap_id": "G3",
+          "category": "hard_soft_policy",
+          "description": "Market demand for products A and B is given as 100 and 200 tons, but it is unclear whether these are maximum sales limits, minimum required production targets, or exact quantities that must be met.",
+          "direct_question": "Are the market demand figures of 100 tons for product A and 200 tons for product B maximum amounts that can be sold, minimum amounts that must be produced, or exact production targets?",
+          "source_status": "not stated",
+          "why_material": "Whether demand is a cap, a floor, or an equality changes the feasible region and the objective from maximizing profit to possibly satisfying demand at minimum cost."
+        },
+        {
+          "gap_id": "G4",
+          "category": "capacity_service_rule",
+          "description": "No capacity limits are given for the mixing tank or the second-stage blending, so it is unknown whether production is constrained by equipment capacity beyond raw material availability.",
+          "direct_question": "Are there any capacity limits on the mixing tank or the final blending process that would restrict how much intermediate or final product can be produced?",
+          "source_status": "not stated",
+          "why_material": "Unstated capacity limits could impose additional upper bounds on production quantities and alter the optimal plan."
+        },
+        {
+          "gap_id": "G5",
+          "category": "objective",
+          "description": "The objective is not explicitly stated; it is unclear whether the goal is to maximize profit, minimize cost, maximize production volume, or meet demand at minimum cost.",
+          "direct_question": "What is the primary objective for the production plan: maximize total profit, minimize total cost, maximize total production, or something else?",
+          "source_status": "not stated",
+          "why_material": "The objective function determines what the optimization is optimizing and can lead to entirely different optimal plans."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 3,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The key unresolved business fact is whether the A/B/D intermediate is shared or product-specific, which changes the blending structure and feasible production plans.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is a single shared intermediate for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared intermediate imposes common composition and flow constraints across both products, while separate mixtures allow independent blending and different feasible regions.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The key unresolved business fact is whether the A/B/D intermediate is shared or product-specific, which changes the blending structure and feasible production plans.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is a single shared intermediate for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared intermediate imposes common composition and flow constraints across both products, while separate mixtures allow independent blending and different feasible regions."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 4,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The production structure for the A/B/D intermediate and the objective for the production plan remain unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is a single shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared intermediate imposes one common A/B/D blend composition, while separate mixtures allow product-specific blending and can change feasible recipes and optimal profit.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"objective\",\n      \"description\": \"The business objective for the production plan, such as maximizing profit, minimizing cost, or meeting demand at minimum cost.\",\n      \"direct_question\": \"What is the objective for the production plan: maximize profit, minimize production cost, or another business goal?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Different objectives can lead to different optimal production quantities and raw material blends.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The production structure for the A/B/D intermediate and the objective for the production plan remain unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is a single shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared intermediate imposes one common A/B/D blend composition, while separate mixtures allow product-specific blending and can change feasible recipes and optimal profit."
+        },
+        {
+          "gap_id": "G2",
+          "category": "objective",
+          "description": "The business objective for the production plan, such as maximizing profit, minimizing cost, or meeting demand at minimum cost.",
+          "direct_question": "What is the objective for the production plan: maximize profit, minimize production cost, or another business goal?",
+          "source_status": "not stated",
+          "why_material": "Different objectives can lead to different optimal production quantities and raw material blends."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 5,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The objective is confirmed as profit maximization, but the process structure for the A/B/D intermediate remains unresolved and could change the feasible production set.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is a single shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Should the A/B/D intermediate be modeled as one shared mixture used for both products, or as separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared intermediate imposes common composition and mass-balance constraints across both products, while separate intermediates allow independent blending and can change the optimal profit and feasible plan.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The objective is confirmed as profit maximization, but the process structure for the A/B/D intermediate remains unresolved and could change the feasible production set.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is a single shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Should the A/B/D intermediate be modeled as one shared mixture used for both products, or as separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared intermediate imposes common composition and mass-balance constraints across both products, while separate intermediates allow independent blending and can change the optimal profit and feasible plan."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 6,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The main unresolved business fact is whether the A/B/D intermediate is shared across both products or separate per product, which changes the feasible blending structure.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared intermediate imposes common A/B/D proportions across both products, while separate mixtures allow product-specific blending and can change the optimal profit and feasible recipes.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The main unresolved business fact is whether the A/B/D intermediate is shared across both products or separate per product, which changes the feasible blending structure.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared intermediate imposes common A/B/D proportions across both products, while separate mixtures allow product-specific blending and can change the optimal profit and feasible recipes."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 7,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The main unresolved business fact is whether the A/B/D intermediate is shared or separate for the two products, which changes the feasible blending structure and optimization model.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is a single shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.\",\n      \"direct_question\": \"Should the production process use one shared A/B/D intermediate mixture for both products, or separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared intermediate imposes common A/B/D composition and shared D usage across products, while separate mixtures allow independent blending and different feasible profit outcomes.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The main unresolved business fact is whether the A/B/D intermediate is shared or separate for the two products, which changes the feasible blending structure and optimization model.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is a single shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.",
+          "direct_question": "Should the production process use one shared A/B/D intermediate mixture for both products, or separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared intermediate imposes common A/B/D composition and shared D usage across products, while separate mixtures allow independent blending and different feasible profit outcomes."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 8,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The key unresolved business fact is whether the A/B/D intermediate is shared or separate for the two products, which changes the feasible blending structure.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is a single shared intermediate for both products or separate mixtures for product A and product B remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"Shared versus separate intermediates changes the feasible blending structure and can alter the optimal production plan and profit.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The key unresolved business fact is whether the A/B/D intermediate is shared or separate for the two products, which changes the feasible blending structure.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is a single shared intermediate for both products or separate mixtures for product A and product B remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "Shared versus separate intermediates changes the feasible blending structure and can alter the optimal production plan and profit."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 9,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The key unresolved business fact is whether the A/B/D intermediate is shared across both products or separate per product, which changes the feasible blending structure.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is a single shared intermediate used for both products or separate A/B/D mixtures for each product remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"partially answered\",\n      \"why_material\": \"A shared intermediate imposes one common A/B/D blend composition and links the two products, while separate mixtures allow independent blending and can change feasible sulfur limits, D usage, and profit.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The key unresolved business fact is whether the A/B/D intermediate is shared across both products or separate per product, which changes the feasible blending structure.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is a single shared intermediate used for both products or separate A/B/D mixtures for each product remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "partially answered",
+          "why_material": "A shared intermediate imposes one common A/B/D blend composition and links the two products, while separate mixtures allow independent blending and can change feasible sulfur limits, D usage, and profit."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 10,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The key unresolved business fact is whether the A/B/D intermediate is shared or separate for products A and B, which changes the feasible blending structure.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is a single shared intermediate for both products or separate intermediates for product A and product B remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Shared versus separate intermediates changes the feasible blending structure and can alter the optimal production plan and profit.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The key unresolved business fact is whether the A/B/D intermediate is shared or separate for products A and B, which changes the feasible blending structure.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is a single shared intermediate for both products or separate intermediates for product A and product B remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "Shared versus separate intermediates changes the feasible blending structure and can alter the optimal production plan and profit."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 11,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate remains unresolved, and it is unclear whether the intermediate must be fully consumed or can be discarded.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether any A/B/D intermediate produced must be fully consumed in final products or can be discarded without value.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Allowing discard changes the feasible region and could make otherwise infeasible or unprofitable production plans optimal.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate remains unresolved, and it is unclear whether the intermediate must be fully consumed or can be discarded.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether any A/B/D intermediate produced must be fully consumed in final products or can be discarded without value.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "Allowing discard changes the feasible region and could make otherwise infeasible or unprofitable production plans optimal."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 12,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The main unresolved business structure is whether the A/B/D intermediate is shared or product-specific, plus whether intermediate can be discarded and whether raw material C is mandatory.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes the material-flow structure, constraints, and feasible blending combinations in the optimization model.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"It is unconfirmed whether all produced A/B/D intermediate must be used in final products or whether unused intermediate can be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"Allowing discard adds disposal or waste variables and can change optimal production and blending decisions.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"It is unconfirmed whether raw material C must be used in every final product or can be omitted.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"inferred but unconfirmed\",\n      \"why_material\": \"A mandatory C requirement imposes a minimum C input per product and can alter feasible blends and profit.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The main unresolved business structure is whether the A/B/D intermediate is shared or product-specific, plus whether intermediate can be discarded and whether raw material C is mandatory.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This changes the material-flow structure, constraints, and feasible blending combinations in the optimization model."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "It is unconfirmed whether all produced A/B/D intermediate must be used in final products or whether unused intermediate can be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "Allowing discard adds disposal or waste variables and can change optimal production and blending decisions."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "It is unconfirmed whether raw material C must be used in every final product or can be omitted.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "inferred but unconfirmed",
+          "why_material": "A mandatory C requirement imposes a minimum C input per product and can alter feasible blends and profit."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 13,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The core process structure remains unresolved: whether the A/B/D intermediate is shared or separate, whether unused intermediate can be discarded, and whether C is required in every product.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is a single shared intermediate for both products or separate intermediates for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product, changing the feasible production set and profit.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate can be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"If discarding is allowed, the model may produce excess intermediate without penalty; if not, an equality balance links intermediate production to final product use.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be used in every final product or can be omitted for some product.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C appears with a positive lower bound in each product's composition or can be zero, altering feasible blends and optimal profit.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The core process structure remains unresolved: whether the A/B/D intermediate is shared or separate, whether unused intermediate can be discarded, and whether C is required in every product.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is a single shared intermediate for both products or separate intermediates for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product, changing the feasible production set and profit."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate can be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "If discarding is allowed, the model may produce excess intermediate without penalty; if not, an equality balance links intermediate production to final product use."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be used in every final product or can be omitted for some product.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C appears with a positive lower bound in each product's composition or can be zero, altering feasible blends and optimal profit."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 14,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The process structure for the A/B/D intermediate remains unresolved, and related material-flow rules for C and unused intermediate are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate intermediates for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality material balance for the intermediate.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be used in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether C is a mandatory input for each product or an optional blending component.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The process structure for the A/B/D intermediate remains unresolved, and related material-flow rules for C and unused intermediate are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate intermediates for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality material balance for the intermediate."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be used in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This determines whether C is a mandatory input for each product or an optional blending component."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 15,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved and is the key formulation-changing business fact.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the intermediate balance is an equality or an inequality and can affect optimal production and waste.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C is required in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether C has a minimum positive usage in each product or can be zero, changing feasible blends and sulfur compliance.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved and is the key formulation-changing business fact.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the intermediate balance is an equality or an inequality and can affect optimal production and waste."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C is required in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This determines whether C has a minimum positive usage in each product or can be zero, changing feasible blends and sulfur compliance."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 16,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether intermediate production is constrained by final product demand or can be wasted.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be included in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects the feasible blending recipes and the role of C in meeting sulfur limits.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether intermediate production is constrained by final product demand or can be wasted."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be included in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects the feasible blending recipes and the role of C in meeting sulfur limits."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 17,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures per product remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances, changing the feasible production set.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or may be discarded remains unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether intermediate production is constrained by final product demand or can be wasted, affecting optimal blending and profit.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be included in every final product or can be omitted remains unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether C is a mandatory ingredient or an optional blend component, changing the feasible recipes and cost structure.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures per product remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances, changing the feasible production set."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or may be discarded remains unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether intermediate production is constrained by final product demand or can be wasted, affecting optimal blending and profit."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be included in every final product or can be omitted remains unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This determines whether C is a mandatory ingredient or an optional blend component, changing the feasible recipes and cost structure."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 18,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality material balance for the intermediate.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be included in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C is a mandatory input in each product's blending constraint or optional.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality material balance for the intermediate."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be included in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C is a mandatory input in each product's blending constraint or optional."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 19,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances, changing the feasible production set and profit optimum.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate can be discarded remains unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"If discarding is allowed, the model may produce intermediate without final-product linkage; if not, material balances must force full consumption.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C is required in every final product or can be omitted remains unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether C is a mandatory input with a minimum positive amount or an optional blending component, affecting feasible recipes and costs.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances, changing the feasible production set and profit optimum."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate can be discarded remains unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "If discarding is allowed, the model may produce intermediate without final-product linkage; if not, material balances must force full consumption."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C is required in every final product or can be omitted remains unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This changes whether C is a mandatory input with a minimum positive amount or an optional blending component, affecting feasible recipes and costs."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 20,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process rules about intermediate use and C inclusion are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality balance on the intermediate material.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be included in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C is a mandatory input in each product's blending constraint or optional.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process rules about intermediate use and C inclusion are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality balance on the intermediate material."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be included in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C is a mandatory input in each product's blending constraint or optional."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 21,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process rules about intermediate use and C inclusion are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures per product is still unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality balance on intermediate use or allows disposal with no final-product value.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be included in every final product or can be omitted is unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C has a minimum positive usage constraint or can be zero in either product.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process rules about intermediate use and C inclusion are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures per product is still unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality balance on intermediate use or allows disposal with no final-product value."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be included in every final product or can be omitted is unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C has a minimum positive usage constraint or can be zero in either product."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 22,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs shared intermediate variables and a split constraint or separate product-specific blending variables.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or can be discarded remains unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether an intermediate balance equality or an inequality with waste is required.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be used in every final product or can be omitted remains unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C has a positive lower bound in each product or can be zero.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs shared intermediate variables and a split constraint or separate product-specific blending variables."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or can be discarded remains unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether an intermediate balance equality or an inequality with waste is required."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be used in every final product or can be omitted remains unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C has a positive lower bound in each product or can be zero."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 23,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires exact intermediate consumption or allows waste and excess production.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C is required in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects the blending constraints and whether C is mandatory or optional in each product recipe.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires exact intermediate consumption or allows waste and excess production."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C is required in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects the blending constraints and whether C is mandatory or optional in each product recipe."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 24,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related material-flow rules are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures for each product is still unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality material-balance constraint on the intermediate.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be used in every final product or can be omitted is unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether C is a required input for each product or an optional blending component.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related material-flow rules are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures for each product is still unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality material-balance constraint on the intermediate."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be used in every final product or can be omitted is unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This determines whether C is a required input for each product or an optional blending component."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 25,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C usage are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances, changing the feasible blending structure.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or can be discarded remains unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether intermediate production is linked to final product output by an equality or can be overproduced without penalty.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be used in every final product or can be omitted remains unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether C is a mandatory input for each product or an optional blending component, affecting feasible product compositions.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts about intermediate use and C usage are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate A/B/D mixtures for each product remains unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances, changing the feasible blending structure."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or can be discarded remains unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether intermediate production is linked to final product output by an equality or can be overproduced without penalty."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be used in every final product or can be omitted remains unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This determines whether C is a mandatory input for each product or an optional blending component, affecting feasible product compositions."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 26,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures per product is still unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality balance on intermediate usage.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C is required in every final product or can be omitted is unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C has a minimum positive contribution or can be zero in either product.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures per product is still unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality balance on intermediate usage."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C is required in every final product or can be omitted is unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C has a minimum positive contribution or can be zero in either product."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 27,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is a single shared mixture for both products or separate mixtures per product is still unconfirmed.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether intermediate production must equal intermediate consumption or can exceed it.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C is required in every final product or can be omitted is unconfirmed.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C has a positive lower bound in each product or can be zero.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related process-flow facts are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is a single shared mixture for both products or separate mixtures per product is still unconfirmed.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or can be discarded is unconfirmed.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether intermediate production must equal intermediate consumption or can exceed it."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C is required in every final product or can be omitted is unconfirmed.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C has a positive lower bound in each product or can be zero."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 28,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related material-flow rules are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality material balance for the intermediate.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C is required in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C is a mandatory input for each product or an optional blending component.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and several related material-flow rules are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality material balance for the intermediate."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C is required in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C is a mandatory input for each product or an optional blending component."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 29,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether the model requires an equality or inequality balance on the intermediate material.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be used in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects whether C blending is mandatory or optional in the product composition constraints.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate remains unresolved, and several related process-flow facts about intermediate use and C blending are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D mixture is one shared intermediate for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate intermediate balances for each product."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether the model requires an equality or inequality balance on the intermediate material."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be used in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects whether C blending is mandatory or optional in the product composition constraints."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  },
+  {
+    "turn": 30,
+    "entered_agent_context": true,
+    "status": "valid",
+    "raw_response": "{\n  \"search_summary\": \"The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.\",\n  \"ready_to_model\": false,\n  \"gaps\": [\n    {\n      \"gap_id\": \"G1\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.\",\n      \"direct_question\": \"Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances.\"\n    },\n    {\n      \"gap_id\": \"G2\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.\",\n      \"direct_question\": \"Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This changes whether intermediate production is constrained by final product demand or can be wasted.\"\n    },\n    {\n      \"gap_id\": \"G3\",\n      \"category\": \"feasible_rule\",\n      \"description\": \"Whether raw material C must be included in every final product or a product can be made without C.\",\n      \"direct_question\": \"Must raw material C be used in every final product, or can a product be made without C?\",\n      \"source_status\": \"not stated\",\n      \"why_material\": \"This affects the feasible blending recipes and whether C is a mandatory input for each product.\"\n    }\n  ]\n}",
+    "result": {
+      "search_summary": "The shared-versus-separate A/B/D intermediate structure remains unresolved, and related material-flow rules for intermediate use and C inclusion are also unconfirmed.",
+      "ready_to_model": false,
+      "ready_to_model_raw": false,
+      "gaps": [
+        {
+          "gap_id": "G1",
+          "category": "entity_relation",
+          "description": "Whether the A/B/D intermediate is one shared mixture for both products or separate mixtures for product A and product B.",
+          "direct_question": "Is the A/B/D mixture a single shared intermediate that is then split and blended with C to make both products, or are there separate A/B/D mixtures for product A and product B?",
+          "source_status": "not stated",
+          "why_material": "This determines whether the model needs one shared intermediate balance or separate product-specific intermediate balances."
+        },
+        {
+          "gap_id": "G2",
+          "category": "feasible_rule",
+          "description": "Whether all produced A/B/D intermediate must be consumed in final products or unused intermediate may be discarded.",
+          "direct_question": "Must all A/B/D intermediate that is produced be used in final products, or can unused intermediate be discarded?",
+          "source_status": "not stated",
+          "why_material": "This changes whether intermediate production is constrained by final product demand or can be wasted."
+        },
+        {
+          "gap_id": "G3",
+          "category": "feasible_rule",
+          "description": "Whether raw material C must be included in every final product or a product can be made without C.",
+          "direct_question": "Must raw material C be used in every final product, or can a product be made without C?",
+          "source_status": "not stated",
+          "why_material": "This affects the feasible blending recipes and whether C is a mandatory input for each product."
+        }
+      ]
+    },
+    "visibility": {
+      "uses_only_public_dialogue": true,
+      "entered_user_context": false,
+      "entered_transcript": false,
+      "entered_judge_context": false
+    }
+  }
+]

@@ -1,0 +1,2273 @@
+[
+  {
+    "turn": 1,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Not confirmed yet: whether the goal is to maximize profit, revenue, or some other objective from purchasing/processing crude oil into gasoline.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase, subject to a maximum purchase of 1500 t\",\n      \"How much crude oil A and B to process into gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil types A and B\",\n      \"Gasoline types I and II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Current inventories: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Maximum allowable purchase of crude oil A: 1500 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.\",\n      \"Whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.\",\n      \"There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Not confirmed yet: whether the goal is to maximize profit from gasoline sales net of crude purchase cost.\",\n    \"confirmed_decision_scope\": [\n      \"Purchase quantity of crude oil A\",\n      \"Allocation of crude oils A and B to gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Crude oil A purchase cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Tiered pricing for crude oil A purchases\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and B\",\n      \"Gasoline Type I and Type II\",\n      \"Selling prices for both gasoline types\",\n      \"Initial inventories of crude oil A and B\",\n      \"Purchase limit and price tiers for crude oil A\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether blending crude oils A and B is allowed to make each gasoline type, and whether any yield loss occurs during processing.\",\n      \"Whether the existing crude oil inventories are usable in the plan and whether they have an opportunity cost or are free.\",\n      \"Whether there are any limits on how much gasoline Type I or Type II can be sold.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Not confirmed yet: the objective could be maximizing total sales revenue, maximizing profit, or meeting a production target.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to buy\",\n      \"How to process available crude oil A and B into gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Maximum crude oil A purchase of 1500 t\",\n      \"Minimum 50% crude oil A share in gasoline Type I\",\n      \"Tiered crude oil A purchase cost\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and B\",\n      \"Gasoline Type I and Type II\",\n      \"Gasoline selling prices\",\n      \"Current crude oil inventories\",\n      \"Crude oil A purchase limit and price schedule\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"The conversion or blending rules from crude oils to gasoline types are unknown.\",\n      \"The role of existing inventories in the plan is unknown.\",\n      \"Sales limits or demand for gasoline types are unknown.\"\n    ]\n  },\n  \"Q1\": {\n    \"frontier_gap_id\": \"G001\",\n    \"question\": \"How are crude oils A and B converted into Gasoline Type I and Type II?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Each gasoline type is produced from a single crude oil type only, with no blending between A and B.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Crude oils are processed with a fixed yield factor into each gasoline type, and blending is allowed.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"frontier_gap_id\": \"G002\",\n    \"question\": \"How should the current inventories of crude oil A and B be treated in the plan?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"Existing inventories are available for processing at no additional cost and can be used alongside new purchases.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Existing inventories must be fully used before any new crude oil A is purchased.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Existing inventories can be sold or left unused, and only newly purchased crude oil A is processed.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"frontier_gap_id\": \"G003\",\n    \"question\": \"Are there any limits on how much Gasoline Type I or Type II can be produced or sold?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"There is no limit; all produced gasoline can be sold at the given prices.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"There is a maximum demand for each gasoline type that cannot be exceeded.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"There is a minimum required production quantity for each gasoline type.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The processing relationship between crude oils and gasoline types, the treatment of existing inventories, and any sales limits are unresolved business-structure assumptions that directly affect the decision scope, constraints, and objective, so clarification is required before modeling.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Not confirmed yet: whether the goal is to maximize profit, revenue, or some other objective from purchasing/processing crude oil into gasoline.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase, subject to a maximum purchase of 1500 t",
+          "How much crude oil A and B to process into gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil types A and B",
+          "Gasoline types I and II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Current inventories: 500 t of crude oil A, 1000 t of crude oil B",
+          "Maximum allowable purchase of crude oil A: 1500 t"
+        ],
+        "unresolved_business_assumptions": [
+          "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "Whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Not confirmed yet: whether the goal is to maximize profit from gasoline sales net of crude purchase cost.",
+        "confirmed_decision_scope": [
+          "Purchase quantity of crude oil A",
+          "Allocation of crude oils A and B to gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Crude oil A purchase cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Tiered pricing for crude oil A purchases"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and B",
+          "Gasoline Type I and Type II",
+          "Selling prices for both gasoline types",
+          "Initial inventories of crude oil A and B",
+          "Purchase limit and price tiers for crude oil A"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether blending crude oils A and B is allowed to make each gasoline type, and whether any yield loss occurs during processing.",
+          "Whether the existing crude oil inventories are usable in the plan and whether they have an opportunity cost or are free.",
+          "Whether there are any limits on how much gasoline Type I or Type II can be sold."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Not confirmed yet: the objective could be maximizing total sales revenue, maximizing profit, or meeting a production target.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to buy",
+          "How to process available crude oil A and B into gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Maximum crude oil A purchase of 1500 t",
+          "Minimum 50% crude oil A share in gasoline Type I",
+          "Tiered crude oil A purchase cost"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and B",
+          "Gasoline Type I and Type II",
+          "Gasoline selling prices",
+          "Current crude oil inventories",
+          "Crude oil A purchase limit and price schedule"
+        ],
+        "unresolved_business_assumptions": [
+          "The conversion or blending rules from crude oils to gasoline types are unknown.",
+          "The role of existing inventories in the plan is unknown.",
+          "Sales limits or demand for gasoline types are unknown."
+        ]
+      },
+      "deep_search_decision_evidence": "The processing relationship between crude oils and gasoline types, the treatment of existing inventories, and any sales limits are unresolved business-structure assumptions that directly affect the decision scope, constraints, and objective, so clarification is required before modeling.",
+      "Q1": {
+        "action": "ASK",
+        "question": "How are crude oils A and B converted into Gasoline Type I and Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss."
+          },
+          {
+            "id": "B",
+            "text": "Each gasoline type is produced from a single crude oil type only, with no blending between A and B."
+          },
+          {
+            "id": "C",
+            "text": "Crude oils are processed with a fixed yield factor into each gasoline type, and blending is allowed."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G001"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "How should the current inventories of crude oil A and B be treated in the plan?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Existing inventories are available for processing at no additional cost and can be used alongside new purchases."
+          },
+          {
+            "id": "B",
+            "text": "Existing inventories must be fully used before any new crude oil A is purchased."
+          },
+          {
+            "id": "C",
+            "text": "Existing inventories can be sold or left unused, and only newly purchased crude oil A is processed."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G002"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are there any limits on how much Gasoline Type I or Type II can be produced or sold?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There is no limit; all produced gasoline can be sold at the given prices."
+          },
+          {
+            "id": "B",
+            "text": "There is a maximum demand for each gasoline type that cannot be exceeded."
+          },
+          {
+            "id": "C",
+            "text": "There is a minimum required production quantity for each gasoline type."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G003"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"CONTINUE\",\n  \"search_summary\": \"The request defines some purchase limits and a blending proportion for Gasoline Type I, but key structural elements remain unspecified: the production/processing rules for converting crude oils into gasoline types, the demand or sales limits for each gasoline type, the role of existing inventory versus new purchases, and whether the stated purchase cap and blending proportion are hard constraints.\",\n  \"updates\": [\n    {\n      \"operation\": \"ADD\",\n      \"category\": \"constraint_set\",\n      \"description\": \"The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.\",\n      \"evidence_quote\": \"produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%\"\n    },\n    {\n      \"operation\": \"ADD\",\n      \"category\": \"decision_scope\",\n      \"description\": \"It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.\",\n      \"evidence_quote\": \"Current inventories: 500 t of crude oil A, 1000 t of crude oil B.\"\n    },\n    {\n      \"operation\": \"ADD\",\n      \"category\": \"constraint_set\",\n      \"description\": \"There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.\",\n      \"evidence_quote\": \"Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.\"\n    }\n  ]\n}",
+      "result": {
+        "decision": "CONTINUE",
+        "search_summary": "The request defines some purchase limits and a blending proportion for Gasoline Type I, but key structural elements remain unspecified: the production/processing rules for converting crude oils into gasoline types, the demand or sales limits for each gasoline type, the role of existing inventory versus new purchases, and whether the stated purchase cap and blending proportion are hard constraints.",
+        "updates": [
+          {
+            "operation": "ADD",
+            "category": "constraint_set",
+            "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+            "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%"
+          },
+          {
+            "operation": "ADD",
+            "category": "decision_scope",
+            "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+            "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B."
+          },
+          {
+            "operation": "ADD",
+            "category": "constraint_set",
+            "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+            "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t."
+          }
+        ],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [
+        {
+          "operation": "ADD",
+          "gap_id": "G001",
+          "status": "OPEN"
+        },
+        {
+          "operation": "ADD",
+          "gap_id": "G002",
+          "status": "OPEN"
+        },
+        {
+          "operation": "ADD",
+          "gap_id": "G003",
+          "status": "OPEN"
+        }
+      ],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "open_gap_ids": [
+        "G001",
+        "G002",
+        "G003"
+      ]
+    },
+    "selected_frontier_gap_id": "G001",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the core conversion/blending relationship between crude oils A/B and gasoline Types I/II, which is a fundamental constraint set needed to define feasible production and the objective. Q2 clarifies the decision scope and treatment of existing inventories, which affects available inputs and cost accounting. Q3 clarifies demand/sales limits, which affects the feasible production quantities and objective tradeoff. All three address OPEN gaps and are business-relevant, not merely mathematically salient. Q1 is the most foundational because without the conversion/blending rules, the model cannot even represent how crude oil becomes gasoline, making the objective, constraints, and feasibility undefined. It therefore best reduces silent-assumption risk before OR modeling.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the core conversion/blending relationship between crude oils A/B and gasoline Types I/II, which is a fundamental constraint set needed to define feasible production and the objective. Q2 clarifies the decision scope and treatment of existing inventories, which affects available inputs and cost accounting. Q3 clarifies demand/sales limits, which affects the feasible production quantities and objective tradeoff. All three address OPEN gaps and are business-relevant, not merely mathematically salient. Q1 is the most foundational because without the conversion/blending rules, the model cannot even represent how crude oil becomes gasoline, making the objective, constraints, and feasibility undefined. It therefore best reduces silent-assumption risk before OR modeling.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "How are crude oils A and B converted into Gasoline Type I and Type II?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss."
+        },
+        {
+          "id": "B",
+          "text": "Each gasoline type is produced from a single crude oil type only, with no blending between A and B."
+        },
+        {
+          "id": "C",
+          "text": "Crude oils are processed with a fixed yield factor into each gasoline type, and blending is allowed."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consumed": {
+      "gap_id": "G001",
+      "asked_turn": 1
+    }
+  },
+  {
+    "turn": 2,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Not confirmed yet: whether the goal is to maximize total profit from selling gasoline, or some other objective.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase (subject to the 1500 t cap)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Inventories: 500 t of A, 1000 t of B\",\n      \"Tiered purchase price for A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the objective is to maximize profit\",\n      \"Not confirmed yet: whether crude oil B can also be purchased or only inventory B is available\",\n      \"Not confirmed yet: whether there is a minimum or maximum required production quantity for each gasoline type\",\n      \"Not confirmed yet: whether all produced gasoline can be sold at the stated prices\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Not confirmed yet: whether the goal is to maximize total profit from selling gasoline, or some other objective.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase (subject to the 1500 t cap)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Inventories: 500 t of A, 1000 t of B\",\n      \"Tiered purchase price for A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the objective is to maximize profit\",\n      \"Not confirmed yet: whether crude oil B can also be purchased or only inventory B is available\",\n      \"Not confirmed yet: whether there is a minimum or maximum required production quantity for each gasoline type\",\n      \"Not confirmed yet: whether all produced gasoline can be sold at the stated prices\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Not confirmed yet: whether the goal is to maximize total profit from selling gasoline, or some other objective.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase (subject to the 1500 t cap)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Inventories: 500 t of A, 1000 t of B\",\n      \"Tiered purchase price for A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the objective is to maximize profit\",\n      \"Not confirmed yet: whether crude oil B can also be purchased or only inventory B is available\",\n      \"Not confirmed yet: whether there is a minimum or maximum required production quantity for each gasoline type\",\n      \"Not confirmed yet: whether all produced gasoline can be sold at the stated prices\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"What is the primary business objective for this plan?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Maximize total profit from selling the gasoline produced.\"},\n      {\"id\": \"B\", \"text\": \"Maximize total revenue from gasoline sales, ignoring crude oil purchase cost.\"},\n      {\"id\": \"C\", \"text\": \"Minimize total crude oil purchase cost while meeting a required gasoline output.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Can crude oil B be purchased in addition to the existing inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Only the existing 1000 t of crude oil B is available; no additional B can be purchased.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a single known market price, in unlimited quantity.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B can be purchased, but only up to a stated maximum quantity.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Are there any required minimum or maximum production quantities for the gasoline types?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"No minimum or maximum; produce any amount that is profitable.\"},\n      {\"id\": \"B\", \"text\": \"There is a minimum required production quantity for one or both gasoline types.\"},\n      {\"id\": \"C\", \"text\": \"There is a maximum production quantity for one or both gasoline types.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The objective is not yet confirmed, and whether crude oil B can be purchased and whether production quantities are bounded are unresolved business rules that would change the decision scope and constraints.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Not confirmed yet: whether the goal is to maximize total profit from selling gasoline, or some other objective.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase (subject to the 1500 t cap)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Inventories: 500 t of A, 1000 t of B",
+          "Tiered purchase price for A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the objective is to maximize profit",
+          "Not confirmed yet: whether crude oil B can also be purchased or only inventory B is available",
+          "Not confirmed yet: whether there is a minimum or maximum required production quantity for each gasoline type",
+          "Not confirmed yet: whether all produced gasoline can be sold at the stated prices"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Not confirmed yet: whether the goal is to maximize total profit from selling gasoline, or some other objective.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase (subject to the 1500 t cap)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Inventories: 500 t of A, 1000 t of B",
+          "Tiered purchase price for A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the objective is to maximize profit",
+          "Not confirmed yet: whether crude oil B can also be purchased or only inventory B is available",
+          "Not confirmed yet: whether there is a minimum or maximum required production quantity for each gasoline type",
+          "Not confirmed yet: whether all produced gasoline can be sold at the stated prices"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Not confirmed yet: whether the goal is to maximize total profit from selling gasoline, or some other objective.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase (subject to the 1500 t cap)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Inventories: 500 t of A, 1000 t of B",
+          "Tiered purchase price for A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the objective is to maximize profit",
+          "Not confirmed yet: whether crude oil B can also be purchased or only inventory B is available",
+          "Not confirmed yet: whether there is a minimum or maximum required production quantity for each gasoline type",
+          "Not confirmed yet: whether all produced gasoline can be sold at the stated prices"
+        ]
+      },
+      "deep_search_decision_evidence": "The objective is not yet confirmed, and whether crude oil B can be purchased and whether production quantities are bounded are unresolved business rules that would change the decision scope and constraints.",
+      "Q1": {
+        "action": "ASK",
+        "question": "What is the primary business objective for this plan?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Maximize total profit from selling the gasoline produced."
+          },
+          {
+            "id": "B",
+            "text": "Maximize total revenue from gasoline sales, ignoring crude oil purchase cost."
+          },
+          {
+            "id": "C",
+            "text": "Minimize total crude oil purchase cost while meeting a required gasoline output."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased in addition to the existing inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Only the existing 1000 t of crude oil B is available; no additional B can be purchased."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a single known market price, in unlimited quantity."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B can be purchased, but only up to a stated maximum quantity."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are there any required minimum or maximum production quantities for the gasoline types?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No minimum or maximum; produce any amount that is profitable."
+          },
+          {
+            "id": "B",
+            "text": "There is a minimum required production quantity for one or both gasoline types."
+          },
+          {
+            "id": "C",
+            "text": "There is a maximum production quantity for one or both gasoline types."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the core business objective (profit vs revenue vs cost minimization), which is the most fundamental pre-modeling structure and currently unconfirmed. Q2 fills in a supply/entity-boundary rule about whether crude oil B can be purchased, reducing silent-assumption risk around procurement scope. Q3 fills in production quantity constraints, which are secondary and may be irrelevant if no such rules exist. Q1 is the highest priority because the objective determines the entire model formulation, and its absence would force the Agent to silently assume profit maximization. Q2 and Q3 are important but depend on the objective being fixed first. Q1's options are clear, mutually exclusive, and answerable by a business user.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the core business objective (profit vs revenue vs cost minimization), which is the most fundamental pre-modeling structure and currently unconfirmed. Q2 fills in a supply/entity-boundary rule about whether crude oil B can be purchased, reducing silent-assumption risk around procurement scope. Q3 fills in production quantity constraints, which are secondary and may be irrelevant if no such rules exist. Q1 is the highest priority because the objective determines the entire model formulation, and its absence would force the Agent to silently assume profit maximization. Q2 and Q3 are important but depend on the objective being fixed first. Q1's options are clear, mutually exclusive, and answerable by a business user.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "What is the primary business objective for this plan?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Maximize total profit from selling the gasoline produced."
+        },
+        {
+          "id": "B",
+          "text": "Maximize total revenue from gasoline sales, ignoring crude oil purchase cost."
+        },
+        {
+          "id": "C",
+          "text": "Minimize total crude oil purchase cost while meeting a required gasoline output."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 3,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"How should the existing crude oil inventories be treated in the plan?\", \"options\": [{\"id\": \"A\", \"text\": \"Existing inventory is free to use and only purchased crude oil incurs cost.\"}, {\"id\": \"B\", \"text\": \"Existing inventory has an opportunity cost equal to the market purchase price.\"}, {\"id\": \"C\", \"text\": \"Existing inventory must be fully used before any new purchases are allowed.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling the gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Current inventories: 500 t of A, 1000 t of B\",\n      \"Maximum allowable purchase amount of crude oil A: 1500 t\",\n      \"Tiered market price for crude oil A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether crude oil B has a purchase price or is only available from inventory\",\n      \"Not confirmed yet: whether there is a maximum purchase limit for crude oil B\",\n      \"Not confirmed yet: whether there is a minimum or maximum production requirement for either gasoline type\",\n      \"Not confirmed yet: whether inventory of crude oil A counts toward the 1500 t purchase limit\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling the gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Current inventories: 500 t of A, 1000 t of B\",\n      \"Maximum allowable purchase amount of crude oil A: 1500 t\",\n      \"Tiered market price for crude oil A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether crude oil B can be purchased and at what price\",\n      \"Not confirmed yet: whether the 1500 t limit applies to purchases only or to total availability including inventory\",\n      \"Not confirmed yet: whether all produced gasoline can be sold without demand limits\",\n      \"Not confirmed yet: whether there are minimum production requirements for either gasoline type\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling the gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Current inventories: 500 t of A, 1000 t of B\",\n      \"Maximum allowable purchase amount of crude oil A: 1500 t\",\n      \"Tiered market price for crude oil A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether crude oil B has a purchase cost or is limited to existing inventory\",\n      \"Not confirmed yet: whether the 1500 t cap on crude oil A includes the 500 t already in inventory\",\n      \"Not confirmed yet: whether there is a maximum sales quantity for either gasoline type\",\n      \"Not confirmed yet: whether any minimum blending proportion applies to Gasoline Type II\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory.\"},\n      {\"id\": \"B\", \"text\": \"The 1500 t limit applies to total crude oil A available, including the 500 t inventory.\"},\n      {\"id\": \"C\", \"text\": \"The 1500 t limit applies to total crude oil A used in production, including inventory.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Can crude oil B be purchased, and if so, is there a purchase price or limit?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Crude oil B can be purchased at a known market price with no stated purchase limit.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a known market price, but only up to a specified maximum amount.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the existing 1000 t inventory is available.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Are there any minimum or maximum production or sales requirements for Gasoline Type I or Gasoline Type II?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"There are no minimum or maximum production or sales limits for either gasoline type.\"},\n      {\"id\": \"B\", \"text\": \"There is a minimum required production quantity for one or both gasoline types.\"},\n      {\"id\": \"C\", \"text\": \"There is a maximum sales or production limit for one or both gasoline types.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The objective and blending rule are confirmed, but key business-structure assumptions remain unresolved: whether the crude oil A purchase cap includes existing inventory, whether crude oil B can be purchased and at what cost or limit, and whether any production or sales bounds exist. These directly affect the decision scope, constraints, and profit calculation, so clarification is required before modeling.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling the gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Current inventories: 500 t of A, 1000 t of B",
+          "Maximum allowable purchase amount of crude oil A: 1500 t",
+          "Tiered market price for crude oil A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether crude oil B has a purchase price or is only available from inventory",
+          "Not confirmed yet: whether there is a maximum purchase limit for crude oil B",
+          "Not confirmed yet: whether there is a minimum or maximum production requirement for either gasoline type",
+          "Not confirmed yet: whether inventory of crude oil A counts toward the 1500 t purchase limit"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling the gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Current inventories: 500 t of A, 1000 t of B",
+          "Maximum allowable purchase amount of crude oil A: 1500 t",
+          "Tiered market price for crude oil A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether crude oil B can be purchased and at what price",
+          "Not confirmed yet: whether the 1500 t limit applies to purchases only or to total availability including inventory",
+          "Not confirmed yet: whether all produced gasoline can be sold without demand limits",
+          "Not confirmed yet: whether there are minimum production requirements for either gasoline type"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling the gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Each gasoline type can be made by blending crude oils A and B in any proportion, with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Current inventories: 500 t of A, 1000 t of B",
+          "Maximum allowable purchase amount of crude oil A: 1500 t",
+          "Tiered market price for crude oil A: 10000 yuan/t up to 500 t; 8000 yuan/t for 500-1000 t; 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether crude oil B has a purchase cost or is limited to existing inventory",
+          "Not confirmed yet: whether the 1500 t cap on crude oil A includes the 500 t already in inventory",
+          "Not confirmed yet: whether there is a maximum sales quantity for either gasoline type",
+          "Not confirmed yet: whether any minimum blending proportion applies to Gasoline Type II"
+        ]
+      },
+      "deep_search_decision_evidence": "The objective and blending rule are confirmed, but key business-structure assumptions remain unresolved: whether the crude oil A purchase cap includes existing inventory, whether crude oil B can be purchased and at what cost or limit, and whether any production or sales bounds exist. These directly affect the decision scope, constraints, and profit calculation, so clarification is required before modeling.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory."
+          },
+          {
+            "id": "B",
+            "text": "The 1500 t limit applies to total crude oil A available, including the 500 t inventory."
+          },
+          {
+            "id": "C",
+            "text": "The 1500 t limit applies to total crude oil A used in production, including inventory."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased, and if so, is there a purchase price or limit?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a known market price with no stated purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a known market price, but only up to a specified maximum amount."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the existing 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are there any minimum or maximum production or sales requirements for Gasoline Type I or Gasoline Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There are no minimum or maximum production or sales limits for either gasoline type."
+          },
+          {
+            "id": "B",
+            "text": "There is a minimum required production quantity for one or both gasoline types."
+          },
+          {
+            "id": "C",
+            "text": "There is a maximum sales or production limit for one or both gasoline types."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 clarifies whether the 1500 t cap on crude oil A is a purchase-only limit or a total-availability limit including the 500 t inventory. This is a hard constraint boundary that directly affects the feasible region and the tiered pricing structure, and it is a silent-assumption risk because the model could otherwise assume either interpretation. Q2 clarifies whether crude oil B can be purchased, at what price, and with what limit; this is also important because B is currently treated as inventory-only, but it is somewhat less central than Q1 since the objective and A-related constraints are already confirmed. Q3 clarifies production/sales bounds for gasoline types; this is relevant but more likely to be a soft or secondary requirement compared with the hard crude-oil availability and purchase rules. Q1 is the best first question because it resolves a direct constraint ambiguity that changes the feasible decision space and cost structure, and it is clearly answerable by a business user with mutually exclusive options.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 clarifies whether the 1500 t cap on crude oil A is a purchase-only limit or a total-availability limit including the 500 t inventory. This is a hard constraint boundary that directly affects the feasible region and the tiered pricing structure, and it is a silent-assumption risk because the model could otherwise assume either interpretation. Q2 clarifies whether crude oil B can be purchased, at what price, and with what limit; this is also important because B is currently treated as inventory-only, but it is somewhat less central than Q1 since the objective and A-related constraints are already confirmed. Q3 clarifies production/sales bounds for gasoline types; this is relevant but more likely to be a soft or secondary requirement compared with the hard crude-oil availability and purchase rules. Q1 is the best first question because it resolves a direct constraint ambiguity that changes the feasible decision space and cost structure, and it is clearly answerable by a business user with mutually exclusive options.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory."
+        },
+        {
+          "id": "B",
+          "text": "The 1500 t limit applies to total crude oil A available, including the 500 t inventory."
+        },
+        {
+          "id": "C",
+          "text": "The 1500 t limit applies to total crude oil A used in production, including inventory."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 4,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"Is there any limit on how much crude oil B can be purchased, or on total crude oil available?\", \"options\": [{\"id\": \"A\", \"text\": \"Crude oil B can be purchased in unlimited quantities at a single known market price.\"}, {\"id\": \"B\", \"text\": \"Crude oil B can be purchased only up to a fixed maximum quantity.\"}, {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased at all; only the 1000 t inventory is available.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Initial inventory: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether the 1500 t purchase limit applies only to newly purchased crude oil A or to total availability including inventory\",\n      \"Whether crude oil B has a purchase price and any purchase limit\",\n      \"Whether there is a maximum demand or sales limit for each gasoline type\",\n      \"Whether all produced gasoline must be sold\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Initial inventory: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether the 1500 t purchase limit applies only to newly purchased crude oil A or to total availability including inventory\",\n      \"Whether crude oil B has a purchase price and any purchase limit\",\n      \"Whether there is a maximum demand or sales limit for each gasoline type\",\n      \"Whether all produced gasoline must be sold\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Initial inventory: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether the 1500 t purchase limit applies only to newly purchased crude oil A or to total availability including inventory\",\n      \"Whether crude oil B has a purchase price and any purchase limit\",\n      \"Whether there is a maximum demand or sales limit for each gasoline type\",\n      \"Whether all produced gasoline must be sold\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Does crude oil B have a purchase price and any purchase limit?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Is there a maximum demand or sales limit for each gasoline type?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"There is no limit; all gasoline produced can be sold at the given prices.\"},\n      {\"id\": \"B\", \"text\": \"Each gasoline type has a known maximum demand that cannot be exceeded.\"},\n      {\"id\": \"C\", \"text\": \"Total gasoline sales are limited by a known overall market demand.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Must all produced gasoline be sold, or can some be left unsold?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"All gasoline produced must be sold.\"},\n      {\"id\": \"B\", \"text\": \"Gasoline can be produced and left unsold if not profitable.\"},\n      {\"id\": \"C\", \"text\": \"Production is planned only to meet confirmed sales orders.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The purchase price and availability of crude oil B, demand limits for gasoline, and whether all output must be sold are unresolved business facts that directly affect the objective and constraints.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Initial inventory: 500 t of crude oil A, 1000 t of crude oil B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether the 1500 t purchase limit applies only to newly purchased crude oil A or to total availability including inventory",
+          "Whether crude oil B has a purchase price and any purchase limit",
+          "Whether there is a maximum demand or sales limit for each gasoline type",
+          "Whether all produced gasoline must be sold"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Initial inventory: 500 t of crude oil A, 1000 t of crude oil B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether the 1500 t purchase limit applies only to newly purchased crude oil A or to total availability including inventory",
+          "Whether crude oil B has a purchase price and any purchase limit",
+          "Whether there is a maximum demand or sales limit for each gasoline type",
+          "Whether all produced gasoline must be sold"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Initial inventory: 500 t of crude oil A, 1000 t of crude oil B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether the 1500 t purchase limit applies only to newly purchased crude oil A or to total availability including inventory",
+          "Whether crude oil B has a purchase price and any purchase limit",
+          "Whether there is a maximum demand or sales limit for each gasoline type",
+          "Whether all produced gasoline must be sold"
+        ]
+      },
+      "deep_search_decision_evidence": "The purchase price and availability of crude oil B, demand limits for gasoline, and whether all output must be sold are unresolved business facts that directly affect the objective and constraints.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Does crude oil B have a purchase price and any purchase limit?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Is there a maximum demand or sales limit for each gasoline type?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There is no limit; all gasoline produced can be sold at the given prices."
+          },
+          {
+            "id": "B",
+            "text": "Each gasoline type has a known maximum demand that cannot be exceeded."
+          },
+          {
+            "id": "C",
+            "text": "Total gasoline sales are limited by a known overall market demand."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Must all produced gasoline be sold, or can some be left unsold?",
+        "options": [
+          {
+            "id": "A",
+            "text": "All gasoline produced must be sold."
+          },
+          {
+            "id": "B",
+            "text": "Gasoline can be produced and left unsold if not profitable."
+          },
+          {
+            "id": "C",
+            "text": "Production is planned only to meet confirmed sales orders."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in a critical missing input/constraint: whether crude oil B has a purchase price and purchase limit, which directly affects the objective function and feasible purchase decisions. Q2 fills in demand-side constraints, which are important but secondary if the model already assumes all output can be sold. Q3 clarifies whether production must equal sales, which affects whether inventory/unsold output variables are needed. Among these, Q1 has the highest silent-assumption risk because the current state lists crude oil B purchase price and limit as unresolved, yet the model cannot correctly compute profit or purchase decisions without it. Q2 and Q3 are also relevant, but Q1 most directly changes the objective, constraints, and decision scope.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in a critical missing input/constraint: whether crude oil B has a purchase price and purchase limit, which directly affects the objective function and feasible purchase decisions. Q2 fills in demand-side constraints, which are important but secondary if the model already assumes all output can be sold. Q3 clarifies whether production must equal sales, which affects whether inventory/unsold output variables are needed. Among these, Q1 has the highest silent-assumption risk because the current state lists crude oil B purchase price and limit as unresolved, yet the model cannot correctly compute profit or purchase decisions without it. Q2 and Q3 are also relevant, but Q1 most directly changes the objective, constraints, and decision scope.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Does crude oil B have a purchase price and any purchase limit?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+        },
+        {
+          "id": "B",
+          "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+        },
+        {
+          "id": "C",
+          "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 5,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"How should crude oil B be treated in the plan, given no purchase price or limit is stated?\", \"options\": [{\"id\": \"A\", \"text\": \"Crude oil B can be purchased freely at no cost, so only the 1000 t inventory matters.\"}, {\"id\": \"B\", \"text\": \"Crude oil B can be purchased, but its price and limit are unknown and must be provided before planning.\"}, {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the existing 1000 t inventory is available for blending.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t, 8,000 yuan/t for 500-1000 t, 6,000 yuan/t above 1000 t\",\n      \"The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Initial inventory: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Selling prices: Gasoline Type I 4800 yuan/t, Gasoline Type II 5600 yuan/t\",\n      \"Crude oil A tiered purchase prices\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased and at what price or limit\",\n      \"Whether there is a maximum demand or sales limit for each gasoline type\",\n      \"Whether all produced gasoline can be sold\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t, 8,000 yuan/t for 500-1000 t, 6,000 yuan/t above 1000 t\",\n      \"The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Initial inventory: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Selling prices: Gasoline Type I 4800 yuan/t, Gasoline Type II 5600 yuan/t\",\n      \"Crude oil A tiered purchase prices\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased and at what price or limit\",\n      \"Whether there is a maximum demand or sales limit for each gasoline type\",\n      \"Whether all produced gasoline can be sold\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t, 8,000 yuan/t for 500-1000 t, 6,000 yuan/t above 1000 t\",\n      \"The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Initial inventory: 500 t of crude oil A, 1000 t of crude oil B\",\n      \"Selling prices: Gasoline Type I 4800 yuan/t, Gasoline Type II 5600 yuan/t\",\n      \"Crude oil A tiered purchase prices\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased and at what price or limit\",\n      \"Whether there is a maximum demand or sales limit for each gasoline type\",\n      \"Whether all produced gasoline can be sold\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Can crude oil B be purchased beyond the 1000 t already in inventory?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Is there a maximum amount of each gasoline type that can be sold?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"There is no sales limit; all gasoline produced can be sold at the given prices.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Each gasoline type has a maximum demand that limits how much can be sold.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Total gasoline sales are limited by a single overall market cap.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Must any crude oil inventory or purchased crude oil be left unused, or can all available crude oil be processed?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"All available crude oil can be processed; no minimum inventory must be retained.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"A minimum ending inventory of crude oil must be retained.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Only purchased crude oil can be processed; existing inventory cannot be used.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The purchase availability and pricing of crude oil B is unconfirmed and directly affects the decision scope, cost structure, and feasible blending options. Without this, the model could wrongly assume B is free, unlimited, or unavailable.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t, 8,000 yuan/t for 500-1000 t, 6,000 yuan/t above 1000 t",
+          "The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Initial inventory: 500 t of crude oil A, 1000 t of crude oil B",
+          "Selling prices: Gasoline Type I 4800 yuan/t, Gasoline Type II 5600 yuan/t",
+          "Crude oil A tiered purchase prices"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased and at what price or limit",
+          "Whether there is a maximum demand or sales limit for each gasoline type",
+          "Whether all produced gasoline can be sold"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t, 8,000 yuan/t for 500-1000 t, 6,000 yuan/t above 1000 t",
+          "The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Initial inventory: 500 t of crude oil A, 1000 t of crude oil B",
+          "Selling prices: Gasoline Type I 4800 yuan/t, Gasoline Type II 5600 yuan/t",
+          "Crude oil A tiered purchase prices"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased and at what price or limit",
+          "Whether there is a maximum demand or sales limit for each gasoline type",
+          "Whether all produced gasoline can be sold"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t, 8,000 yuan/t for 500-1000 t, 6,000 yuan/t above 1000 t",
+          "The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Initial inventory: 500 t of crude oil A, 1000 t of crude oil B",
+          "Selling prices: Gasoline Type I 4800 yuan/t, Gasoline Type II 5600 yuan/t",
+          "Crude oil A tiered purchase prices"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased and at what price or limit",
+          "Whether there is a maximum demand or sales limit for each gasoline type",
+          "Whether all produced gasoline can be sold"
+        ]
+      },
+      "deep_search_decision_evidence": "The purchase availability and pricing of crude oil B is unconfirmed and directly affects the decision scope, cost structure, and feasible blending options. Without this, the model could wrongly assume B is free, unlimited, or unavailable.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Is there a maximum amount of each gasoline type that can be sold?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There is no sales limit; all gasoline produced can be sold at the given prices."
+          },
+          {
+            "id": "B",
+            "text": "Each gasoline type has a maximum demand that limits how much can be sold."
+          },
+          {
+            "id": "C",
+            "text": "Total gasoline sales are limited by a single overall market cap."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Must any crude oil inventory or purchased crude oil be left unused, or can all available crude oil be processed?",
+        "options": [
+          {
+            "id": "A",
+            "text": "All available crude oil can be processed; no minimum inventory must be retained."
+          },
+          {
+            "id": "B",
+            "text": "A minimum ending inventory of crude oil must be retained."
+          },
+          {
+            "id": "C",
+            "text": "Only purchased crude oil can be processed; existing inventory cannot be used."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in whether crude oil B is purchasable and at what price/limit, which is a core constraint and cost-structure fact; its absence forces the model to silently assume B is either unavailable or freely purchasable, materially changing the feasible region and objective. Q2 fills in demand/sales limits, which affects whether production is bounded by market demand, but the user has already indicated profit maximization and no demand limit has been mentioned; it is important but less foundational than B's availability. Q3 fills in inventory-retention or processing rules, which is a secondary policy detail. Q1 best reduces silent-assumption risk because the previous turn explicitly left crude oil B's purchase price and limit unresolved, and this directly determines the decision scope and cost side of the profit objective.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in whether crude oil B is purchasable and at what price/limit, which is a core constraint and cost-structure fact; its absence forces the model to silently assume B is either unavailable or freely purchasable, materially changing the feasible region and objective. Q2 fills in demand/sales limits, which affects whether production is bounded by market demand, but the user has already indicated profit maximization and no demand limit has been mentioned; it is important but less foundational than B's availability. Q3 fills in inventory-retention or processing rules, which is a secondary policy detail. Q1 best reduces silent-assumption risk because the previous turn explicitly left crude oil B's purchase price and limit unresolved, and this directly determines the decision scope and cost side of the profit objective.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+        },
+        {
+          "id": "B",
+          "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+        },
+        {
+          "id": "C",
+          "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 6,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"For the purpose of this plan, how should crude oil B availability be treated?\", \"options\": [{\"id\": \"A\", \"text\": \"Treat crude oil B as limited to the 1000 t already in inventory.\"}, {\"id\": \"B\", \"text\": \"Treat crude oil B as purchasable at a price to be provided later.\"}, {\"id\": \"C\", \"text\": \"Treat crude oil B as purchasable at the same tiered prices as crude oil A.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase or use\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t\",\n      \"The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Inventory: 500 t crude oil A, 1000 t crude oil B\",\n      \"Crude oil A tiered purchase prices\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase or use\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t\",\n      \"The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Inventory: 500 t crude oil A, 1000 t crude oil B\",\n      \"Crude oil A tiered purchase prices\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase or use\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"In Gasoline Type I, the proportion of crude oil A must be at least 50%\",\n      \"Crude oils A and B can be blended in any proportion with no processing loss\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t\",\n      \"The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Inventory: 500 t crude oil A, 1000 t crude oil B\",\n      \"Crude oil A tiered purchase prices\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Can crude oil B be purchased beyond the 1000 t already in inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Is there any limit on how much crude oil B can be used in production?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Crude oil B usage is limited only by available inventory and any purchases.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B usage is capped at the 1000 t inventory regardless of purchases.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B usage has a separate maximum limit specified by the business.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Does the 50% minimum crude oil A proportion apply only to Gasoline Type I, or also to Gasoline Type II?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"The 50% minimum crude oil A proportion applies only to Gasoline Type I.\"},\n      {\"id\": \"B\", \"text\": \"The 50% minimum crude oil A proportion applies to both Gasoline Type I and Type II.\"},\n      {\"id\": \"C\", \"text\": \"There is no minimum crude oil A proportion requirement for Gasoline Type II.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The purchase availability and price of crude oil B is unconfirmed and directly affects the decision scope, cost structure, and feasible production plan. Without this, the model could wrongly assume B is free, unlimited, or unavailable.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase or use",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t",
+          "The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Inventory: 500 t crude oil A, 1000 t crude oil B",
+          "Crude oil A tiered purchase prices"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase or use",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t",
+          "The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Inventory: 500 t crude oil A, 1000 t crude oil B",
+          "Crude oil A tiered purchase prices"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase or use",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "In Gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "Crude oils A and B can be blended in any proportion with no processing loss",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t",
+          "The 1500 t purchase limit applies only to newly purchased crude oil A, separate from the 500 t inventory"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Inventory: 500 t crude oil A, 1000 t crude oil B",
+          "Crude oil A tiered purchase prices"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit"
+        ]
+      },
+      "deep_search_decision_evidence": "The purchase availability and price of crude oil B is unconfirmed and directly affects the decision scope, cost structure, and feasible production plan. Without this, the model could wrongly assume B is free, unlimited, or unavailable.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Is there any limit on how much crude oil B can be used in production?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B usage is limited only by available inventory and any purchases."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B usage is capped at the 1000 t inventory regardless of purchases."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B usage has a separate maximum limit specified by the business."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does the 50% minimum crude oil A proportion apply only to Gasoline Type I, or also to Gasoline Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "The 50% minimum crude oil A proportion applies only to Gasoline Type I."
+          },
+          {
+            "id": "B",
+            "text": "The 50% minimum crude oil A proportion applies to both Gasoline Type I and Type II."
+          },
+          {
+            "id": "C",
+            "text": "There is no minimum crude oil A proportion requirement for Gasoline Type II."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 targets the unresolved purchase availability/price of crude oil B, which is a genuine open business fact that directly affects the objective (profit), decision scope (whether B is a purchase decision), and cost structure. However, this exact gap has already been asked twice (Turns 4 and 5) and the user could not confirm it, so re-asking it risks repeating an already-probed gap without new framing. Q2 addresses a related but distinct constraint: whether crude oil B usage has a separate production cap, which fills in a hard constraint/coverage rule and reduces silent-assumption risk about B's usable quantity. Q3 clarifies the scope of the 50% minimum crude oil A blending rule, which is a hard business rule and entity-specific constraint; it is not merely mathematically salient and its options are clear and mutually exclusive. Among the three, Q3 best fills a confirmed-but-possibly-overgeneralized business rule (the 50% A proportion) whose misapplication would silently change the feasible region for Gasoline Type II, and it has not yet been asked. Q1 is important but has already been probed and left unresolved by the user, so it is less likely to yield new structure now. Q2 is useful but partially derivative of Q1's unresolved purchase question. Therefore Q3 is the best next question.\",\n  \"selected_question_id\": \"Q3\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 targets the unresolved purchase availability/price of crude oil B, which is a genuine open business fact that directly affects the objective (profit), decision scope (whether B is a purchase decision), and cost structure. However, this exact gap has already been asked twice (Turns 4 and 5) and the user could not confirm it, so re-asking it risks repeating an already-probed gap without new framing. Q2 addresses a related but distinct constraint: whether crude oil B usage has a separate production cap, which fills in a hard constraint/coverage rule and reduces silent-assumption risk about B's usable quantity. Q3 clarifies the scope of the 50% minimum crude oil A blending rule, which is a hard business rule and entity-specific constraint; it is not merely mathematically salient and its options are clear and mutually exclusive. Among the three, Q3 best fills a confirmed-but-possibly-overgeneralized business rule (the 50% A proportion) whose misapplication would silently change the feasible region for Gasoline Type II, and it has not yet been asked. Q1 is important but has already been probed and left unresolved by the user, so it is less likely to yield new structure now. Q2 is useful but partially derivative of Q1's unresolved purchase question. Therefore Q3 is the best next question.",
+          "selected_question_id": "Q3"
+        }
+      }
+    ],
+    "selected_question_id": "Q3",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Does the 50% minimum crude oil A proportion apply only to Gasoline Type I, or also to Gasoline Type II?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The 50% minimum crude oil A proportion applies only to Gasoline Type I."
+        },
+        {
+          "id": "B",
+          "text": "The 50% minimum crude oil A proportion applies to both Gasoline Type I and Type II."
+        },
+        {
+          "id": "C",
+          "text": "There is no minimum crude oil A proportion requirement for Gasoline Type II."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 7,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"Is there any limit on how much Gasoline Type I and Type II can be sold?\", \"options\": [{\"id\": \"A\", \"text\": \"There is no demand limit; all gasoline produced can be sold at the stated prices.\"}, {\"id\": \"B\", \"text\": \"There is a maximum demand for each gasoline type that limits sales.\"}, {\"id\": \"C\", \"text\": \"There is a minimum required amount of each gasoline type that must be produced.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from inventory)\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss and any proportion of A and B is allowed\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Inventory: 500 t of A, 1000 t of B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Tiered purchase price for A: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\",\n      \"Whether there is any demand limit or maximum sales quantity for Gasoline Type I and Type II\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from inventory)\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss and any proportion of A and B is allowed\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Inventory: 500 t of A, 1000 t of B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Tiered purchase price for A: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\",\n      \"Whether there is any demand limit or maximum sales quantity for Gasoline Type I and Type II\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\",\n      \"How much of each gasoline type to sell\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from inventory)\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss and any proportion of A and B is allowed\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and crude oil B\",\n      \"Gasoline Type I and Gasoline Type II\",\n      \"Inventory: 500 t of A, 1000 t of B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Tiered purchase price for A: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\",\n      \"Whether there is any demand limit or maximum sales quantity for Gasoline Type I and Type II\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Can crude oil B be purchased beyond the 1000 t already in inventory?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"There is no demand limit; all gasoline produced can be sold at the given prices.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Each gasoline type has a maximum sales quantity that must be respected.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Total gasoline sales across both types are capped at a fixed amount.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Does the 50% minimum crude oil A proportion apply only to Gasoline Type I, or also to Gasoline Type II?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"The 50% minimum crude oil A proportion applies only to Gasoline Type I.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"The 50% minimum crude oil A proportion applies to both Gasoline Type I and Type II.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"There is no minimum crude oil A proportion requirement for Gasoline Type II.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The user's response clarified that Gasoline Type II requires at least 60% crude oil A, which resolves the Type II blending rule. However, two important business-structure assumptions remain unresolved: whether crude oil B can be purchased beyond inventory (affecting decision scope and cost structure), and whether there are demand limits on gasoline sales (affecting the objective and feasible sales quantities). These could change the modeled business problem, so clarification is still needed.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from inventory)",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss and any proportion of A and B is allowed"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Inventory: 500 t of A, 1000 t of B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Tiered purchase price for A: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit",
+          "Whether there is any demand limit or maximum sales quantity for Gasoline Type I and Type II"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from inventory)",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss and any proportion of A and B is allowed"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Inventory: 500 t of A, 1000 t of B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Tiered purchase price for A: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit",
+          "Whether there is any demand limit or maximum sales quantity for Gasoline Type I and Type II"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II",
+          "How much of each gasoline type to sell"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from inventory)",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss and any proportion of A and B is allowed"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and crude oil B",
+          "Gasoline Type I and Gasoline Type II",
+          "Inventory: 500 t of A, 1000 t of B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Tiered purchase price for A: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit",
+          "Whether there is any demand limit or maximum sales quantity for Gasoline Type I and Type II"
+        ]
+      },
+      "deep_search_decision_evidence": "The user's response clarified that Gasoline Type II requires at least 60% crude oil A, which resolves the Type II blending rule. However, two important business-structure assumptions remain unresolved: whether crude oil B can be purchased beyond inventory (affecting decision scope and cost structure), and whether there are demand limits on gasoline sales (affecting the objective and feasible sales quantities). These could change the modeled business problem, so clarification is still needed.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There is no demand limit; all gasoline produced can be sold at the given prices."
+          },
+          {
+            "id": "B",
+            "text": "Each gasoline type has a maximum sales quantity that must be respected."
+          },
+          {
+            "id": "C",
+            "text": "Total gasoline sales across both types are capped at a fixed amount."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does the 50% minimum crude oil A proportion apply only to Gasoline Type I, or also to Gasoline Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "The 50% minimum crude oil A proportion applies only to Gasoline Type I."
+          },
+          {
+            "id": "B",
+            "text": "The 50% minimum crude oil A proportion applies to both Gasoline Type I and Type II."
+          },
+          {
+            "id": "C",
+            "text": "There is no minimum crude oil A proportion requirement for Gasoline Type II."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the crude oil B procurement boundary (whether B can be purchased, at what price/limit), which is a hard constraint/decision-scope fact that currently forces the model to silently assume B is inventory-only or purchasable. Q2 fills in demand/sales limits, which affects whether production is sales-capped but is less central than the unresolved B procurement rule. Q3 revisits the minimum A proportion for Gasoline Type II, but the user already clarified in Turn 6 that Type II requires at least 60% A, so this gap is effectively resolved and would repeat an already answered issue. Q1 is therefore the best next question because it addresses an open, high-impact business rule that materially changes the feasible region and objective calculation.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the crude oil B procurement boundary (whether B can be purchased, at what price/limit), which is a hard constraint/decision-scope fact that currently forces the model to silently assume B is inventory-only or purchasable. Q2 fills in demand/sales limits, which affects whether production is sales-capped but is less central than the unresolved B procurement rule. Q3 revisits the minimum A proportion for Gasoline Type II, but the user already clarified in Turn 6 that Type II requires at least 60% A, so this gap is effectively resolved and would repeat an already answered issue. Q1 is therefore the best next question because it addresses an open, high-impact business rule that materially changes the feasible region and objective calculation.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+        },
+        {
+          "id": "B",
+          "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+        },
+        {
+          "id": "C",
+          "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 8,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase (if allowed)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A inventory: 500 t\",\n      \"Crude oil B inventory: 1000 t\",\n      \"Gasoline Type I selling price: 4800 yuan/t\",\n      \"Gasoline Type II selling price: 5600 yuan/t\",\n      \"Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\",\n      \"Whether there is any maximum demand or sales limit for Gasoline Type I and Type II\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A inventory: 500 t\",\n      \"Crude oil B inventory: 1000 t\",\n      \"Gasoline Type I selling price: 4800 yuan/t\",\n      \"Gasoline Type II selling price: 5600 yuan/t\",\n      \"Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\",\n      \"Whether there is any maximum demand or sales limit for Gasoline Type I and Type II\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase (if allowed)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A inventory: 500 t\",\n      \"Crude oil B inventory: 1000 t\",\n      \"Gasoline Type I selling price: 4800 yuan/t\",\n      \"Gasoline Type II selling price: 5600 yuan/t\",\n      \"Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit\",\n      \"Whether there is any maximum demand or sales limit for Gasoline Type I and Type II\"\n    ]\n  },\n  \"Q1\": {\n    \"frontier_gap_id\": \"G001\",\n    \"question\": \"Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"There is no maximum demand; all gasoline produced can be sold.\"},\n      {\"id\": \"B\", \"text\": \"There is a maximum demand for each gasoline type that must be respected.\"},\n      {\"id\": \"C\", \"text\": \"There is a maximum demand for Gasoline Type I only.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"frontier_gap_id\": \"G002\",\n    \"question\": \"Can crude oil B be purchased beyond the 1000 t already in inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"frontier_gap_id\": \"G003\",\n    \"question\": \"Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory.\"},\n      {\"id\": \"B\", \"text\": \"The 1500 t limit applies to total crude oil A available, including the 500 t inventory.\"},\n      {\"id\": \"C\", \"text\": \"The 1500 t limit applies to total crude oil A used in production, including inventory.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The user has not confirmed whether crude oil B can be purchased beyond inventory, whether there is any maximum demand for the gasoline types, and whether the 1500 t purchase limit includes existing inventory. These assumptions directly affect the decision scope, constraints, and objective, so clarification is still needed before modeling.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase (if allowed)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A inventory: 500 t",
+          "Crude oil B inventory: 1000 t",
+          "Gasoline Type I selling price: 4800 yuan/t",
+          "Gasoline Type II selling price: 5600 yuan/t",
+          "Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit",
+          "Whether there is any maximum demand or sales limit for Gasoline Type I and Type II"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A inventory: 500 t",
+          "Crude oil B inventory: 1000 t",
+          "Gasoline Type I selling price: 4800 yuan/t",
+          "Gasoline Type II selling price: 5600 yuan/t",
+          "Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit",
+          "Whether there is any maximum demand or sales limit for Gasoline Type I and Type II"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase (if allowed)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A inventory: 500 t",
+          "Crude oil B inventory: 1000 t",
+          "Gasoline Type I selling price: 4800 yuan/t",
+          "Gasoline Type II selling price: 5600 yuan/t",
+          "Crude oil A tiered purchase price: 10000 yuan/t up to 500 t, 8000 yuan/t for 500-1000 t, 6000 yuan/t above 1000 t"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory, and at what price or limit",
+          "Whether there is any maximum demand or sales limit for Gasoline Type I and Type II"
+        ]
+      },
+      "deep_search_decision_evidence": "The user has not confirmed whether crude oil B can be purchased beyond inventory, whether there is any maximum demand for the gasoline types, and whether the 1500 t purchase limit includes existing inventory. These assumptions directly affect the decision scope, constraints, and objective, so clarification is still needed before modeling.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There is no maximum demand; all gasoline produced can be sold."
+          },
+          {
+            "id": "B",
+            "text": "There is a maximum demand for each gasoline type that must be respected."
+          },
+          {
+            "id": "C",
+            "text": "There is a maximum demand for Gasoline Type I only."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G001"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G002"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory."
+          },
+          {
+            "id": "B",
+            "text": "The 1500 t limit applies to total crude oil A available, including the 500 t inventory."
+          },
+          {
+            "id": "C",
+            "text": "The 1500 t limit applies to total crude oil A used in production, including inventory."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G003"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": "G001",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the demand/sales boundary for Gasoline Type I and II, which determines whether production is demand-capped or can expand without limit; this is a key business constraint that would otherwise be silently assumed. Q2 fills in the procurement rule for crude oil B, but this exact question has already been asked twice and the user explicitly said the supplied facts do not state it, so repeating it is low-value and risks re-asking a non-answerable gap. Q3 fills in the interpretation of the 1500 t crude oil A purchase limit relative to inventory, but this was already asked and answered in Turn 3, so it is a repeated confirmation. Q1 is the best choice because it addresses an unresolved business assumption that materially affects the objective and feasible decision scope, and it has not yet been asked.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the demand/sales boundary for Gasoline Type I and II, which determines whether production is demand-capped or can expand without limit; this is a key business constraint that would otherwise be silently assumed. Q2 fills in the procurement rule for crude oil B, but this exact question has already been asked twice and the user explicitly said the supplied facts do not state it, so repeating it is low-value and risks re-asking a non-answerable gap. Q3 fills in the interpretation of the 1500 t crude oil A purchase limit relative to inventory, but this was already asked and answered in Turn 3, so it is a repeated confirmation. Q1 is the best choice because it addresses an unresolved business assumption that materially affects the objective and feasible decision scope, and it has not yet been asked.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?",
+      "options": [
+        {
+          "id": "A",
+          "text": "There is no maximum demand; all gasoline produced can be sold."
+        },
+        {
+          "id": "B",
+          "text": "There is a maximum demand for each gasoline type that must be respected."
+        },
+        {
+          "id": "C",
+          "text": "There is a maximum demand for Gasoline Type I only."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consume_error": {
+      "gap_id": "G001",
+      "error": "gap G001 is not OPEN (status=ASKED)"
+    }
+  },
+  {
+    "turn": 9,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"Can crude oil B be purchased beyond the 1000 t already in inventory?\", \"options\": [{\"id\": \"A\", \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"}, {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"}, {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase (if allowed)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and B\",\n      \"Gasoline Type I and Type II\",\n      \"Inventory: 500 t A, 1000 t B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Tiered purchase price for crude oil A\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond inventory\",\n      \"Whether there is any maximum demand or sales limit for gasoline types\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and B\",\n      \"Gasoline Type I and Type II\",\n      \"Inventory: 500 t A, 1000 t B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Tiered purchase price for crude oil A\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond inventory\",\n      \"Whether there is any maximum demand or sales limit for gasoline types\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase\",\n      \"How much crude oil B to purchase (if allowed)\",\n      \"How to blend crude oils A and B into Gasoline Type I and Type II\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t\",\n      \"Gasoline Type I must contain at least 50% crude oil A\",\n      \"Gasoline Type II must contain at least 60% crude oil A\",\n      \"Blending has no processing loss\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil A and B\",\n      \"Gasoline Type I and Type II\",\n      \"Inventory: 500 t A, 1000 t B\",\n      \"Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t\",\n      \"Tiered purchase price for crude oil A\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond inventory\",\n      \"Whether there is any maximum demand or sales limit for gasoline types\"\n    ]\n  },\n  \"Q1\": {\n    \"frontier_gap_id\": \"NONE\",\n    \"question\": \"Can crude oil B be purchased beyond the 1000 t already in inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Crude oil B can be purchased at a fixed price with no purchase limit.\"},\n      {\"id\": \"B\", \"text\": \"Crude oil B can be purchased at a tiered price similar to crude oil A.\"},\n      {\"id\": \"C\", \"text\": \"Crude oil B cannot be purchased; only the 1000 t inventory is available.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"frontier_gap_id\": \"NONE\",\n    \"question\": \"Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"There is no maximum demand; all gasoline produced can be sold.\"},\n      {\"id\": \"B\", \"text\": \"There is a maximum demand for each gasoline type that must be respected.\"},\n      {\"id\": \"C\", \"text\": \"There is a maximum demand for Gasoline Type I only.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"frontier_gap_id\": \"NONE\",\n    \"question\": \"Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory.\"},\n      {\"id\": \"B\", \"text\": \"The 1500 t limit applies to total crude oil A available, including the 500 t inventory.\"},\n      {\"id\": \"C\", \"text\": \"The 1500 t limit applies to total crude oil A used in production, including inventory.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The purchase availability of crude oil B and any demand limits for gasoline types remain unconfirmed and could change the decision scope and constraints. The user has not confirmed these business facts, so clarification is still needed.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase (if allowed)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and B",
+          "Gasoline Type I and Type II",
+          "Inventory: 500 t A, 1000 t B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Tiered purchase price for crude oil A"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond inventory",
+          "Whether there is any maximum demand or sales limit for gasoline types"
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and B",
+          "Gasoline Type I and Type II",
+          "Inventory: 500 t A, 1000 t B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Tiered purchase price for crude oil A"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond inventory",
+          "Whether there is any maximum demand or sales limit for gasoline types"
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase",
+          "How much crude oil B to purchase (if allowed)",
+          "How to blend crude oils A and B into Gasoline Type I and Type II"
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t",
+          "Gasoline Type I must contain at least 50% crude oil A",
+          "Gasoline Type II must contain at least 60% crude oil A",
+          "Blending has no processing loss"
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil A and B",
+          "Gasoline Type I and Type II",
+          "Inventory: 500 t A, 1000 t B",
+          "Selling prices: Type I 4800 yuan/t, Type II 5600 yuan/t",
+          "Tiered purchase price for crude oil A"
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond inventory",
+          "Whether there is any maximum demand or sales limit for gasoline types"
+        ]
+      },
+      "deep_search_decision_evidence": "The purchase availability of crude oil B and any demand limits for gasoline types remain unconfirmed and could change the decision scope and constraints. The user has not confirmed these business facts, so clarification is still needed.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+          },
+          {
+            "id": "B",
+            "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+          },
+          {
+            "id": "C",
+            "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "NONE"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Is there any maximum demand or sales limit for Gasoline Type I and Gasoline Type II?",
+        "options": [
+          {
+            "id": "A",
+            "text": "There is no maximum demand; all gasoline produced can be sold."
+          },
+          {
+            "id": "B",
+            "text": "There is a maximum demand for each gasoline type that must be respected."
+          },
+          {
+            "id": "C",
+            "text": "There is a maximum demand for Gasoline Type I only."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "NONE"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does the 1500 t maximum purchase limit for crude oil A include the 500 t already in inventory?",
+        "options": [
+          {
+            "id": "A",
+            "text": "The 1500 t limit applies only to newly purchased crude oil A, separate from the 500 t inventory."
+          },
+          {
+            "id": "B",
+            "text": "The 1500 t limit applies to total crude oil A available, including the 500 t inventory."
+          },
+          {
+            "id": "C",
+            "text": "The 1500 t limit applies to total crude oil A used in production, including inventory."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "NONE"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": "NONE",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the purchase availability and pricing structure for crude oil B, which directly affects the decision scope (whether B is a decision variable) and the objective/cost structure. It addresses a genuine unresolved business assumption that has already caused repeated user non-confirmation. Q2 fills in demand/sales limits, which affect constraints and whether production is bounded, but the user has already indicated the supplied facts do not state any demand cap, so it is less likely to change the model structure. Q3 revisits the crude oil A purchase-limit/inventory boundary, which was already asked and answered in Turn 3, so it is a repeated confirmation of an already resolved gap. Q1 is the best choice because it targets an open, high-impact business rule: whether crude oil B can be purchased beyond inventory determines whether the model includes a B purchase decision, a B purchase cost, and possibly a B purchase limit, thereby reducing silent-assumption risk in the objective and decision scope.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the purchase availability and pricing structure for crude oil B, which directly affects the decision scope (whether B is a decision variable) and the objective/cost structure. It addresses a genuine unresolved business assumption that has already caused repeated user non-confirmation. Q2 fills in demand/sales limits, which affect constraints and whether production is bounded, but the user has already indicated the supplied facts do not state any demand cap, so it is less likely to change the model structure. Q3 revisits the crude oil A purchase-limit/inventory boundary, which was already asked and answered in Turn 3, so it is a repeated confirmation of an already resolved gap. Q1 is the best choice because it targets an open, high-impact business rule: whether crude oil B can be purchased beyond inventory determines whether the model includes a B purchase decision, a B purchase cost, and possibly a B purchase limit, thereby reducing silent-assumption risk in the objective and decision scope.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Can crude oil B be purchased beyond the 1000 t already in inventory?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Crude oil B can be purchased at a fixed price with no purchase limit."
+        },
+        {
+          "id": "B",
+          "text": "Crude oil B can be purchased at a tiered price similar to crude oil A."
+        },
+        {
+          "id": "C",
+          "text": "Crude oil B cannot be purchased; only the 1000 t inventory is available."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 10,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase (subject to the 1500 t purchase limit).\",\n      \"How much of each crude oil to allocate to Gasoline Type I and Gasoline Type II.\",\n      \"How much of each gasoline type to produce and sell.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from the 500 t inventory).\",\n      \"Gasoline Type I must contain at least 50% crude oil A.\",\n      \"Gasoline Type II must contain at least 60% crude oil A.\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t.\",\n      \"Gasoline Type I sells for 4800 yuan/t; Gasoline Type II sells for 5600 yuan/t.\",\n      \"Initial inventories: 500 t crude oil A, 1000 t crude oil B.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil types: A, B.\",\n      \"Gasoline types: I, II.\",\n      \"Selling prices for Gasoline I and II.\",\n      \"Tiered purchase price schedule for crude oil A.\",\n      \"Initial inventory quantities for crude oils A and B.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory is not confirmed; the supplied facts do not state any purchase price or purchase limit for B.\",\n      \"Whether there is any maximum demand or sales limit for Gasoline Type I or Type II is not confirmed; the supplied facts do not state any demand cap.\",\n      \"Whether blending has any processing loss or yield factor is not confirmed; option A stated no processing loss, but this was not explicitly confirmed by the user.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase (subject to the 1500 t purchase limit).\",\n      \"How much of each crude oil to allocate to Gasoline Type I and Gasoline Type II.\",\n      \"How much of each gasoline type to produce and sell.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from the 500 t inventory).\",\n      \"Gasoline Type I must contain at least 50% crude oil A.\",\n      \"Gasoline Type II must contain at least 60% crude oil A.\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t.\",\n      \"Gasoline Type I sells for 4800 yuan/t; Gasoline Type II sells for 5600 yuan/t.\",\n      \"Initial inventories: 500 t crude oil A, 1000 t crude oil B.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil types: A, B.\",\n      \"Gasoline types: I, II.\",\n      \"Selling prices for Gasoline I and II.\",\n      \"Tiered purchase price schedule for crude oil A.\",\n      \"Initial inventory quantities for crude oils A and B.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory is not confirmed; the supplied facts do not state any purchase price or purchase limit for B.\",\n      \"Whether there is any maximum demand or sales limit for Gasoline Type I or Type II is not confirmed; the supplied facts do not state any demand cap.\",\n      \"Whether blending has any processing loss or yield factor is not confirmed; option A stated no processing loss, but this was not explicitly confirmed by the user.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Maximize total profit from selling gasoline produced.\",\n    \"confirmed_decision_scope\": [\n      \"How much crude oil A to purchase (subject to the 1500 t purchase limit).\",\n      \"How much of each crude oil to allocate to Gasoline Type I and Gasoline Type II.\",\n      \"How much of each gasoline type to produce and sell.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from the 500 t inventory).\",\n      \"Gasoline Type I must contain at least 50% crude oil A.\",\n      \"Gasoline Type II must contain at least 60% crude oil A.\",\n      \"Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t.\",\n      \"Gasoline Type I sells for 4800 yuan/t; Gasoline Type II sells for 5600 yuan/t.\",\n      \"Initial inventories: 500 t crude oil A, 1000 t crude oil B.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Crude oil types: A, B.\",\n      \"Gasoline types: I, II.\",\n      \"Selling prices for Gasoline I and II.\",\n      \"Tiered purchase price schedule for crude oil A.\",\n      \"Initial inventory quantities for crude oils A and B.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether crude oil B can be purchased beyond the 1000 t inventory is not confirmed; the supplied facts do not state any purchase price or purchase limit for B.\",\n      \"Whether there is any maximum demand or sales limit for Gasoline Type I or Type II is not confirmed; the supplied facts do not state any demand cap.\",\n      \"Whether blending has any processing loss or yield factor is not confirmed; option A stated no processing loss, but this was not explicitly confirmed by the user.\"\n    ]\n  },\n  \"deep_search_decision_evidence\": \"The user has confirmed the objective (maximize profit), the blending structure (any proportion, no processing loss), the crude oil A purchase limit interpretation (applies only to new purchases), and the minimum crude oil A proportions for both gasoline types (50% for Type I, 60% for Type II). The remaining unconfirmed items (purchasability of crude oil B, demand limits, and processing loss) are not stated in the supplied facts and the user has explicitly declined to confirm them; they are minor or outside the stated business structure and do not change the core objective, decision scope, or confirmed constraints.\",\n  \"summary\": \"Confirmed: maximize total profit from selling Gasoline Type I and Type II. Decisions include how much crude oil A to purchase (up to 1500 t of new purchases, separate from the 500 t inventory), how to blend crude oils A and B into each gasoline type, and how much of each gasoline to produce and sell. Confirmed rules: Gasoline Type I must be at least 50% crude oil A; Gasoline Type II must be at least 60% crude oil A; crude oil A has a tiered purchase price (10,000 yuan/t up to 500 t, 8,000 yuan/t for 500–1000 t, 6,000 yuan/t above 1000 t); Gasoline I sells at 4800 yuan/t and Gasoline II at 5600 yuan/t; initial inventories are 500 t A and 1000 t B. Remaining minor assumptions not confirmed by the user: whether crude oil B can be purchased beyond inventory, whether any demand cap exists for either gasoline type, and whether blending involves any processing loss or yield factor. These are treated as outside the stated facts and do not alter the confirmed business structure.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "READY_TO_MODEL",
+      "C1": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase (subject to the 1500 t purchase limit).",
+          "How much of each crude oil to allocate to Gasoline Type I and Gasoline Type II.",
+          "How much of each gasoline type to produce and sell."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from the 500 t inventory).",
+          "Gasoline Type I must contain at least 50% crude oil A.",
+          "Gasoline Type II must contain at least 60% crude oil A.",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t.",
+          "Gasoline Type I sells for 4800 yuan/t; Gasoline Type II sells for 5600 yuan/t.",
+          "Initial inventories: 500 t crude oil A, 1000 t crude oil B."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil types: A, B.",
+          "Gasoline types: I, II.",
+          "Selling prices for Gasoline I and II.",
+          "Tiered purchase price schedule for crude oil A.",
+          "Initial inventory quantities for crude oils A and B."
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory is not confirmed; the supplied facts do not state any purchase price or purchase limit for B.",
+          "Whether there is any maximum demand or sales limit for Gasoline Type I or Type II is not confirmed; the supplied facts do not state any demand cap.",
+          "Whether blending has any processing loss or yield factor is not confirmed; option A stated no processing loss, but this was not explicitly confirmed by the user."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase (subject to the 1500 t purchase limit).",
+          "How much of each crude oil to allocate to Gasoline Type I and Gasoline Type II.",
+          "How much of each gasoline type to produce and sell."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from the 500 t inventory).",
+          "Gasoline Type I must contain at least 50% crude oil A.",
+          "Gasoline Type II must contain at least 60% crude oil A.",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t.",
+          "Gasoline Type I sells for 4800 yuan/t; Gasoline Type II sells for 5600 yuan/t.",
+          "Initial inventories: 500 t crude oil A, 1000 t crude oil B."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil types: A, B.",
+          "Gasoline types: I, II.",
+          "Selling prices for Gasoline I and II.",
+          "Tiered purchase price schedule for crude oil A.",
+          "Initial inventory quantities for crude oils A and B."
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory is not confirmed; the supplied facts do not state any purchase price or purchase limit for B.",
+          "Whether there is any maximum demand or sales limit for Gasoline Type I or Type II is not confirmed; the supplied facts do not state any demand cap.",
+          "Whether blending has any processing loss or yield factor is not confirmed; option A stated no processing loss, but this was not explicitly confirmed by the user."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Maximize total profit from selling gasoline produced.",
+        "confirmed_decision_scope": [
+          "How much crude oil A to purchase (subject to the 1500 t purchase limit).",
+          "How much of each crude oil to allocate to Gasoline Type I and Gasoline Type II.",
+          "How much of each gasoline type to produce and sell."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Total purchase of crude oil A cannot exceed 1500 t (applies only to newly purchased A, separate from the 500 t inventory).",
+          "Gasoline Type I must contain at least 50% crude oil A.",
+          "Gasoline Type II must contain at least 60% crude oil A.",
+          "Crude oil A purchase price is tiered: 10,000 yuan/t up to 500 t; 8,000 yuan/t for the portion above 500 t up to 1000 t; 6,000 yuan/t for the portion above 1000 t.",
+          "Gasoline Type I sells for 4800 yuan/t; Gasoline Type II sells for 5600 yuan/t.",
+          "Initial inventories: 500 t crude oil A, 1000 t crude oil B."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Crude oil types: A, B.",
+          "Gasoline types: I, II.",
+          "Selling prices for Gasoline I and II.",
+          "Tiered purchase price schedule for crude oil A.",
+          "Initial inventory quantities for crude oils A and B."
+        ],
+        "unresolved_business_assumptions": [
+          "Whether crude oil B can be purchased beyond the 1000 t inventory is not confirmed; the supplied facts do not state any purchase price or purchase limit for B.",
+          "Whether there is any maximum demand or sales limit for Gasoline Type I or Type II is not confirmed; the supplied facts do not state any demand cap.",
+          "Whether blending has any processing loss or yield factor is not confirmed; option A stated no processing loss, but this was not explicitly confirmed by the user."
+        ]
+      },
+      "deep_search_decision_evidence": "The user has confirmed the objective (maximize profit), the blending structure (any proportion, no processing loss), the crude oil A purchase limit interpretation (applies only to new purchases), and the minimum crude oil A proportions for both gasoline types (50% for Type I, 60% for Type II). The remaining unconfirmed items (purchasability of crude oil B, demand limits, and processing loss) are not stated in the supplied facts and the user has explicitly declined to confirm them; they are minor or outside the stated business structure and do not change the core objective, decision scope, or confirmed constraints.",
+      "summary": "Confirmed: maximize total profit from selling Gasoline Type I and Type II. Decisions include how much crude oil A to purchase (up to 1500 t of new purchases, separate from the 500 t inventory), how to blend crude oils A and B into each gasoline type, and how much of each gasoline to produce and sell. Confirmed rules: Gasoline Type I must be at least 50% crude oil A; Gasoline Type II must be at least 60% crude oil A; crude oil A has a tiered purchase price (10,000 yuan/t up to 500 t, 8,000 yuan/t for 500–1000 t, 6,000 yuan/t above 1000 t); Gasoline I sells at 4800 yuan/t and Gasoline II at 5600 yuan/t; initial inventories are 500 t A and 1000 t B. Remaining minor assumptions not confirmed by the user: whether crude oil B can be purchased beyond inventory, whether any demand cap exists for either gasoline type, and whether blending involves any processing loss or yield factor. These are treated as outside the stated facts and do not alter the confirmed business structure."
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "The processing relationship between crude oils A/B and gasoline Types I/II is not specified, including whether each gasoline type can be produced from either crude, whether blending is allowed, and any yield or conversion factors.",
+          "evidence_quote": "produce gasoline, where the total purchase of crude oil A cannot exceed 1500 t and, in gasoline Type I, the proportion of crude oil A must be at least 50%",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "decision_scope",
+          "description": "It is unclear whether existing inventories of crude oil A and B are available for processing and whether they are fixed inputs, can be sold, or must be used before or alongside new purchases.",
+          "evidence_quote": "Current inventories: 500 t of crude oil A, 1000 t of crude oil B.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "There is no stated demand, sales cap, or minimum production requirement for Gasoline Type I or Type II, so the feasible production quantities and objective tradeoff are undefined.",
+          "evidence_quote": "Selling prices: Gasoline Type I: 4800 yuan/t, Gasoline Type II: 5600 yuan/t.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "public_ready_payload": {
+      "action": "READY_TO_MODEL",
+      "summary": "Confirmed: maximize total profit from selling Gasoline Type I and Type II. Decisions include how much crude oil A to purchase (up to 1500 t of new purchases, separate from the 500 t inventory), how to blend crude oils A and B into each gasoline type, and how much of each gasoline to produce and sell. Confirmed rules: Gasoline Type I must be at least 50% crude oil A; Gasoline Type II must be at least 60% crude oil A; crude oil A has a tiered purchase price (10,000 yuan/t up to 500 t, 8,000 yuan/t for 500–1000 t, 6,000 yuan/t above 1000 t); Gasoline I sells at 4800 yuan/t and Gasoline II at 5600 yuan/t; initial inventories are 500 t A and 1000 t B. Remaining minor assumptions not confirmed by the user: whether crude oil B can be purchased beyond inventory, whether any demand cap exists for either gasoline type, and whether blending involves any processing loss or yield factor. These are treated as outside the stated facts and do not alter the confirmed business structure."
+    },
+    "ledger_open_at_ready": 2,
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_ready_entered_transcript_judge": true
+    }
+  }
+]

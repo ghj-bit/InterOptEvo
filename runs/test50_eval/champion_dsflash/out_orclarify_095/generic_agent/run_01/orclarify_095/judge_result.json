@@ -1,0 +1,78 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimize_total_production_and_storage_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Is the objective to minimize total cost (production cost plus storage cost) over the four weeks?",
+      "rationale": "The agent explicitly asked whether the objective is to minimize total production plus storage cost, matching the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "demand_must_be_met_each_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the goal to satisfy all four weeks of demand exactly (meeting every week's demand on time), or is it acceptable to leave some demand unmet (with a penalty or backorder)?",
+      "rationale": "The agent explicitly asked about demand satisfaction obligations and whether unmet demand or backorders are allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The objective is to minimize total production cost plus storage cost over the four weeks.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "Although the agent asked about this in turn 11 and the user confirmed it, the slot was resolved before READY_TO_MODEL; this is not an unconfirmed assumption."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent resolved the P0 objective slot and the P1 demand-satisfaction slot before entering READY_TO_MODEL. Remaining deferred issues concern storage-cost timing and initial inventory, which are boundary/reporting details rather than unresolved P0/P1 hidden slots."
+  },
+  "summary": "The agent asked targeted questions that recovered the core objective and demand-satisfaction requirements, then stopped appropriately after resolving the P0/P1 hidden slots. It did defer some storage-cost timing and initial-inventory details, but those are minor boundary assumptions rather than core hidden-slot misses.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 5.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

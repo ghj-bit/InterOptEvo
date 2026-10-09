@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_ratio_productB_toA",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum demand ratio or that B must be at least three times A before READY_TO_MODEL; the constraint was only revealed by the user simulator after the agent had already stopped."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No minimum demand ratio between product B and product A exists, so any mix satisfying time and A-cap constraints is allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed a B-to-A minimum ratio before entering READY_TO_MODEL and presenting the initial plan."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL and produced a plan while the P1 hidden slot H1 (minimum B-to-A ratio) remained unresolved; it was only supplied by the user simulator after the premature stop."
+  },
+  "summary": "The agent spent many turns on storage-capacity clarification and then stopped with a plan that silently omitted the key P1 demand-ratio constraint, which the user simulator had to reveal afterward. Interaction quality is poor because the core hidden business constraint was never elicited."
+}

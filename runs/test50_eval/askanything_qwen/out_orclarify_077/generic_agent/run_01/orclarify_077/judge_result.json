@@ -1,0 +1,129 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total cost, which is the sum of the unit processing costs for all assigned parts plus the setup costs for any machine that is used?",
+      "rationale": "The agent explicitly asked whether the objective is to minimize total cost including processing and setup costs."
+    },
+    {
+      "slot_id": "H2",
+      "name": "exactly_one_piece_per_part",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is each part type required to be processed on exactly one machine, or can a single part type be split across multiple machines?",
+      "rationale": "The agent asked about processing each part type on exactly one machine, and the user clarified one piece of each of the ten part types must be produced."
+    },
+    {
+      "slot_id": "H3",
+      "name": "reverse_conditional_part1_part2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about the reverse conditional requiring part 2 on machine A when part 1 is on B or C."
+    },
+    {
+      "slot_id": "H4",
+      "name": "part3_on_machine_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether part 3 has a mandatory machine assignment."
+    },
+    {
+      "slot_id": "H5",
+      "name": "part5_on_machine_C",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether part 5 must be processed on machine C."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "No reverse conditional applies when part 1 is processed on machine B or C.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the reverse conditional and omitted it from the confirmed constraints."
+    },
+    {
+      "related_slot": "H4",
+      "agent_assumption": "Part 3 can be assigned to any machine.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a fixed machine for part 3 and did not include such a constraint."
+    },
+    {
+      "related_slot": "H5",
+      "agent_assumption": "Part 5 can be assigned to any machine.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a fixed machine for part 5 and did not include such a constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H3",
+      "H4",
+      "H5"
+    ],
+    "rationale": "The agent stopped after resolving P0 slots but before asking about three P1 hidden constraints."
+  },
+  "summary": "The agent recovered the objective and one-piece-per-part requirement but missed three P1 assignment constraints, leading to a premature stop.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 6.0,
+    "total_weight": 12.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 3,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 6.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 5,
+    "core_unresolved_slots": [
+      "H3",
+      "H4",
+      "H5"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H3",
+      "H4",
+      "H5"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

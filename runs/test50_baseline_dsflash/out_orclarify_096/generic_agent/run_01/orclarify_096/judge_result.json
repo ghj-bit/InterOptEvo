@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "cost_definition",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Should the extra cost be minimized as a secondary objective after meeting the order, or is the goal simply to find any feasible cutting plan that satisfies the order and the pattern constraints?",
+      "rationale": "The agent explicitly asked about the objective/cost interpretation, and the user clarified that total cost is the sum of extra costs based on pattern usage frequency."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_pieces_per_pipe",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether there is a limit on the number of pieces cut from a single raw pipe, and later assumed patterns with up to 6 pieces were allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no explicit limit on the number of pieces per raw pipe; patterns with up to 6 pieces are allowed.",
+      "where_it_appeared": "final_answer",
+      "silent_reason": "The agent never asked about a maximum pieces-per-pipe constraint, but enumerated and used patterns such as (2,4,0,0) with 6 pieces, implicitly assuming no such limit."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL and proceeded to solve while the P1 hidden slot H2 (max pieces per pipe) remained unresolved and was silently assumed."
+  },
+  "summary": "The agent clarified several important modeling points, including the cost objective and leftover interpretation, but failed to ask about the maximum pieces per raw pipe and silently assumed no such limit, leaving a P1 hidden slot unresolved before modeling.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

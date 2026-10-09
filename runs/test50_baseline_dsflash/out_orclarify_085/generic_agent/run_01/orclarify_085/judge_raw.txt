@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "idle_time_no_cost",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether idle machine or craftsman time incurs a cost, and did not explicitly mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "fractional_batches_allowed",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Should the production quantities of X and Y be whole batches (integers), or can they be fractional?",
+      "rationale": "The agent directly asked whether production quantities must be integer or can be fractional, matching the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "all_batches_sold",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "There is no upper limit on demand for either product, so all produced batches are sold.",
+      "rationale": "The agent did not ask a direct question about whether all batches are sold or whether demand constraints exist, but it explicitly marked the no-demand/all-sold condition as an assumption needing correction."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Idle machine and craftsman time incurs no cost; only actual time used is charged.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about idle-time cost and did not explicitly flag this as an assumption needing confirmation, yet used it in the profit calculation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent stopped after resolving the only directly asked hidden slot and explicitly flagging the all-sold assumption; the remaining unresolved hidden slot is P2 only, so stopping was appropriate."
+  },
+  "summary": "The agent asked about fractional batches and explicitly flagged the all-sold/no-demand assumption, but missed the idle-time cost clarification and silently assumed idle time is free. Overall interaction quality is adequate for a P2-only hidden-slot set."
+}

@@ -1,0 +1,55 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "idle_time_no_cost",
+      "severity": "P2",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about whether time costs are variable or fixed, but did not ask whether idle or unused machine/craftsman time incurs a cost."
+    },
+    {
+      "slot_id": "H2",
+      "name": "fractional_batches_allowed",
+      "severity": "P2",
+      "hit": "yes",
+      "first_yes_atomic_question": 2,
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Should the weekly production quantities of X and Y be whole batches (integers), or can fractional batches be produced?",
+      "rationale": "The agent directly asked whether production quantities can be fractional or must be integer."
+    },
+    {
+      "slot_id": "H3",
+      "name": "all_batches_sold",
+      "severity": "P2",
+      "hit": "partial",
+      "first_yes_atomic_question": null,
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Are there any maximum or minimum weekly production limits for product Y, such as demand caps or required minimum batches?",
+      "rationale": "The agent asked about demand caps for Y, which is related to whether all batches are sold, but did not ask whether all produced batches are guaranteed to be sold or whether demand constraints exist for both products."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Idle or unused machine and craftsman time incurs no cost.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether idle time is charged; it only confirmed that time costs are based on time actually used, leaving the idle-time cost assumption unconfirmed."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "All produced batches are sold, with no demand constraints beyond the absence of Y limits.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only about production limits for Y and did not confirm that all produced batches are sold or that there are no demand constraints for X."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were resolved before READY_TO_MODEL; the remaining unresolved slots are P2 boundary assumptions."
+  },
+  "summary": "The agent recovered the key modeling facts and clarified fractional batches, but missed the idle-time cost assumption and only partially addressed whether all produced batches are sold. Since the remaining gaps are P2, stopping was appropriate."
+}

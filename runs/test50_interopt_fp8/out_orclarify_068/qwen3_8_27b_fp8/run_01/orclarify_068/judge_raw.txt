@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unknown_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "first_yes_atomic_question": 1,
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the primary objective of this distribution plan: minimizing total transportation cost, minimizing total distance traveled, or something else?",
+      "rationale": "The agent explicitly asked about the optimization objective and included the correct ton-kilometer-style option."
+    },
+    {
+      "slot_id": "H2",
+      "name": "undisclosed_distribution_limit",
+      "severity": "P1",
+      "hit": "yes",
+      "first_yes_atomic_question": 2,
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are the amounts received by Coal Yard A (at least 80 tons) and Coal Yard B (at least 100 tons) minimum requirements that can be exceeded, or are they exact fixed supply limits that must be fully distributed?",
+      "rationale": "The agent asked whether the yard amounts are minimums or fixed limits, which directly probes the relationship between received coal and outgoing distribution."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The yards can supply up to the total residential demand of 180 tons, and any excess received coal can be left at the yards.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The user simulator repeatedly said the maximum supply capacities still needed internal confirmation, so the agent's upper-bound assumption was not confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 objective was resolved, and the P1 distribution-limit issue was addressed through the agent's questions and the user's clarification that distribution cannot exceed received coal; remaining uncertainty about maximum capacities was treated as non-binding and did not leave a core P0/P1 slot unresolved."
+  },
+  "summary": "The agent recovered the key objective and distribution-limit facts through direct questions, then stopped after making a reasonable non-binding-capacity assumption for the unresolved maximum supply issue."
+}

@@ -1,0 +1,120 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unknown_objective_minimize_courses",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of the course selection — for example, minimize the number of courses taken, or is there a fixed total number of courses to select?",
+      "rationale": "The agent explicitly asked whether the objective is to minimize the number of courses taken."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unknown_mathematics_course_count",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Besides the Computer Science requirement of at least two courses, are there any other category requirements (e.g., a minimum number of Mathematics or Operations Research courses) that must be met?",
+      "rationale": "The agent explicitly asked about minimum Mathematics and Operations Research course requirements."
+    },
+    {
+      "slot_id": "H3",
+      "name": "unknown_operations_research_course_count",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Besides the Computer Science requirement of at least two courses, are there any other category requirements (e.g., a minimum number of Mathematics or Operations Research courses) that must be met?",
+      "rationale": "The agent explicitly asked about minimum Operations Research course requirements."
+    },
+    {
+      "slot_id": "H4",
+      "name": "unknown_prerequisite_management_statistics",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether Management Statistics has a prerequisite, nor did it mention Calculus as a prerequisite for Management Statistics."
+    },
+    {
+      "slot_id": "H5",
+      "name": "unknown_prerequisite_forecasting",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether Forecasting has a prerequisite, nor did it mention Management Statistics as a prerequisite for Forecasting."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H4",
+      "agent_assumption": "Management Statistics has no prerequisite, so it can be selected without Calculus.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about Management Statistics prerequisites, and the READY_TO_MODEL summary omits any Management Statistics → Calculus prerequisite."
+    },
+    {
+      "related_slot": "H5",
+      "agent_assumption": "Forecasting has no prerequisite, so it can be selected without Management Statistics.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about Forecasting prerequisites, and the READY_TO_MODEL summary omits any Forecasting → Management Statistics prerequisite."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H4",
+      "H5"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while two P1 prerequisite slots, H4 and H5, remained unresolved."
+  },
+  "summary": "The agent recovered the objective and category-count requirements well, but stopped without asking about the Management Statistics and Forecasting prerequisites, leaving two P1 hidden slots unresolved and silently assuming those prerequisites did not exist.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6363636363636364,
+    "earned_weight": 7.0,
+    "total_weight": 11.0,
+    "hit_counts": {
+      "yes": 3,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 4.0,
+        "total_weight": 8.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 5,
+    "core_unresolved_slots": [
+      "H4",
+      "H5"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H4",
+      "H5"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

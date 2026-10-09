@@ -1,0 +1,55 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "mandatory_bob_selection",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether any child, including Bob, is mandatory, and did not mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "alice_diana_conflict_rule",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about mutual exclusion or conflict constraints involving Alice and Diana, nor did it explicitly flag this as an unconfirmed assumption."
+    },
+    {
+      "slot_id": "H3",
+      "name": "minimize_total_cost_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "first_yes_atomic_question": "1",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the trip selection minimize the total cost of the selected children, or is there another objective such as maximizing a benefit or simply choosing any valid set?",
+      "rationale": "The agent explicitly asked about the objective and confirmed whether it is to minimize total cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No child is mandatory; Bob is treated as optional.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether any child must be selected, and the READY_TO_MODEL summary omits any mandatory-selection constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no Alice-Diana conflict or mutual exclusion rule.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about conflict constraints involving Alice and Diana, and the READY_TO_MODEL summary lists only the stated conditional rules without this exclusion."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent stopped at READY_TO_MODEL while two P1 hidden slots, mandatory Bob selection and the Alice-Diana conflict rule, remained unresolved."
+  },
+  "summary": "The agent correctly clarified the objective and some boundary/conditional-rule details, but it missed two P1 hidden constraints: Bob being mandatory and the Alice-Diana conflict rule. It then stopped prematurely with those unresolved."
+}

@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "objective_minimize_waste",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "When you say \"minimizing total waste,\" do you want the plan to minimize the total number of raw bars used, or minimize leftover unusable offcut length even if that means using more bars?",
+      "rationale": "The agent explicitly asked about the objective and distinguished waste minimization from minimizing bar count."
+    },
+    {
+      "slot_id": "H2",
+      "name": "exact_demand_constraint",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether the 90 and 60 piece requirements were exact equality constraints or whether overproduction was allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The required piece counts are exact equality constraints, with no overproduction allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed whether overproduction was acceptable; it simply treated the demand as exact in the READY_TO_MODEL summary and final cutting plan."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 exact-demand constraint remained unresolved."
+  },
+  "summary": "The agent clarified the waste-minimization objective well, but failed to ask whether the required piece counts were exact or whether overproduction was allowed, silently assuming exact equality before stopping."
+}

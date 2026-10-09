@@ -1,0 +1,98 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_starting_city",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Which city is the salesman’s starting city?",
+      "rationale": "The agent explicitly asked for the identity of the starting city."
+    },
+    {
+      "slot_id": "H2",
+      "name": "number_of_cities_to_visit",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 12 generic_agent",
+      "evidence_quote": "Must the salesman visit each of the four cities exactly once before returning to the starting city?",
+      "rationale": "The agent asked about visiting all four cities exactly once, which touches the total number of cities, but did not address the conflict with the brief's 'visit two other cities' phrasing."
+    },
+    {
+      "slot_id": "H3",
+      "name": "visit_each_city_exactly_once",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 12 generic_agent",
+      "evidence_quote": "Must the salesman visit each of the four cities exactly once before returning to the starting city?",
+      "rationale": "The agent explicitly asked whether each city must be visited exactly once before returning."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The salesman must visit all four cities exactly once, resolving the 'two other cities' conflict in favor of all four cities.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only whether all four cities must be visited exactly once and did not clarify the contradictory 'visit two other cities' statement; the user's yes answer did not explicitly resolve that conflict."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while the P0 discrepancy between 'visit two other cities' and 'visit each city exactly once' was not fully resolved."
+  },
+  "summary": "The agent asked about the starting city and the exactly-once constraint, but only partially addressed the P0 conflict about how many cities must be visited, then stopped with that core ambiguity unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 4.5,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      },
+      "P2": {
+        "earned_weight": 1.0,
+        "total_weight": 1.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "objective_minimizes_waste_area",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Should the cutting plan minimize the total amount of standard roll material used (for example, total square meters or total length consumed), or is there another objective such as minimizing waste or cost?",
+      "rationale": "The agent explicitly asked about the optimization objective and included minimizing waste as an option, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "strict_demand_fulfillment",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether order quantities must be fulfilled exactly or whether overproduction/partial fulfillment is allowed before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The orders must be fulfilled exactly according to their width and length requirements, with no overproduction or partial fulfillment.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether demand fulfillment is strict or whether overproduction is allowed, but treated exact fulfillment as confirmed in the READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent resolved the P0 objective slot but stopped at READY_TO_MODEL without resolving the P1 strict-demand-fulfillment slot."
+  },
+  "summary": "The agent asked clear questions and correctly recovered the waste-minimization objective, but it failed to clarify whether order quantities must be met exactly, leaving a P1 hidden slot unresolved before modeling.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 3.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

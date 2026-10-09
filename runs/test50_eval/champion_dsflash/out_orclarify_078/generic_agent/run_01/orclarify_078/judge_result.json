@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "ambiguous_sales_goal_interpretation",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Does the 5500-pair target have to be met exactly, or is it a minimum that the store must reach or exceed?",
+      "rationale": "The agent explicitly asked whether the 5500-pair target is exact or a minimum, resolving the hard-constraint vs. soft-goal ambiguity."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unclear_full_employment_definition",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the monthly working hours — is 160 hours for full-time and 80 hours for part-time a fixed requirement that each clerk must work (a floor), or a maximum cap they cannot exceed?",
+      "rationale": "The agent asked whether regular hours are a floor or cap, which is related to full employment, but did not ask the key definitional question of whether full employment means exactly regular hours, at least regular hours, or how overtime relates to full employment."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Full employment means regular hours are maximum caps that must be filled before overtime, rather than a requirement that clerks work exactly or at least their regular hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly asked what 'full employment' means; it inferred a cap-before-overtime structure from separate questions about caps and overtime eligibility."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 hidden slot H2 about the definition of full employment was only partially addressed and not fully resolved."
+  },
+  "summary": "The agent resolved the sales-target ambiguity well but only partially clarified the meaning of full employment before stopping, leaving a P1 hidden slot unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 3.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

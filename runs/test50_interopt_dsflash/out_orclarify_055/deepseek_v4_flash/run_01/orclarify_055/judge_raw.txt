@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unknown_objective_minimize_courses",
+      "severity": "P0",
+      "hit": "yes",
+      "first_yes_atomic_question": "Q1",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What should the course plan optimize for — for example, minimizing the total number of courses taken, maximizing coverage of categories, or meeting requirements while respecting course preferences?",
+      "rationale": "The agent explicitly asked about the optimization objective and included minimizing total courses as an option."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unknown_mathematics_course_count",
+      "severity": "P1",
+      "hit": "yes",
+      "first_yes_atomic_question": "Q2",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "What are the exact minimum course requirements for each category — Mathematics, Operations Research, and Computer Science?",
+      "rationale": "The agent explicitly asked for the minimum course requirements for Mathematics, among other categories."
+    },
+    {
+      "slot_id": "H3",
+      "name": "unknown_operations_research_course_count",
+      "severity": "P1",
+      "hit": "yes",
+      "first_yes_atomic_question": "Q2",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "What are the exact minimum course requirements for each category — Mathematics, Operations Research, and Computer Science?",
+      "rationale": "The agent explicitly asked for the minimum course requirements for Operations Research, among other categories."
+    },
+    {
+      "slot_id": "H4",
+      "name": "unknown_prerequisite_management_statistics",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Management Statistics has a prerequisite or whether Calculus is required before Management Statistics."
+    },
+    {
+      "slot_id": "H5",
+      "name": "unknown_prerequisite_forecasting",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Forecasting has a prerequisite or whether Management Statistics is required before Forecasting."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H4",
+      "agent_assumption": "Management Statistics has no prerequisite, so it can be selected without requiring Calculus.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about Management Statistics prerequisites, and the READY_TO_MODEL summary omits any Management Statistics–Calculus prerequisite constraint."
+    },
+    {
+      "related_slot": "H5",
+      "agent_assumption": "Forecasting has no prerequisite, so it can be selected without requiring Management Statistics.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about Forecasting prerequisites, and the READY_TO_MODEL summary omits any Forecasting–Management Statistics prerequisite constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H4", "H5"],
+    "rationale": "The agent stopped at READY_TO_MODEL while two P1 prerequisite slots, H4 and H5, remained unresolved and were silently omitted from the model."
+  },
+  "summary": "The agent recovered the objective and category-count requirements well, but it failed to ask about the Management Statistics and Forecasting prerequisites and then stopped with those P1 constraints silently omitted."
+}

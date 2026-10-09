@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "objective_minimize_waste",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "When you say \"minimizing total waste,\" do you want the plan to minimize the total number of raw bars used, or minimize leftover unusable offcut length even if that means using more bars?",
+      "rationale": "The agent explicitly asked about the objective and distinguished waste minimization from minimizing bar count."
+    },
+    {
+      "slot_id": "H2",
+      "name": "exact_demand_constraint",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether the 90 and 60 piece requirements were exact equality constraints or whether overproduction was allowed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The required piece counts are exact equality constraints, with no overproduction allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed whether overproduction was acceptable; it simply treated the demand as exact in the READY_TO_MODEL summary and final cutting plan."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P1 exact-demand constraint remained unresolved."
+  },
+  "summary": "The agent clarified the waste-minimization objective well, but failed to ask whether the required piece counts were exact or whether overproduction was allowed, silently assuming exact equality before stopping.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 3.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

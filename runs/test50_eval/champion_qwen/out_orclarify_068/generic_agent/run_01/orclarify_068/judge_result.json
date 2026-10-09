@@ -1,0 +1,82 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unknown_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of this distribution plan — are we minimizing total transportation cost (i.e., total ton-kilometers shipped), or is there another goal such as minimizing total distance for a fixed shipment, or something else?",
+      "rationale": "The agent explicitly asked about the optimization objective and named total ton-kilometers, fully covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "undisclosed_distribution_limit",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "The brief says each coal yard \"receives no less than\" a monthly amount (A ≥ 80, B ≥ 100), but the total demand of the three areas is only 180 tons while the minimums alone already sum to 180 — so the yards must ship exactly 80 and 100 tons. Is that the intended reading (the yard supplies are fixed at exactly 80 and 100 tons), or could a yard actually ship more than its minimum if that ever helped?",
+      "rationale": "The agent touched the supply/distribution limit by asking whether yards could ship more than their minimum, but did not explicitly ask whether outgoing coal is bounded by the amount each yard receives, which is the key hidden business rule."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The amount of coal distributed from each yard is fixed at exactly the minimum received amount (80 and 100 tons), with no separate upper bound tied to actual received quantity.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about fixed versus expandable supply, but did not confirm the hidden rule that distribution cannot exceed what each yard receives; the READY_TO_MODEL summary treats supply as fixed exactly at 80/100 without confirming that distribution-limit condition."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 objective slot was resolved in turn 1. The P1 distribution-limit slot was only partially covered, but the agent's turn 2 question about whether yards could ship more than their minimum effectively resolved the practical supply-bound issue for this case, so stopping was appropriate."
+  },
+  "summary": "The agent recovered the core objective and clarified supply/demand exactness well, but only partially probed the hidden distribution-limit rule; overall the interaction was efficient and sufficient for modeling.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

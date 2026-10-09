@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_endpoints",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the communication link be a simple path between two specific nodes (and if so, which two), or should I choose the pair of endpoints myself in order to maximize the path's bandwidth?",
+      "rationale": "The agent explicitly asked which two nodes the link should connect, directly targeting the missing endpoints."
+    },
+    {
+      "slot_id": "H2",
+      "name": "must_pass_through_node_C",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether the path must pass through a mandatory intermediate node such as service node C, and did not mark this as an assumption needing confirmation."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The path from A to E may use any simple route and does not need to pass through service node C.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a mandatory waypoint or service node C, but its READY_TO_MODEL summary omits any C-passing constraint and treats the problem as an unrestricted A-to-E max-min path."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent resolved the P0 endpoint issue but stopped at READY_TO_MODEL without resolving the P1 requirement that the link pass through service node C."
+  },
+  "summary": "The agent correctly clarified the endpoints, directionality, objective, and tie-breaking, but failed to ask about the mandatory service node C constraint and silently modeled an unrestricted A-to-E path.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 3.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,240 @@
+[
+  {
+    "turn": 1,
+    "agent_response": "QUESTION: Should the decision minimize total rental cost, minimize the number of trucks rented, or optimize some other objective?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Should the decision minimize total rental cost, minimize the number of trucks rented, or optimize some other objective?\",\n      \"why_it_matters\": \"The objective function determines which truck mix is optimal; minimizing cost versus minimizing truck count can yield different solutions because Type A and Type B have different per-kilometer costs.\",\n      \"answerability\": \"The business user knows whether their primary concern is budget, fleet size, or another operational goal.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"What distance in kilometers will the trucks be rented for, or is the per-kilometer cost irrelevant to the decision?\",\n      \"why_it_matters\": \"Without a distance, per-kilometer rental costs cannot be converted into total costs, so a cost-minimization objective cannot be evaluated or compared across truck types.\",\n      \"answerability\": \"The user can state the planned trip distance or confirm that distance is not a factor in the decision.\",\n      \"overask_risk\": \"If the objective is to minimize truck count rather than cost, distance may be irrelevant.\",\n      \"selection_score\": 0.75\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Must the number of Type A and Type B trucks be whole numbers, or can fractional truck rentals be considered?\",\n      \"why_it_matters\": \"Integer versus continuous truck counts changes the feasible region and the optimal solution, affecting whether the model is an integer program or a linear program.\",\n      \"answerability\": \"The user knows whether trucks are rented as indivisible units or whether fractional equivalents are meaningful.\",\n      \"overask_risk\": \"In practice trucks are usually whole units, so this may be assumed without asking.\",\n      \"selection_score\": 0.6\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective is the most fundamental formulation-changing ambiguity: the request provides per-kilometer costs but never states whether to minimize cost, truck count, or something else. Resolving this determines the entire objective function and may also clarify whether distance (Q2) is needed.\",\n  \"public_question\": \"Should the decision minimize total rental cost, minimize the number of trucks rented, or optimize some other objective?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Should the decision minimize total rental cost, minimize the number of trucks rented, or optimize some other objective?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about the optimization objective.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Should the decision minimize total rental cost, minimize the number of trucks rented, or optimize some other objective?"
+      ],
+      "rationale": "The response asks a single clarification question about the optimization objective."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 2,
+    "agent_response": "QUESTION: What distance in kilometers will each rented truck travel, or is the per-kilometer rental cost meant to be applied to a common fixed distance?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What distance in kilometers will each rented truck travel, or is the per-kilometer rental cost meant to be applied to a common fixed distance?\",\n      \"why_it_matters\": \"The objective is to minimize total rental cost, but cost is given per kilometer. Without a distance or a common fixed distance, the total cost of each truck type cannot be computed, so the objective function cannot be evaluated or compared across truck mixes.\",\n      \"answerability\": \"The business user knows the planned trip distance or can confirm that all trucks travel the same fixed distance.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Must the number of Type A and Type B trucks be whole numbers, or can fractional truck rentals be considered?\",\n      \"why_it_matters\": \"Integer versus continuous truck counts changes the feasible region and the optimal solution, determining whether the model is an integer program or a linear program.\",\n      \"answerability\": \"The user knows whether trucks are rented as indivisible units or whether fractional equivalents are meaningful.\",\n      \"overask_risk\": \"In practice trucks are usually whole units, so this may be assumed without asking.\",\n      \"selection_score\": 0.6\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective is confirmed as cost minimization, but the per-kilometer rates cannot be turned into a total cost without a distance or a common fixed distance. This is the most fundamental remaining gap because it directly determines whether the objective function can be written at all.\",\n  \"public_question\": \"What distance in kilometers will each rented truck travel, or is the per-kilometer rental cost meant to be applied to a common fixed distance?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"What distance in kilometers will each rented truck travel, or is the per-kilometer rental cost meant to be applied to a common fixed distance?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question asking about truck travel distance or the basis for applying per-kilometer rental cost.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "What distance in kilometers will each rented truck travel, or is the per-kilometer rental cost meant to be applied to a common fixed distance?"
+      ],
+      "rationale": "The response contains a single clarification question asking about truck travel distance or the basis for applying per-kilometer rental cost."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 3,
+    "agent_response": "QUESTION: Since no travel distance is available, should the model treat the per-kilometer costs as fixed per-truck costs (i.e., assume a common distance of 1 km), or should the distance be left as a parameter to be supplied later?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Since no travel distance is available, should the model treat the per-kilometer costs as fixed per-truck costs (i.e., assume a common distance of 1 km), or should the distance be left as a parameter to be supplied later?\",\n      \"why_it_matters\": \"The objective is to minimize total rental cost, but per-kilometer rates cannot become cost coefficients without a distance. Assuming a common distance of 1 km makes the cost coefficients £30 and £40 per truck; leaving distance as a parameter keeps the objective symbolic. Either choice changes how the objective function is written.\",\n      \"answerability\": \"The business user can decide whether to proceed with a placeholder common distance or defer the distance as a parameter.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Must the number of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?\",\n      \"why_it_matters\": \"Integer versus continuous truck counts changes the feasible region and can change the optimal rental mix, determining whether the model is an integer program or a linear program.\",\n      \"answerability\": \"The user knows whether trucks are rented as indivisible units or whether fractional equivalents are meaningful.\",\n      \"overask_risk\": \"In practice trucks are usually whole units, so this may be assumed without asking.\",\n      \"selection_score\": 0.6\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"For Type B trucks, should the refrigerated and non-refrigerated capacities each be 30 cubic meters, making the total 60 cubic meters?\",\n      \"why_it_matters\": \"The exact Type B capacity split determines how much refrigerated and non-refrigerated cargo each Type B truck can carry, directly affecting the capacity constraints.\",\n      \"answerability\": \"The user can confirm the intended capacity split for Type B trucks.\",\n      \"overask_risk\": \"The request already implies equal split with the same total as Type A, so this may be inferable.\",\n      \"selection_score\": 0.55\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The distance gap is the only unresolved issue that blocks writing the objective function at all. Since the user confirmed no distance is available, the most useful next step is to decide how to handle it: assume a common placeholder distance or keep it as a symbolic parameter. This directly determines whether the cost coefficients are numeric or parametric.\",\n  \"public_question\": \"Since no travel distance is available, should the model treat the per-kilometer costs as fixed per-truck costs (i.e., assume a common distance of 1 km), or should the distance be left as a parameter to be supplied later?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Since no travel distance is available, should the model treat the per-kilometer costs as fixed per-truck costs (i.e., assume a common distance of 1 km), or should the distance be left as a parameter to be supplied later?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about how to handle per-kilometer costs given missing travel distance.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Since no travel distance is available, should the model treat the per-kilometer costs as fixed per-truck costs (i.e., assume a common distance of 1 km), or should the distance be left as a parameter to be supplied later?"
+      ],
+      "rationale": "The response asks a single clarification question about how to handle per-kilometer costs given missing travel distance."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 4,
+    "agent_response": "QUESTION: What are the exact refrigerated and non-refrigerated capacities of a Type B truck?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What are the exact refrigerated and non-refrigerated capacities of a Type B truck?\",\n      \"why_it_matters\": \"Type B is described as having the same total capacity as Type A (60 cubic meters) with equal refrigerated and non-refrigerated capacities, which implies 30/30, but if the intended split differs, the capacity constraints and the optimal truck mix change.\",\n      \"answerability\": \"The business user can confirm the intended capacity split for Type B trucks.\",\n      \"overask_risk\": \"The description strongly implies 30/30, so this may be inferable without asking.\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Must the numbers of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?\",\n      \"why_it_matters\": \"Integer versus continuous truck counts changes the feasible region and can change the optimal rental plan, determining whether the model is an integer program or a linear program.\",\n      \"answerability\": \"The user knows whether trucks are rented as indivisible units or whether fractional equivalents are meaningful.\",\n      \"overask_risk\": \"In practice trucks are usually whole units, so this may be assumed without asking.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The Type B capacity split directly defines the coefficients in the refrigerated and non-refrigerated capacity constraints, which are the core feasibility conditions of the model. Although the description implies 30/30, confirming it removes a silent assumption that would otherwise drive the entire feasible region.\",\n  \"public_question\": \"What are the exact refrigerated and non-refrigerated capacities of a Type B truck?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"What are the exact refrigerated and non-refrigerated capacities of a Type B truck?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question asking for the capacities of a Type B truck.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "What are the exact refrigerated and non-refrigerated capacities of a Type B truck?"
+      ],
+      "rationale": "The response contains a single clarification question asking for the capacities of a Type B truck."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 5,
+    "agent_response": "QUESTION: Must the numbers of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Must the numbers of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?\",\n      \"why_it_matters\": \"Integer versus continuous truck counts changes the feasible region and can change the optimal rental plan, determining whether the model is an integer program or a linear program.\",\n      \"answerability\": \"The user knows whether trucks are rented as indivisible units or whether fractional equivalents are meaningful.\",\n      \"overask_risk\": \"In practice trucks are usually whole units, so this may be assumed without asking.\",\n      \"selection_score\": 0.8\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any requirement that the rented trucks be fully loaded, or is it acceptable to have unused capacity above the minimum cargo requirements?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_score\": 0.8,\n  \"selection_rationale\": \"The Type B capacity split is now confirmed as equal halves of the same 60 cubic meter total as Type A, i.e., 30/30, so that gap is resolved. The remaining material ambiguity is whether truck counts must be integers, which determines whether the model is an integer program or a linear program and can change the optimal solution.\",\n  \"public_question\": \"Must the numbers of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Must the numbers of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question about whether truck rental quantities must be integers.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Must the numbers of Type A and Type B trucks rented be whole numbers, or can fractional trucks be rented?"
+      ],
+      "rationale": "The response contains a single clarification question about whether truck rental quantities must be integers."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 6,
+    "agent_response": "QUESTION: Since the integer requirement still needs internal confirmation, should the model be built assuming whole-number truck counts, or should it be built with continuous truck counts and the integer restriction added later?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Since the integer requirement still needs internal confirmation, should the model be built assuming whole-number truck counts, or should it be built with continuous truck counts and the integer restriction added later?\",\n      \"why_it_matters\": \"This determines whether the model is formulated as an integer program or a linear program, which changes the feasible region and the optimal rental plan.\",\n      \"answerability\": \"The business user can choose a working assumption to proceed with while internal confirmation is pending.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is it acceptable to have unused capacity above the minimum cargo requirements, or must the rented trucks be fully loaded?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The integer requirement is the only remaining material ambiguity and it is still unconfirmed. Rather than re-asking the same fact, the most useful next step is to let the user choose a working assumption so the model can proceed while internal confirmation is pending.\",\n  \"public_question\": \"Since the integer requirement still needs internal confirmation, should the model be built assuming whole-number truck counts, or should it be built with continuous truck counts and the integer restriction added later?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Since the integer requirement still needs internal confirmation, should the model be built assuming whole-number truck counts, or should it be built with continuous truck counts and the integer restriction added later?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about whether to model truck counts as integers now or add the integer restriction later.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Since the integer requirement still needs internal confirmation, should the model be built assuming whole-number truck counts, or should it be built with continuous truck counts and the integer restriction added later?"
+      ],
+      "rationale": "The response asks a single clarification question about whether to model truck counts as integers now or add the integer restriction later."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 7,
+    "agent_response": "QUESTION: Can each rented truck carry both refrigerated and non-refrigerated cargo simultaneously, or must each truck be assigned exclusively to one cargo type?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Can each rented truck carry both refrigerated and non-refrigerated cargo simultaneously, or must each truck be assigned exclusively to one cargo type?\",\n      \"why_it_matters\": \"If trucks can carry both cargo types at once, the capacity constraints are simply summed across the fleet; if each truck is restricted to one cargo type, the model needs separate assignment variables and the feasible region and optimal fleet change materially.\",\n      \"answerability\": \"The business user knows whether the trucks are compartmentalized to carry both cargo types or dedicated to a single type.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is it acceptable to have unused capacity above the minimum cargo requirements, or must the rented trucks be fully loaded?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective, distance parameter, Type B capacities, and integer truck counts are now confirmed. The remaining structural ambiguity is whether each truck can carry both cargo types simultaneously or is dedicated to one type, which directly determines the constraint structure and feasible region.\",\n  \"public_question\": \"Can each rented truck carry both refrigerated and non-refrigerated cargo simultaneously, or must each truck be assigned exclusively to one cargo type?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Can each rented truck carry both refrigerated and non-refrigerated cargo simultaneously, or must each truck be assigned exclusively to one cargo type?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question about truck cargo assignment.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Can each rented truck carry both refrigerated and non-refrigerated cargo simultaneously, or must each truck be assigned exclusively to one cargo type?"
+      ],
+      "rationale": "The response contains a single clarification question about truck cargo assignment."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 8,
+    "agent_response": "QUESTION: Must the rented trucks' total refrigerated capacity exactly equal 3000 cubic meters and total non-refrigerated capacity exactly equal 4000 cubic meters, or can either capacity exceed those amounts?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Must the rented trucks' total refrigerated capacity exactly equal 3000 cubic meters and total non-refrigerated capacity exactly equal 4000 cubic meters, or can either capacity exceed those amounts?\",\n      \"why_it_matters\": \"Exact equality would impose additional constraints and could change the feasible truck combinations and the minimum cost; allowing surplus keeps the constraints as inequalities.\",\n      \"answerability\": \"The business user can state whether the cargo amounts must be matched exactly or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request frames the requirements as minimums ('at least'), which implies surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.85\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any requirement that the rented trucks be fully loaded, or is it acceptable to have unused capacity above the minimum cargo requirements?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective, distance parameter, Type B capacities, integer truck counts, and mixed-cargo capability are confirmed. The remaining structural ambiguity is whether the capacity requirements are exact equalities or minimums, which directly determines the constraint structure and feasible region.\",\n  \"public_question\": \"Must the rented trucks' total refrigerated capacity exactly equal 3000 cubic meters and total non-refrigerated capacity exactly equal 4000 cubic meters, or can either capacity exceed those amounts?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Must the rented trucks' total refrigerated capacity exactly equal 3000 cubic meters and total non-refrigerated capacity exactly equal 4000 cubic meters, or can either capacity exceed those amounts?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about whether the capacity requirements must be exact or can be exceeded.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Must the rented trucks' total refrigerated capacity exactly equal 3000 cubic meters and total non-refrigerated capacity exactly equal 4000 cubic meters, or can either capacity exceed those amounts?"
+      ],
+      "rationale": "The response asks a single clarification question about whether the capacity requirements must be exact or can be exceeded."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 9,
+    "agent_response": "QUESTION: Is the rental cost per kilometer charged for each rented truck individually, or is it a single cost for the whole fleet?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Is the rental cost per kilometer charged for each rented truck individually, or is it a single cost for the whole fleet?\",\n      \"why_it_matters\": \"If the cost is per truck, the objective multiplies each truck count by its per-kilometer rate; if it is a single fleet-level cost, the objective structure changes materially and the optimal truck mix may differ.\",\n      \"answerability\": \"The business user knows how the rental company bills: per truck or for the whole fleet.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any requirement that the rented trucks be fully loaded, or is it acceptable to have unused capacity above the minimum cargo requirements?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The objective, distance parameter, Type B capacities, integer truck counts, mixed-cargo capability, and minimum (inequality) capacity requirements are confirmed. The remaining material ambiguity is whether the per-kilometer cost is charged per truck or for the whole fleet, which directly determines the objective function structure.\",\n  \"public_question\": \"Is the rental cost per kilometer charged for each rented truck individually, or is it a single cost for the whole fleet?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Is the rental cost per kilometer charged for each rented truck individually, or is it a single cost for the whole fleet?\"\n  ],\n  \"rationale\": \"The response asks one clarification question about how rental cost per kilometer is charged.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Is the rental cost per kilometer charged for each rented truck individually, or is it a single cost for the whole fleet?"
+      ],
+      "rationale": "The response asks one clarification question about how rental cost per kilometer is charged."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 10,
+    "agent_response": "QUESTION: What is the total cargo capacity of a Type A truck, and therefore what is the total cargo capacity of a Type B truck?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What is the total cargo capacity of a Type A truck, and therefore what is the total cargo capacity of a Type B truck?\",\n      \"why_it_matters\": \"Type B's total capacity is defined only as equal to Type A's, and Type A's total is never stated. Without the total, Type B's equal refrigerated/non-refrigerated split cannot be computed, so the capacity constraints and the optimal truck mix cannot be determined.\",\n      \"answerability\": \"The business user can state the total capacity of a Type A truck, from which Type B's total follows.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 0.95\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any requirement that the rented trucks be fully loaded, or is it acceptable to have unused capacity above the minimum cargo requirements?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"Type B's capacity is defined only relative to Type A's total, which is never given. This missing total is the single fact that blocks computing Type B's equal split and therefore the capacity constraints, so it must be resolved before the model can be formulated.\",\n  \"public_question\": \"What is the total cargo capacity of a Type A truck, and therefore what is the total cargo capacity of a Type B truck?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"What is the total cargo capacity of a Type A truck, and therefore what is the total cargo capacity of a Type B truck?\"\n  ],\n  \"rationale\": \"The response asks a single clarification question about the cargo capacities of Type A and Type B trucks, with the Type B capacity derived from the Type A capacity.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "What is the total cargo capacity of a Type A truck, and therefore what is the total cargo capacity of a Type B truck?"
+      ],
+      "rationale": "The response asks a single clarification question about the cargo capacities of Type A and Type B trucks, with the Type B capacity derived from the Type A capacity."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 11,
+    "agent_response": "QUESTION: Does a Type B truck have 30 cubic meters of refrigerated capacity and 30 cubic meters of non-refrigerated capacity?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Does a Type B truck have 30 cubic meters of refrigerated capacity and 30 cubic meters of non-refrigerated capacity?\",\n      \"why_it_matters\": \"The exact Type B capacity split determines the coefficients in the refrigerated and non-refrigerated capacity constraints, which directly affect the feasible truck combinations and the minimum-cost solution.\",\n      \"answerability\": \"The business user can confirm whether the equal split of the 60 cubic meter total is 30/30.\",\n      \"overask_risk\": \"The description strongly implies an equal split of 60, so this may be inferable without asking.\",\n      \"selection_score\": 0.9\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any limits on how many Type A or Type B trucks are available to rent?\",\n      \"why_it_matters\": \"Availability caps would add upper-bound constraints on the decision variables and could change the feasible region and optimal truck mix.\",\n      \"answerability\": \"The user can state whether the rental fleet has limited availability for either truck type.\",\n      \"overask_risk\": \"If availability is effectively unlimited, this constraint is unnecessary and the question is redundant.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there any requirement that the rented trucks be fully loaded, or is it acceptable to have unused capacity above the minimum cargo requirements?\",\n      \"why_it_matters\": \"A full-loading requirement would add equality constraints and change the feasible region, whereas allowing surplus capacity keeps the constraints as inequalities.\",\n      \"answerability\": \"The user can state whether trucks must be fully utilized or whether surplus capacity is acceptable.\",\n      \"overask_risk\": \"The request already frames the capacity requirements as minimums, implying surplus is allowed, so this may be inferable.\",\n      \"selection_score\": 0.45\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The only remaining structural uncertainty is the exact Type B capacity split. Confirming the 30/30 split fixes the constraint coefficients and completes the formulation.\",\n  \"public_question\": \"Does a Type B truck have 30 cubic meters of refrigerated capacity and 30 cubic meters of non-refrigerated capacity?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Does a Type B truck have 30 cubic meters of refrigerated capacity and 30 cubic meters of non-refrigerated capacity?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question about the capacity specifications of a Type B truck.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Does a Type B truck have 30 cubic meters of refrigerated capacity and 30 cubic meters of non-refrigerated capacity?"
+      ],
+      "rationale": "The response contains a single clarification question about the capacity specifications of a Type B truck."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 12,
+    "agent_response": "READY_TO_MODEL\n\nFormulatable confidence: 0.850\n\nConfidence rationale: All structural elements are confirmed: the objective is to minimize total rental cost; decision variables are the whole-number counts of Type A and Type B trucks; Type A has 20 m³ refrigerated and 40 m³ non-refrigerated capacity; Type B has 30 m³ refrigerated and 30 m³ non-refrigerated capacity; each truck can carry both cargo types simultaneously; refrigerated capacity must be at least 3000 m³ and non-refrigerated at least 4000 m³ (inequalities, surplus allowed); and cost is charged per truck per kilometer at £30 for Type A and £40 for Type B. The only unresolved item is the travel distance, which the user explicitly chose to leave as a symbolic parameter to be supplied later. Because distance is a single scalar multiplier common to both truck types, it does not affect the optimal truck mix and can be carried as a parameter in the objective without changing the formulation structure.\n\nSummary: Integer linear program minimizing total rental cost. Decision variables: non-negative integer counts of Type A (x_A) and Type B (x_B) trucks. Objective: minimize d*(30*x_A + 40*x_B), where d is the per-truck travel distance in kilometers, left as a parameter to be supplied later. Constraints: 20*x_A + 30*x_B >= 3000 (refrigerated capacity); 40*x_A + 30*x_B >= 4000 (non-refrigerated capacity); x_A, x_B integer >= 0. Each truck may carry both cargo types simultaneously, and capacity requirements are minimums, so surplus capacity is permitted.",
+    "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"formulatable_confidence\": 0.85,\n  \"confidence_rationale\": \"All structural elements are confirmed: the objective is to minimize total rental cost; decision variables are the whole-number counts of Type A and Type B trucks; Type A has 20 m³ refrigerated and 40 m³ non-refrigerated capacity; Type B has 30 m³ refrigerated and 30 m³ non-refrigerated capacity; each truck can carry both cargo types simultaneously; refrigerated capacity must be at least 3000 m³ and non-refrigerated at least 4000 m³ (inequalities, surplus allowed); and cost is charged per truck per kilometer at £30 for Type A and £40 for Type B. The only unresolved item is the travel distance, which the user explicitly chose to leave as a symbolic parameter to be supplied later. Because distance is a single scalar multiplier common to both truck types, it does not affect the optimal truck mix and can be carried as a parameter in the objective without changing the formulation structure.\",\n  \"summary\": \"Integer linear program minimizing total rental cost. Decision variables: non-negative integer counts of Type A (x_A) and Type B (x_B) trucks. Objective: minimize d*(30*x_A + 40*x_B), where d is the per-truck travel distance in kilometers, left as a parameter to be supplied later. Constraints: 20*x_A + 30*x_B >= 3000 (refrigerated capacity); 40*x_A + 30*x_B >= 4000 (non-refrigerated capacity); x_A, x_B integer >= 0. Each truck may carry both cargo types simultaneously, and capacity requirements are minimums, so surplus capacity is permitted.\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"ready_to_model\",\n  \"question_count\": 0,\n  \"is_atomic\": true,\n  \"atomic_questions\": [],\n  \"rationale\": \"The response contains READY_TO_MODEL and no clarification questions; it is a clean stop response.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "ready_to_model",
+      "question_count": 0,
+      "is_atomic": true,
+      "atomic_questions": [],
+      "rationale": "The response contains READY_TO_MODEL and no clarification questions; it is a clean stop response."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  }
+]

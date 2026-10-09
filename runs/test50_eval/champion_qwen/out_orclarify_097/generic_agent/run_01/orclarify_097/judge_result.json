@@ -1,0 +1,102 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_A_demand_cap",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the market demand figures of 100 tons for product A and 200 tons for product B hard upper limits on how much of each product you may produce and sell, or are they targets you would like to meet if possible?",
+      "rationale": "The agent explicitly asked whether product A's market demand is a hard upper limit on production/sales."
+    },
+    {
+      "slot_id": "H2",
+      "name": "product_B_demand_cap",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the market demand figures of 100 tons for product A and 200 tons for product B hard upper limits on how much of each product you may produce and sell, or are they targets you would like to meet if possible?",
+      "rationale": "The same question explicitly covered product B's 200-ton market demand as a possible hard upper limit."
+    },
+    {
+      "slot_id": "H3",
+      "name": "mixing_process_sequence",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about the required two-stage mixing process where A, B, and D are mixed first and then C is added."
+    },
+    {
+      "slot_id": "H4",
+      "name": "objective_function",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is the objective to maximize total profit (total revenue from selling products A and B minus total purchase cost of raw materials A, B, C, and D), or is it to maximize total revenue while keeping raw material cost within some budget?",
+      "rationale": "The agent explicitly asked about the optimization objective and confirmed profit maximization."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "All four raw materials can be blended directly into each product without the required two-stage mixing sequence of A, B, and D first and then C.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the mixing process sequence, but its READY_TO_MODEL formulation allows each raw material to be blended directly into each product."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H3"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent stopped at READY_TO_MODEL while the P0 hidden slot H3 about the two-stage mixing process remained unresolved."
+  },
+  "summary": "The agent recovered the objective and demand-cap facts, but missed the critical P0 mixing-process sequence and silently assumed all raw materials could be blended directly into each product.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.625,
+    "earned_weight": 5.0,
+    "total_weight": 8.0,
+    "hit_counts": {
+      "yes": 3,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 6.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H3"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 4,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H3"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

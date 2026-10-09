@@ -1,0 +1,55 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "min_weekly_production_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly production requirement for model A, nor did it explicitly mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_weekly_production_B",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly production requirement for model B, nor did it explicitly mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_overtime_process_II",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "When the regular 70 hours of Process II capacity is exceeded, is there a maximum number of overtime hours allowed per week for Process II",
+      "rationale": "The agent explicitly asked for the maximum allowed overtime hours for Process II, directly covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No minimum weekly production requirement for model A; x_A can be zero or any non-negative value.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production requirement for model A, and the READY_TO_MODEL formulation omits any lower bound on x_A."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum weekly production requirement for model B; x_B can be zero or any non-negative value.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production requirement for model B, and the READY_TO_MODEL formulation omits any lower bound on x_B."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slots for minimum weekly production of models A and B remained unresolved."
+  },
+  "summary": "The agent recovered the overtime cap for Process II but failed to ask about minimum weekly production requirements for models A and B, silently omitting these contractual constraints and stopping prematurely."
+}

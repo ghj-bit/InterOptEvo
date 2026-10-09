@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "idle_time_no_cost",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are machine and craftsman time costs charged only for time actually used, or for the full available weekly capacity?",
+      "rationale": "The agent explicitly asked whether costs apply only to used time or full capacity, which covers whether idle/unused time incurs cost."
+    },
+    {
+      "slot_id": "H2",
+      "name": "fractional_batches_allowed",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "The only remaining minor assumption is that production quantities are continuous (fractional batches allowed), which does not change the business structure.",
+      "rationale": "The agent did not ask a question about fractional vs integer batches, but explicitly marked continuous/fractional production as an assumption in the READY_TO_MODEL summary."
+    },
+    {
+      "slot_id": "H3",
+      "name": "all_batches_sold",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are there any upper bounds, demand limits, or minimum production requirements for product Y?",
+      "rationale": "The agent asked about demand limits for Y, which is related to whether all batches are sold, but did not ask whether all produced batches are guaranteed to be sold or whether demand constraints exist for X."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "All produced batches are sold, with no demand constraints beyond the absence of upper bounds for Y.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked about upper bounds/demand limits for Y, not whether all produced batches are sold or whether demand constraints exist for X; the READY_TO_MODEL summary treats no demand limits as confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2 only. H1 was resolved by a direct question, and H2/H3 were at least explicitly or partially addressed; no P0 or P1 slots remained unresolved when the agent stopped."
+  },
+  "summary": "The agent asked targeted questions that resolved the idle-time cost issue and touched on demand limits, then explicitly flagged fractional batches as an assumption. It stopped appropriately because only P2-level hidden slots remained, though the all-batches-sold assumption was not fully confirmed."
+}

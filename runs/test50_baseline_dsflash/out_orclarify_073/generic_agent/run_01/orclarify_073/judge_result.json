@@ -1,0 +1,102 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "mandatory_bob_selection",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether any child, especially Bob, was mandatory, and did not mark this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "alice_diana_conflict_rule",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about any conflict or mutual-exclusion rule involving Alice and Diana, nor did it explicitly flag this as an unconfirmed assumption."
+    },
+    {
+      "slot_id": "H3",
+      "name": "minimize_total_cost_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the goal for the selection — should I minimize total cost, or just list all valid combinations?",
+      "rationale": "The agent explicitly asked about the objective and confirmed whether it should minimize total cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No child is mandatory; Bob is optional and can be excluded.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether Bob or any child must be selected, then proceeded to model and solve without that constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no conflict between Alice and Diana; they may be selected together if otherwise feasible.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about Alice-Diana incompatibility and did not mark it as an assumption, yet omitted the constraint from the model."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL after resolving the P0 objective slot but while P1 hidden slots H1 and H2 remained unasked and unresolved."
+  },
+  "summary": "The agent confirmed the minimization objective but stopped prematurely without asking about the mandatory Bob selection or the Alice-Diana conflict rule, silently omitting both P1 constraints from its model.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.42857142857142855,
+    "earned_weight": 3.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

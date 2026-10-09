@@ -1,0 +1,48 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "mandatory_bob_selection",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3-4 generic_agent",
+      "evidence_quote": "Are there any other eligibility rules for which children can be selected? ... At least one specific child must be included in the trip. / Which specific child must be included in the trip? ... Bob must be included.",
+      "rationale": "The agent explicitly asked whether a specific child must be included and then identified Bob as mandatory."
+    },
+    {
+      "slot_id": "H2",
+      "name": "alice_diana_conflict_rule",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about mutual exclusion or conflict constraints involving Alice and Diana, nor marked this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H3",
+      "name": "minimize_total_cost_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What should the trip selection optimize? ... Minimize the total cost of the selected children.",
+      "rationale": "The agent explicitly asked about the objective and confirmed minimizing total cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no Alice-Diana conflict rule; Alice and Diana may be selected together unless otherwise constrained.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed any mutual exclusion between Alice and Diana, but proceeded to model without this hidden constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 Alice-Diana conflict rule remained unresolved."
+  },
+  "summary": "The agent recovered the objective and mandatory Bob selection, but missed the Alice-Diana conflict rule and stopped with that P1 hidden slot unresolved."
+}

@@ -5,7 +5,7 @@
   round 0  种子策略 → 在 val 上评测（passes 遍并行）→ 成为初始冠军
   round r  ① 从 train 池确定性采样 batch（默认 8 题）
            ② 父本（当前冠军）跑 train batch × passes 遍（tag=train）→ 打包证据喂给演化器
-           ③ 演化器产出新的 `## Interaction Strategy` 段（JSON patch）
+           ③ 演化器产出新的策略（JSON patch；可演化对象由 --policy-schema 决定）
            ④ 候选策略在【同一 batch】上跑 train × passes 遍（tag=ctrain）
               → train 门：候选 net > 父本 net + --selection-epsilon 才继续；
                 不过门则本轮到此为止（跳过 val，记 accepted_train=False）
@@ -50,13 +50,27 @@ SYMLINKED_PROMPTS = (
 )
 SEED_STRATEGY_SECTION = "## Interaction Strategy"
 
+# 交互策略文档的两种 schema（2026-10-09 新增 behavior；evo_r10 线沿用 strategy_section）：
+#   strategy_section: 可演化 = `## Interaction Strategy` 整段；
+#   behavior:         可演化 = `## Behavior` 段的正文；其末尾的协议 bullet 块
+#                     （`QUESTION:` 格式组 + `READY_TO_MODEL` 收尾组）是 harness 机件、
+#                     完全冻结，且**由程序拼装**——演化器在 prompt 里只看得到可变正文，
+#                     patch 也只含正文（不含 section/协议）。
+POLICY_SCHEMA = "strategy_section"
+PROTOCOL_MARKER = "- Before you are ready to model"
+MIN_STRATEGY_CHARS = 40
+MAX_STRATEGY_CHARS = 8000  # 仅防失控输出；旧线无长度上限（evo_r10 冠军正文 ~3.8k chars）
+
 
 # ---------------------------------------------------------------------------
 # 策略文档：读取 / 打补丁 / 冻结段校验
 # ---------------------------------------------------------------------------
 
 def strategy_body(policy_text: str) -> str:
-    """取出 `## Interaction Strategy` 段的正文（到下一个 ## 标题为止）。"""
+    """取出可演化的交互策略正文（按 POLICY_SCHEMA 分派）。"""
+    if POLICY_SCHEMA == "behavior":
+        return behavior_strategy_body(policy_text)
+    # 旧 schema：取出 `## Interaction Strategy` 段的正文（到下一个 ## 标题为止）。
     lines = policy_text.splitlines()
     out, inside = [], False
     for line in lines:
@@ -70,7 +84,71 @@ def strategy_body(policy_text: str) -> str:
     return "\n".join(out).strip()
 
 
+def behavior_bounds(policy_text: str) -> tuple[list[str], int, int, int]:
+    """定位 `## Behavior` 段：返回 (lines, heading_idx, body_start, marker_idx)。
+
+    body_start = 标题后第一条非空行；marker_idx = 协议块首行
+    （以 PROTOCOL_MARKER 开头的 bullet）。两者之间（去尾部空行）即可演化正文。
+    """
+    lines = policy_text.splitlines()
+    heading = None
+    for i, line in enumerate(lines):
+        if line.strip() == "## Behavior":
+            heading = i
+            break
+    if heading is None:
+        raise ValueError("policy has no '## Behavior' section")
+    start = heading + 1
+    while start < len(lines) and not lines[start].strip():
+        start += 1
+    marker = None
+    for k in range(start, len(lines)):
+        if lines[k].strip().startswith(PROTOCOL_MARKER):
+            marker = k
+            break
+    if marker is None:
+        raise ValueError(f"policy has no protocol block (line starting with {PROTOCOL_MARKER!r})")
+    return lines, heading, start, marker
+
+
+def behavior_strategy_body(policy_text: str) -> str:
+    lines, _, start, marker = behavior_bounds(policy_text)
+    end = marker
+    while end > start and not lines[end - 1].strip():
+        end -= 1
+    return "\n".join(lines[start:end])
+
+
+def _validate_behavior_body(body: str) -> None:
+    if not body:
+        raise ValueError("empty strategy body")
+    if re.search(r"^#+ ", body, flags=re.M):
+        raise ValueError("strategy body must not contain markdown headings")
+    if len(body) < MIN_STRATEGY_CHARS:
+        raise ValueError(f"strategy body too short ({len(body)} < {MIN_STRATEGY_CHARS} chars)")
+    if len(body) > MAX_STRATEGY_CHARS:
+        raise ValueError(f"strategy body too long ({len(body)} > {MAX_STRATEGY_CHARS} chars)")
+    for token in ("READY_TO_MODEL", "QUESTION:"):
+        if token in body:
+            raise ValueError(f"strategy body must not mention protocol token {token!r}")
+
+
 def apply_policy_patch(parent_policy: str, patch: dict) -> str:
+    if POLICY_SCHEMA == "behavior":
+        # patch 只含正文；协议块与其余段落由程序原样拼装（演化器不可见/不可写）。
+        section = patch.get("section")
+        if section not in (None, "## Behavior"):
+            raise ValueError(
+                f"section {section!r} is not patchable in this schema; "
+                f"return only {{'body': ...}} and the system will insert it")
+        body = str(patch.get("body", "")).strip()
+        _validate_behavior_body(body)
+        lines, _, start, marker = behavior_bounds(parent_policy)
+        out = lines[:start] + body.splitlines() + [""] + lines[marker:]
+        result = "\n".join(out)
+        if parent_policy.endswith("\n"):
+            result += "\n"
+        return result
     section = patch.get("section", SEED_STRATEGY_SECTION)
     if section != SEED_STRATEGY_SECTION:
         raise ValueError(f"only {SEED_STRATEGY_SECTION} may be patched, got {section!r}")
@@ -97,7 +175,10 @@ def apply_policy_patch(parent_policy: str, patch: dict) -> str:
 
 
 def frozen_fragments(policy_text: str) -> dict[str, str]:
-    """除策略段外，其余原文必须逐字保留。"""
+    """除策略正文外，其余原文必须逐字保留（behavior schema 下含协议块）。"""
+    if POLICY_SCHEMA == "behavior":
+        lines, _, start, marker = behavior_bounds(policy_text)
+        return {"__pre__": "\n".join(lines[:start]), "__post__": "\n".join(lines[marker:])}
     lines = policy_text.splitlines()
     out, inside, buf = {}, False, []
     for line in lines:
@@ -289,6 +370,13 @@ def extract_json_object(text: str) -> dict:
 
 def build_evolution_prompt(parent_strategy: str, evidence: dict,
                            champion_history: list[dict], max_turns: int) -> str:
+    if POLICY_SCHEMA == "behavior":
+        return build_evolution_prompt_behavior(parent_strategy, evidence, champion_history, max_turns)
+    return build_evolution_prompt_section(parent_strategy, evidence, champion_history, max_turns)
+
+
+def build_evolution_prompt_section(parent_strategy: str, evidence: dict,
+                                   champion_history: list[dict], max_turns: int) -> str:
     champion_view = [
         {"policy": e.get("policy"), "net": e.get("val_net"),
          "core": e.get("val_core"), "allslot": e.get("val_allslot"), "silent": e.get("val_silent")}
@@ -359,6 +447,92 @@ Per case: the three metrics per repetition, the per-slot judge verdicts and the
 
 {{"policy_patch": {{"section": "## Interaction Strategy", "body": "..."}},
  "changed_components": ["## Interaction Strategy"],
+ "evolution_rationale": "why these changes address what the evidence shows"}}
+"""
+
+
+def build_evolution_prompt_behavior(parent_strategy: str, evidence: dict,
+                                    champion_history: list[dict], max_turns: int) -> str:
+    """behavior schema 的演化 prompt（2026-10-09）：
+
+    与 strategy_section 版的区别：可演化对象 = 一份**自由形态的交互策略文本**，
+    由系统自行拼接进 agent 策略文档；输出格式/停轮等协议是固定 harness 机件，
+    演化器既看不到也不得描述/复述（prompt 里只展示 current strategy 这段可变文本）。
+    """
+    champion_view = [
+        {"policy": e.get("policy"), "net": e.get("val_net"),
+         "core": e.get("val_core"), "allslot": e.get("val_allslot"), "silent": e.get("val_silent")}
+        for e in champion_history
+    ]
+    return f"""# Clarification Strategy
+
+A modeling agent receives an incomplete business brief for an operations-research
+problem. Before it declares itself ready to model, it may interview the client
+(one question per turn, answered by the client) to recover the formulation-critical
+facts that the brief omits. A free-form **interaction strategy** governs how the
+agent uses that interview: what it asks, when, and when it stops.
+
+Your task is to write a better interaction strategy.
+
+## Fixed around the strategy (you cannot change these)
+
+- the agent model, the client simulator, the protocol detector and the judge are fixed;
+- the output format and the stopping machinery are fixed harness protocol: every
+  response is one `QUESTION:` line or a `READY_TO_MODEL` summary, one question per
+  turn, and a hard turn cap of {max_turns} applies. **This machinery is inserted
+  around your text by the system; you never see it and you never write it. Do not
+  describe, restate or invent any output format, wrapper or stop command** —
+  write the strategy as if the agent already knows the protocol;
+- the briefs, hidden facts and judge rubrics are fixed and unknown to the agent;
+- only the free-form interaction-strategy text may be rewritten;
+- the strategy must not name any specific problem, entity, number or dataset fact.
+
+## Scoring
+
+Each run is scored on the hidden requirements the agent recovered:
+- **Core Exact** (0/1): every P0/P1 hidden requirement was explicitly asked about;
+- **All-Slot Exact** (0/1): every hidden requirement (including P2) was asked about;
+- **Silent/run**: facts the agent treated as true without ever confirming them.
+
+net = 0.5*Core + 0.5*AllSlot - 0.1*Silent.  All-or-nothing: one missed core
+requirement zeroes Core. Asking more does not by itself help; asking the wrong
+things costs turns and invites collapse.
+
+## Current strategy (the only text you may rewrite; shown in full)
+
+{parent_strategy}
+
+## Evidence from the current strategy's evaluation (JSON)
+
+Per case: the three metrics per repetition, the per-slot judge verdicts and the
+**complete first-repetition dialogue** (agent questions and client answers).
+
+{json.dumps(evidence, ensure_ascii=False)}
+
+## Strategies with the best validation results so far, in chronological order (complete texts)
+
+{json.dumps(champion_view, ensure_ascii=False)}
+
+## Output rules
+
+- Return ONE JSON object and nothing else.
+- `policy_patch` is an object: {{"body": "<the entire new interaction strategy>"}}.
+  The system inserts that text by itself in the right place; **return only the
+  strategy text as `body` — no document sections, no headings, no surrounding
+  document text, no protocol or output-format lines.**
+- The body REPLACES the current strategy; it is not appended.
+- The body may take ANY form you judge most effective -- linear rules, ordered
+  steps, conditional branches, a portfolio of question archetypes routed by
+  situation, a checklist, or anything else. Name kinds of situations rather than
+  task topics.
+- Stay generic: never copy task facts, entities, parameters or numbers out of the
+  evidence, and never name a case.
+- The body must be substantively different from the current strategy and from
+  every strategy shown above; near-verbatim rewording is not acceptable.
+
+## Required JSON shape
+
+{{"policy_patch": {{"body": "..."}},
  "evolution_rationale": "why these changes address what the evidence shows"}}
 """
 
@@ -522,9 +696,11 @@ def make_policy_dir(root: Path, name: str, policy_text: str) -> Path:
 
 
 def make_prompt_dir_with_strategy(root: Path, name: str, strategy_body_text: str) -> Path:
-    """以种子模板为底座，替换策略段。"""
+    """以种子模板为底座，替换策略正文（按 schema 拼装；协议块保持原样）。"""
     template = (root / "seed_template.md").read_text(encoding="utf-8")
-    patched = apply_policy_patch(template, {"section": SEED_STRATEGY_SECTION, "body": strategy_body_text})
+    patch = ({"body": strategy_body_text} if POLICY_SCHEMA == "behavior"
+             else {"section": SEED_STRATEGY_SECTION, "body": strategy_body_text})
+    patched = apply_policy_patch(template, patch)
     return make_policy_dir(root, name, patched)
 
 
@@ -547,6 +723,7 @@ def write_state(path: Path, state: dict) -> None:
 
 
 def main() -> None:
+    global POLICY_SCHEMA, PROXY_BASE_URL
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True)
     ap.add_argument("--rounds", type=int, default=5)
@@ -562,6 +739,11 @@ def main() -> None:
                     help="初始策略段文件；默认用 round4 的策略")
     ap.add_argument("--template", default=None,
                     help="策略文档模板（含冻结段）；默认用 runs/prompts_evo4/generic_agent_prompt.md")
+    ap.add_argument("--policy-schema", choices=["strategy_section", "behavior"], default="strategy_section",
+                    help="可演化对象：strategy_section=旧线（## Interaction Strategy 段）；"
+                         "behavior=新线（仅 ## Behavior 正文可变；协议 bullet 块冻结、由程序拼装，演化器不可见）")
+    ap.add_argument("--proxy-base-url", default=PROXY_BASE_URL,
+                    help="case 评测用的本地代理 base（默认 18770；judge-think 线用 18776）")
     ap.add_argument("--evolver-model", default="deepseek-flash")
     ap.add_argument("--evolver-temperature", type=float, default=0.667)
     ap.add_argument("--evolver-max-tokens", type=int, default=4000)
@@ -571,6 +753,9 @@ def main() -> None:
     args = ap.parse_args()
 
     WEIGHTS.update({"core": args.w_core, "allslot": args.w_allslot, "silent": args.w_silent})
+
+    POLICY_SCHEMA = args.policy_schema
+    PROXY_BASE_URL = args.proxy_base_url
 
     root = (REPO_ROOT / "runs" / "evolution" / args.name).resolve()
     root.mkdir(parents=True, exist_ok=True)

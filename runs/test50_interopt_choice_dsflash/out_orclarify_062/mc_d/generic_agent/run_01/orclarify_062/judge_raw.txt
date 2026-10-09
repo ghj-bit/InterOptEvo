@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "binary_purchase_constraint",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "How are restaurant purchases treated in this decision? Options: A. Each restaurant is either fully purchased or not purchased at all. B. A restaurant can be purchased in partial ownership with cost and revenue scaled to the owned share.",
+      "rationale": "The agent explicitly asked whether purchases are all-or-nothing versus partial ownership, directly covering the binary purchase constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "conditional_exclusion_restaurant_D_and_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any dependency or exclusion between Restaurant D and Restaurant A. The READY_TO_MODEL summary only vaguely mentions 'no other business rules' as a remaining assumption, which does not explicitly target this hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No exclusivity or dependency rules apply, so all restaurants are independent and Restaurant D and Restaurant A can both be selected if budget allows.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about the D/A conditional exclusion and treated the absence of other business rules as a minor assumption rather than confirming it."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H2 about the conditional exclusion between Restaurant D and Restaurant A remained unresolved."
+  },
+  "summary": "The agent correctly clarified the binary purchase constraint and budget interpretation, but failed to ask about the conditional exclusion between Restaurants D and A, silently assuming no such dependency before stopping."
+}

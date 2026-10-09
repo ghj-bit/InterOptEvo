@@ -1,0 +1,40 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "binary_purchase_constraint",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Can each restaurant be purchased at most once, or may multiple locations of the same restaurant be purchased?",
+      "rationale": "The agent asked about purchasing each restaurant at most once, which is related to the all-or-nothing purchase constraint, but it did not explicitly ask whether fractional/partial ownership is allowed versus whole-restaurant binary purchase."
+    },
+    {
+      "slot_id": "H2",
+      "name": "conditional_exclusion_restaurant_D_and_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any dependency or restriction between Restaurant D and Restaurant A before declaring READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "All restaurants are independent, so Restaurant D and Restaurant A can both be considered without any mutual exclusion.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed any restriction between buying Restaurant D and Restaurant A, yet proceeded to model and solve the selection as if all restaurants were independent."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while H1 was only partially addressed and H2 was entirely unresolved, leaving P1 hidden slots unresolved before final modeling."
+  },
+  "summary": "The agent asked one useful but incomplete question about purchase multiplicity, then stopped without clarifying binary versus fractional purchasing or the D/A exclusion dependency, leading to a premature and potentially incorrect model."
+}

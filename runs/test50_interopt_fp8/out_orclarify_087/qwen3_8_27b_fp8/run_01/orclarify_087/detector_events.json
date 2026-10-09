@@ -1,0 +1,40 @@
+[
+  {
+    "turn": 1,
+    "agent_response": "QUESTION: What is the total distance in kilometers for the transport trip?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What is the total distance in kilometers for the transport trip?\",\n      \"why_it_matters\": \"The objective function depends on total cost, which is calculated as rate per km multiplied by distance; without distance, the cost coefficients cannot be determined.\",\n      \"answerability\": \"A business user can realistically answer it.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 1.0\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are the truck counts required to be integers?\",\n      \"why_it_matters\": \"This determines whether the decision variables are continuous or integer, which changes the feasible region and solver requirements.\",\n      \"answerability\": \"A business user can realistically answer it.\",\n      \"overask_risk\": \"Trucks are typically discrete, so this might be a low-risk assumption, but it is a formulation-changing detail.\",\n      \"selection_score\": 0.5\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is there a maximum number of trucks available or a budget constraint?\",\n      \"why_it_matters\": \"This would add upper bound constraints or a budget constraint to the model, changing the feasible region.\",\n      \"answerability\": \"A business user can realistically answer it.\",\n      \"overask_risk\": \"This is a common constraint but not explicitly requested; it might be over-asking if the user only wants the minimum cost solution without other limits.\",\n      \"selection_score\": 0.3\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The distance is a critical missing parameter for the objective function. Without it, the cost coefficients are undefined, making the model unsolvable. This is a P0 gap.\",\n  \"public_question\": \"What is the total distance in kilometers for the transport trip?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"What is the total distance in kilometers for the transport trip?\"\n  ],\n  \"rationale\": \"The response contains a single clarification question asking for a specific numeric value.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "What is the total distance in kilometers for the transport trip?"
+      ],
+      "rationale": "The response contains a single clarification question asking for a specific numeric value."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 2,
+    "agent_response": "READY_TO_MODEL\n\nFormulatable confidence: 0.950\n\nConfidence rationale: The missing distance is a scalar multiplier for the objective function. Since the distance is constant for all trucks, it does not affect the optimal mix of Type A and Type B trucks, only the final total cost value. The model can be formulated with a variable 'D' for distance, or by minimizing the cost per kilometer, which yields the same optimal decision variables. All other constraints (capacity requirements, truck capacities) are fully specified.\n\nSummary: Minimize the total rental cost (proportional to distance) by determining the number of Type A and Type B trucks. Constraints: Total refrigerated capacity >= 3000 m³, Total non-refrigerated capacity >= 4000 m³. Type A: 20 m³ ref, 40 m³ non-ref, £30/km. Type B: 30 m³ ref, 30 m³ non-ref, £40/km. Decision variables: Number of Type A and Type B trucks (integers).",
+    "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"formulatable_confidence\": 0.95,\n  \"confidence_rationale\": \"The missing distance is a scalar multiplier for the objective function. Since the distance is constant for all trucks, it does not affect the optimal mix of Type A and Type B trucks, only the final total cost value. The model can be formulated with a variable 'D' for distance, or by minimizing the cost per kilometer, which yields the same optimal decision variables. All other constraints (capacity requirements, truck capacities) are fully specified.\",\n  \"summary\": \"Minimize the total rental cost (proportional to distance) by determining the number of Type A and Type B trucks. Constraints: Total refrigerated capacity >= 3000 m³, Total non-refrigerated capacity >= 4000 m³. Type A: 20 m³ ref, 40 m³ non-ref, £30/km. Type B: 30 m³ ref, 30 m³ non-ref, £40/km. Decision variables: Number of Type A and Type B trucks (integers).\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"ready_to_model\",\n  \"question_count\": 0,\n  \"is_atomic\": true,\n  \"atomic_questions\": [],\n  \"rationale\": \"The response contains the stop action READY_TO_MODEL and provides a summary and rationale without asking any clarification questions.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "ready_to_model",
+      "question_count": 0,
+      "is_atomic": true,
+      "atomic_questions": [],
+      "rationale": "The response contains the stop action READY_TO_MODEL and provides a summary and rationale without asking any clarification questions."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  }
+]

@@ -1,0 +1,91 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "binary_purchase_constraint",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether purchases are all-or-nothing or allowed fractional shares; it simply declared a 0-1 knapsack formulation without confirming the binary nature of the purchase decision."
+    },
+    {
+      "slot_id": "H2",
+      "name": "conditional_exclusion_restaurant_D_and_A",
+      "severity": "P1",
+      "hit": "no",
+      "first_yes_atomic_question": null,
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any dependency or restriction between Restaurant A and Restaurant D, and instead assumed all restaurants are independent."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each restaurant purchase is a binary all-or-nothing decision, modeled as a 0-1 knapsack.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether fractional ownership or partial purchase was allowed; it asserted the 0-1 formulation as if confirmed."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There are no restrictions or dependencies between purchasing Restaurant A and Restaurant D; all restaurant choices are independent.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about mutual exclusion or conditional restrictions involving A and D, and treated the problem as a standard independent knapsack."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent immediately entered READY_TO_MODEL without asking any clarifying questions, leaving both P1 hidden slots unresolved."
+  },
+  "summary": "The agent stopped immediately with READY_TO_MODEL and asked no clarifying questions, silently assuming binary purchases and no A-D dependency, so both P1 hidden slots were missed.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_exact_applicable": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Core exact uses P0/P1 only; all-slot exact uses P0/P1/P2. P2-only cases are not applicable to core exact."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,2477 @@
+[
+  {
+    "turn": 1,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Select new employees for the team while respecting headcount, budget, experience, and candidate compatibility rules.\",\n    \"confirmed_decision_scope\": [\"Choose which candidates to hire from candidates A, B, C, D, and E.\"],\n    \"confirmed_constraints_and_rules\": [\"Select no more than 3 candidates.\", \"Hire at least 2 candidates.\", \"Total salary of selected candidates cannot exceed $35,000.\", \"Total work experience of selected candidates must be at least 12 years.\", \"At most one of candidate A and candidate E can be selected.\"],\n    \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E\", \"Salary per candidate\", \"Degree per candidate\", \"Work experience per candidate\", \"Maximum headcount 3\", \"Minimum headcount 2\", \"Budget $35,000\", \"Minimum total experience 12 years\"],\n    \"unresolved_business_assumptions\": [\"Not confirmed yet: whether any minimum degree or education requirement applies.\", \"Not confirmed yet: whether budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.\", \"Not confirmed yet: whether there are other candidate compatibility or must-include relationships beyond the A/E restriction.\"]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Recruit a compliant set of new employees for the team.\",\n    \"confirmed_decision_scope\": [\"Select a subset of the five listed candidates to hire.\"],\n    \"confirmed_constraints_and_rules\": [\"Headcount between 2 and 3.\", \"Salary budget cap of $35,000.\", \"Minimum total experience of 12 years.\", \"Cannot select both A and E.\"],\n    \"known_inputs_entities_and_indices\": [\"Candidate list A-E\", \"Candidate salaries\", \"Candidate degrees\", \"Candidate experience values\", \"Headcount limits\", \"Budget limit\", \"Experience threshold\"],\n    \"unresolved_business_assumptions\": [\"Not confirmed yet: whether degrees affect eligibility or selection.\", \"Not confirmed yet: whether any constraint is soft rather than hard.\", \"Not confirmed yet: whether additional candidate relationships exist.\"]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Choose a team of new hires that satisfies stated hiring limits and candidate rules.\",\n    \"confirmed_decision_scope\": [\"Decide which of candidates A, B, C, D, and E are selected.\"],\n    \"confirmed_constraints_and_rules\": [\"At least 2 and at most 3 selected.\", \"Total payment no more than $35,000.\", \"Total experience at least 12 years.\", \"At most one of A and E.\"],\n    \"known_inputs_entities_and_indices\": [\"Five candidates\", \"Salary data\", \"Degree data\", \"Experience data\", \"Budget\", \"Experience minimum\", \"Headcount bounds\"],\n    \"unresolved_business_assumptions\": [\"Not confirmed yet: whether education level is a requirement.\", \"Not confirmed yet: whether constraints are hard or penalty-based.\", \"Not confirmed yet: whether other candidate exclusions or inclusions apply.\"]\n  },\n  \"Q1\": {\n    \"frontier_gap_id\": \"G001\",\n    \"question\": \"Does the team have any minimum education requirement that selected candidates must meet?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"No degree requirement applies; degrees are just informational.\"},\n      {\"id\": \"B\", \"text\": \"Selected candidates must have at least a Bachelor's degree.\"},\n      {\"id\": \"C\", \"text\": \"Selected candidates must have at least a Master's degree.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"frontier_gap_id\": \"G002\",\n    \"question\": \"Are the budget, experience, and headcount limits strict requirements or can they be relaxed with penalties?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"All stated limits are strict and cannot be violated.\"},\n      {\"id\": \"B\", \"text\": \"The budget can be exceeded with a penalty, but other limits are strict.\"},\n      {\"id\": \"C\", \"text\": \"The experience requirement can be missed with a penalty, but other limits are strict.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"frontier_gap_id\": \"G003\",\n    \"question\": \"Are there any other candidate compatibility rules beyond the restriction that A and E cannot both be selected?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"No other compatibility rules apply.\"},\n      {\"id\": \"B\", \"text\": \"There are additional candidates who cannot be selected together.\"},\n      {\"id\": \"C\", \"text\": \"There are candidates who must be selected together if either is selected.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The request provides candidate degrees but no degree rule, states limits without clarifying whether they are hard or soft, and mentions only one candidate exclusion while other compatibility rules may exist. These unresolved business-structure assumptions could change the constraints and feasibility of the hiring problem.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Select new employees for the team while respecting headcount, budget, experience, and candidate compatibility rules.",
+        "confirmed_decision_scope": [
+          "Choose which candidates to hire from candidates A, B, C, D, and E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select no more than 3 candidates.",
+          "Hire at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E",
+          "Salary per candidate",
+          "Degree per candidate",
+          "Work experience per candidate",
+          "Maximum headcount 3",
+          "Minimum headcount 2",
+          "Budget $35,000",
+          "Minimum total experience 12 years"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any minimum degree or education requirement applies.",
+          "Not confirmed yet: whether budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "Not confirmed yet: whether there are other candidate compatibility or must-include relationships beyond the A/E restriction."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Recruit a compliant set of new employees for the team.",
+        "confirmed_decision_scope": [
+          "Select a subset of the five listed candidates to hire."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Headcount between 2 and 3.",
+          "Salary budget cap of $35,000.",
+          "Minimum total experience of 12 years.",
+          "Cannot select both A and E."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidate list A-E",
+          "Candidate salaries",
+          "Candidate degrees",
+          "Candidate experience values",
+          "Headcount limits",
+          "Budget limit",
+          "Experience threshold"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether degrees affect eligibility or selection.",
+          "Not confirmed yet: whether any constraint is soft rather than hard.",
+          "Not confirmed yet: whether additional candidate relationships exist."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Choose a team of new hires that satisfies stated hiring limits and candidate rules.",
+        "confirmed_decision_scope": [
+          "Decide which of candidates A, B, C, D, and E are selected."
+        ],
+        "confirmed_constraints_and_rules": [
+          "At least 2 and at most 3 selected.",
+          "Total payment no more than $35,000.",
+          "Total experience at least 12 years.",
+          "At most one of A and E."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Five candidates",
+          "Salary data",
+          "Degree data",
+          "Experience data",
+          "Budget",
+          "Experience minimum",
+          "Headcount bounds"
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether education level is a requirement.",
+          "Not confirmed yet: whether constraints are hard or penalty-based.",
+          "Not confirmed yet: whether other candidate exclusions or inclusions apply."
+        ]
+      },
+      "deep_search_decision_evidence": "The request provides candidate degrees but no degree rule, states limits without clarifying whether they are hard or soft, and mentions only one candidate exclusion while other compatibility rules may exist. These unresolved business-structure assumptions could change the constraints and feasibility of the hiring problem.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Does the team have any minimum education requirement that selected candidates must meet?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No degree requirement applies; degrees are just informational."
+          },
+          {
+            "id": "B",
+            "text": "Selected candidates must have at least a Bachelor's degree."
+          },
+          {
+            "id": "C",
+            "text": "Selected candidates must have at least a Master's degree."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G001"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Are the budget, experience, and headcount limits strict requirements or can they be relaxed with penalties?",
+        "options": [
+          {
+            "id": "A",
+            "text": "All stated limits are strict and cannot be violated."
+          },
+          {
+            "id": "B",
+            "text": "The budget can be exceeded with a penalty, but other limits are strict."
+          },
+          {
+            "id": "C",
+            "text": "The experience requirement can be missed with a penalty, but other limits are strict."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G002"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are there any other candidate compatibility rules beyond the restriction that A and E cannot both be selected?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No other compatibility rules apply."
+          },
+          {
+            "id": "B",
+            "text": "There are additional candidates who cannot be selected together."
+          },
+          {
+            "id": "C",
+            "text": "There are candidates who must be selected together if either is selected."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G003"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"CONTINUE\",\n  \"search_summary\": \"The request defines cardinality, budget, experience, and one exclusion rule, but leaves open whether degree requirements, candidate eligibility, and the hard/soft nature of the stated limits are fixed.\",\n  \"updates\": [\n    {\n      \"operation\": \"ADD\",\n      \"category\": \"constraint_set\",\n      \"description\": \"Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.\",\n      \"evidence_quote\": \"Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.\"\n    },\n    {\n      \"operation\": \"ADD\",\n      \"category\": \"hard_soft_policy\",\n      \"description\": \"Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.\",\n      \"evidence_quote\": \"Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.\"\n    },\n    {\n      \"operation\": \"ADD\",\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.\",\n      \"evidence_quote\": \"at most one of candidate A and E can be selected.\"\n    }\n  ]\n}",
+      "result": {
+        "decision": "CONTINUE",
+        "search_summary": "The request defines cardinality, budget, experience, and one exclusion rule, but leaves open whether degree requirements, candidate eligibility, and the hard/soft nature of the stated limits are fixed.",
+        "updates": [
+          {
+            "operation": "ADD",
+            "category": "constraint_set",
+            "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+            "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree."
+          },
+          {
+            "operation": "ADD",
+            "category": "hard_soft_policy",
+            "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+            "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years."
+          },
+          {
+            "operation": "ADD",
+            "category": "entity_relation",
+            "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+            "evidence_quote": "at most one of candidate A and E can be selected."
+          }
+        ],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [
+        {
+          "operation": "ADD",
+          "gap_id": "G001",
+          "status": "OPEN"
+        },
+        {
+          "operation": "ADD",
+          "gap_id": "G002",
+          "status": "OPEN"
+        },
+        {
+          "operation": "ADD",
+          "gap_id": "G003",
+          "status": "OPEN"
+        }
+      ],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "open_gap_ids": [
+        "G001",
+        "G002",
+        "G003"
+      ]
+    },
+    "selected_frontier_gap_id": "G002",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in a constraint-set gap about whether a minimum degree/education requirement applies; this is a hard eligibility rule that would otherwise be silently assumed away because degree data is present but unused. Q2 fills in a hard-versus-soft policy gap for budget, experience, and headcount; this is important because it changes whether the model is feasibility-only or penalty-based. Q3 fills in an entity-relation gap about additional compatibility rules beyond the known A/E restriction. All three reference OPEN ledger gaps and are answerable by a business user. Q2 is the strongest first question because it most directly changes the objective and constraint structure: if limits are soft, the model must optimize tradeoffs with penalties; if hard, it is a feasibility/selection model. This reduces the largest silent-assumption risk before modeling, whereas Q1 and Q3 are narrower rule-completion questions.\",\n  \"selected_question_id\": \"Q2\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in a constraint-set gap about whether a minimum degree/education requirement applies; this is a hard eligibility rule that would otherwise be silently assumed away because degree data is present but unused. Q2 fills in a hard-versus-soft policy gap for budget, experience, and headcount; this is important because it changes whether the model is feasibility-only or penalty-based. Q3 fills in an entity-relation gap about additional compatibility rules beyond the known A/E restriction. All three reference OPEN ledger gaps and are answerable by a business user. Q2 is the strongest first question because it most directly changes the objective and constraint structure: if limits are soft, the model must optimize tradeoffs with penalties; if hard, it is a feasibility/selection model. This reduces the largest silent-assumption risk before modeling, whereas Q1 and Q3 are narrower rule-completion questions.",
+          "selected_question_id": "Q2"
+        }
+      }
+    ],
+    "selected_question_id": "Q2",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Are the budget, experience, and headcount limits strict requirements or can they be relaxed with penalties?",
+      "options": [
+        {
+          "id": "A",
+          "text": "All stated limits are strict and cannot be violated."
+        },
+        {
+          "id": "B",
+          "text": "The budget can be exceeded with a penalty, but other limits are strict."
+        },
+        {
+          "id": "C",
+          "text": "The experience requirement can be missed with a penalty, but other limits are strict."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consumed": {
+      "gap_id": "G002",
+      "asked_turn": 1
+    }
+  },
+  {
+    "turn": 2,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Select a set of new employees that satisfies all stated requirements.\",\n    \"confirmed_decision_scope\": [\"Choose which candidates to hire from A, B, C, D, E.\"],\n    \"confirmed_constraints_and_rules\": [\n      \"At most 3 candidates selected.\",\n      \"At least 2 candidates selected.\",\n      \"Total salary of selected candidates must not exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\",\n      \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\",\n      \"Work experience: A 3, B 10, C 4, D 3, E 7 years.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether there is any additional objective beyond feasibility, such as minimizing cost or maximizing experience.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Select a feasible set of new employees meeting all hard requirements.\",\n    \"confirmed_decision_scope\": [\"Choose which candidates to hire from A, B, C, D, E.\"],\n    \"confirmed_constraints_and_rules\": [\n      \"At most 3 candidates selected.\",\n      \"At least 2 candidates selected.\",\n      \"Total salary of selected candidates must not exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\",\n      \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\",\n      \"Work experience: A 3, B 10, C 4, D 3, E 7 years.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the degree information is relevant to selection or just descriptive.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Select a set of new employees satisfying all stated requirements.\",\n    \"confirmed_decision_scope\": [\"Choose which candidates to hire from A, B, C, D, E.\"],\n    \"confirmed_constraints_and_rules\": [\n      \"At most 3 candidates selected.\",\n      \"At least 2 candidates selected.\",\n      \"Total salary of selected candidates must not exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\",\n      \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\",\n      \"Work experience: A 3, B 10, C 4, D 3, E 7 years.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether there is any preference or objective among feasible selections, such as minimizing total salary or maximizing total experience.\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Is there a specific objective for choosing among feasible candidate sets, or is any feasible set acceptable?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Any feasible set is acceptable; there is no additional objective.\"},\n      {\"id\": \"B\", \"text\": \"Minimize total salary paid to selected candidates.\"},\n      {\"id\": \"C\", \"text\": \"Maximize total work experience of selected candidates.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Does the degree information affect which candidates can be selected?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Degree is only descriptive and does not affect selection.\"},\n      {\"id\": \"B\", \"text\": \"At least one selected candidate must have a degree.\"},\n      {\"id\": \"C\", \"text\": \"A specific degree level is required for the team.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Is the at-most-one rule between candidates A and E the only special relationship among candidates?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Yes, A and E are the only pair with a special restriction.\"},\n      {\"id\": \"B\", \"text\": \"There are other candidate pairs that also cannot be selected together.\"},\n      {\"id\": \"C\", \"text\": \"There are candidate pairs that must be selected together.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The request states constraints but does not confirm whether there is an optimization objective or whether degree data is a selection rule, which could change the modeled problem.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Select a set of new employees that satisfies all stated requirements.",
+        "confirmed_decision_scope": [
+          "Choose which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "At most 3 candidates selected.",
+          "At least 2 candidates selected.",
+          "Total salary of selected candidates must not exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Work experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether there is any additional objective beyond feasibility, such as minimizing cost or maximizing experience."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Select a feasible set of new employees meeting all hard requirements.",
+        "confirmed_decision_scope": [
+          "Choose which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "At most 3 candidates selected.",
+          "At least 2 candidates selected.",
+          "Total salary of selected candidates must not exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Work experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the degree information is relevant to selection or just descriptive."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Select a set of new employees satisfying all stated requirements.",
+        "confirmed_decision_scope": [
+          "Choose which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "At most 3 candidates selected.",
+          "At least 2 candidates selected.",
+          "Total salary of selected candidates must not exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Work experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether there is any preference or objective among feasible selections, such as minimizing total salary or maximizing total experience."
+        ]
+      },
+      "deep_search_decision_evidence": "The request states constraints but does not confirm whether there is an optimization objective or whether degree data is a selection rule, which could change the modeled problem.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Is there a specific objective for choosing among feasible candidate sets, or is any feasible set acceptable?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Any feasible set is acceptable; there is no additional objective."
+          },
+          {
+            "id": "B",
+            "text": "Minimize total salary paid to selected candidates."
+          },
+          {
+            "id": "C",
+            "text": "Maximize total work experience of selected candidates."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Does the degree information affect which candidates can be selected?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Degree is only descriptive and does not affect selection."
+          },
+          {
+            "id": "B",
+            "text": "At least one selected candidate must have a degree."
+          },
+          {
+            "id": "C",
+            "text": "A specific degree level is required for the team."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Is the at-most-one rule between candidates A and E the only special relationship among candidates?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Yes, A and E are the only pair with a special restriction."
+          },
+          {
+            "id": "B",
+            "text": "There are other candidate pairs that also cannot be selected together."
+          },
+          {
+            "id": "C",
+            "text": "There are candidate pairs that must be selected together."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the business objective/tradeoff: whether any feasible set is acceptable or whether the model should minimize salary or maximize experience. This is the highest-priority missing structure because without it the Agent must silently assume a default objective, which directly changes the OR model. Q2 fills in whether degree is a constraint or merely descriptive; it is useful but secondary because it only affects one attribute and may be irrelevant if no objective exists. Q3 fills in additional candidate relationship constraints; it is also useful but narrower and less likely to change the core model than the objective. Q1 best reduces silent-assumption risk because the current state explicitly notes the objective is unresolved, and choosing an objective is a business tradeoff that cannot be safely defaulted.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the business objective/tradeoff: whether any feasible set is acceptable or whether the model should minimize salary or maximize experience. This is the highest-priority missing structure because without it the Agent must silently assume a default objective, which directly changes the OR model. Q2 fills in whether degree is a constraint or merely descriptive; it is useful but secondary because it only affects one attribute and may be irrelevant if no objective exists. Q3 fills in additional candidate relationship constraints; it is also useful but narrower and less likely to change the core model than the objective. Q1 best reduces silent-assumption risk because the current state explicitly notes the objective is unresolved, and choosing an objective is a business tradeoff that cannot be safely defaulted.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Is there a specific objective for choosing among feasible candidate sets, or is any feasible set acceptable?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Any feasible set is acceptable; there is no additional objective."
+        },
+        {
+          "id": "B",
+          "text": "Minimize total salary paid to selected candidates."
+        },
+        {
+          "id": "C",
+          "text": "Maximize total work experience of selected candidates."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 3,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salaries: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether any minimum degree or education requirement applies to selected candidates.\",\n      \"Not confirmed yet: whether any candidate compatibility, exclusion, or must-include relationships exist beyond the stated A/E restriction.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salaries: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether a minimum degree level is required for the selected team.\",\n      \"Not confirmed yet: whether candidates with no degree are eligible for selection.\",\n      \"Not confirmed yet: whether any other candidate relationships or restrictions apply.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salaries: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the team must include at least one candidate with a degree.\",\n      \"Not confirmed yet: whether the A/E restriction is the only candidate relationship rule.\"\n    ]\n  },\n  \"Q1\": {\n    \"frontier_gap_id\": \"G001\",\n    \"question\": \"Does the selected team need to satisfy any minimum education or degree requirement?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"No degree requirement applies; candidates are eligible regardless of degree.\"},\n      {\"id\": \"B\", \"text\": \"At least one selected candidate must hold a Bachelor's degree or higher.\"},\n      {\"id\": \"C\", \"text\": \"At least one selected candidate must hold a Master's degree or higher.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"frontier_gap_id\": \"G003\",\n    \"question\": \"Are there any candidate compatibility or exclusion rules beyond the stated A/E restriction?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"The A/E restriction is the only candidate relationship rule.\"},\n      {\"id\": \"B\", \"text\": \"There are additional forbidden candidate combinations that must be respected.\"},\n      {\"id\": \"C\", \"text\": \"There are additional must-include candidate requirements that must be respected.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"frontier_gap_id\": \"G004\",\n    \"question\": \"Are candidates with no degree eligible for selection?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"Candidates with no degree are eligible for selection.\"},\n      {\"id\": \"B\", \"text\": \"Candidates with no degree are not eligible for selection.\"},\n      {\"id\": \"C\", \"text\": \"Candidates with no degree are eligible only if another selected candidate holds a degree.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The request provides degree data but states no degree-related rule, and it states only one candidate relationship. These unresolved business rules could change which candidate sets are feasible, so clarification is needed before modeling.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any minimum degree or education requirement applies to selected candidates.",
+          "Not confirmed yet: whether any candidate compatibility, exclusion, or must-include relationships exist beyond the stated A/E restriction."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether a minimum degree level is required for the selected team.",
+          "Not confirmed yet: whether candidates with no degree are eligible for selection.",
+          "Not confirmed yet: whether any other candidate relationships or restrictions apply."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the team must include at least one candidate with a degree.",
+          "Not confirmed yet: whether the A/E restriction is the only candidate relationship rule."
+        ]
+      },
+      "deep_search_decision_evidence": "The request provides degree data but states no degree-related rule, and it states only one candidate relationship. These unresolved business rules could change which candidate sets are feasible, so clarification is needed before modeling.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Does the selected team need to satisfy any minimum education or degree requirement?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No degree requirement applies; candidates are eligible regardless of degree."
+          },
+          {
+            "id": "B",
+            "text": "At least one selected candidate must hold a Bachelor's degree or higher."
+          },
+          {
+            "id": "C",
+            "text": "At least one selected candidate must hold a Master's degree or higher."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G001"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Are there any candidate compatibility or exclusion rules beyond the stated A/E restriction?",
+        "options": [
+          {
+            "id": "A",
+            "text": "The A/E restriction is the only candidate relationship rule."
+          },
+          {
+            "id": "B",
+            "text": "There are additional forbidden candidate combinations that must be respected."
+          },
+          {
+            "id": "C",
+            "text": "There are additional must-include candidate requirements that must be respected."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G003"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are candidates with no degree eligible for selection?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Candidates with no degree are eligible for selection."
+          },
+          {
+            "id": "B",
+            "text": "Candidates with no degree are not eligible for selection."
+          },
+          {
+            "id": "C",
+            "text": "Candidates with no degree are eligible only if another selected candidate holds a degree."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G004"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        }
+      ],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"CONTINUE\",\n  \"search_summary\": \"The objective is now resolved as minimizing total salary, and hard/soft status is resolved. Remaining structural uncertainty concerns whether the stated A/E restriction is the only candidate relationship, whether any degree/education rule applies, and whether there are additional eligibility or coverage rules not yet stated.\",\n  \"updates\": [\n    {\n      \"category\": \"constraint_set\",\n      \"description\": \"Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.\",\n      \"evidence_quote\": \"Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.\",\n      \"operation\": \"ADD\"\n    },\n    {\n      \"category\": \"entity_relation\",\n      \"description\": \"Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.\",\n      \"evidence_quote\": \"at most one of candidate A and E can be selected.\",\n      \"operation\": \"ADD\"\n    }\n  ]\n}",
+      "result": {
+        "decision": "CONTINUE",
+        "search_summary": "The objective is now resolved as minimizing total salary, and hard/soft status is resolved. Remaining structural uncertainty concerns whether the stated A/E restriction is the only candidate relationship, whether any degree/education rule applies, and whether there are additional eligibility or coverage rules not yet stated.",
+        "updates": [
+          {
+            "operation": "ADD",
+            "category": "constraint_set",
+            "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+            "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree."
+          },
+          {
+            "operation": "ADD",
+            "category": "entity_relation",
+            "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+            "evidence_quote": "at most one of candidate A and E can be selected."
+          }
+        ],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [
+        {
+          "operation": "ADD",
+          "gap_id": "G004",
+          "status": "OPEN"
+        },
+        {
+          "operation": "ADD",
+          "gap_id": "G005",
+          "status": "OPEN"
+        }
+      ],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "open_gap_ids": [
+        "G001",
+        "G003",
+        "G004",
+        "G005"
+      ]
+    },
+    "selected_frontier_gap_id": "G001",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the constraint_set gap G001: whether a minimum degree/education requirement applies to the selected team. This is a hard business rule that, if unasked, the Agent would silently assume away, directly affecting feasibility and the optimal selection. Q2 fills in entity_relation gap G003: whether candidate compatibility/exclusion rules exist beyond the A/E restriction; important but somewhat broader and less likely to be a hidden hard rule than a degree requirement. Q3 fills in constraint_set gap G004: whether no-degree candidates are eligible, which overlaps heavily with Q1 and is a narrower sub-case of the same education-eligibility issue. Q1 is the best first question because it addresses the most consequential silent assumption (education requirement) with clear, mutually exclusive, business-answerable options, and its answer would most change the feasible set and optimal objective.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the constraint_set gap G001: whether a minimum degree/education requirement applies to the selected team. This is a hard business rule that, if unasked, the Agent would silently assume away, directly affecting feasibility and the optimal selection. Q2 fills in entity_relation gap G003: whether candidate compatibility/exclusion rules exist beyond the A/E restriction; important but somewhat broader and less likely to be a hidden hard rule than a degree requirement. Q3 fills in constraint_set gap G004: whether no-degree candidates are eligible, which overlaps heavily with Q1 and is a narrower sub-case of the same education-eligibility issue. Q1 is the best first question because it addresses the most consequential silent assumption (education requirement) with clear, mutually exclusive, business-answerable options, and its answer would most change the feasible set and optimal objective.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Does the selected team need to satisfy any minimum education or degree requirement?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No degree requirement applies; candidates are eligible regardless of degree."
+        },
+        {
+          "id": "B",
+          "text": "At least one selected candidate must hold a Bachelor's degree or higher."
+        },
+        {
+          "id": "C",
+          "text": "At least one selected candidate must hold a Master's degree or higher."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consumed": {
+      "gap_id": "G001",
+      "asked_turn": 3
+    }
+  },
+  {
+    "turn": 4,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"Is the restriction that at most one of candidate A and candidate E can be selected the only candidate-pair restriction?\", \"options\": [{\"id\": \"A\", \"text\": \"Yes, the A/E restriction is the only candidate-pair restriction.\"}, {\"id\": \"B\", \"text\": \"No, there are additional candidate-pair restrictions not yet stated.\"}, {\"id\": \"C\", \"text\": \"No, there are restrictions involving other candidate combinations not yet stated.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\"Select which candidates to hire from candidates A, B, C, D, E.\"],\n    \"confirmed_constraints_and_rules\": [\n      \"All stated limits are strict and cannot be violated.\",\n      \"Number of selected candidates must not exceed 3.\",\n      \"At least 2 new employees must be hired.\",\n      \"Total payment to selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"At least one selected candidate must hold a Master's degree or higher.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary requirements per candidate.\",\n      \"Degree per candidate.\",\n      \"Work experience per candidate.\",\n      \"Maximum number of new employees: 3.\",\n      \"Budget: $35,000.\",\n      \"Minimum total work experience: 12 years.\",\n      \"Minimum number of new employees: 2.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether any other eligibility or policy rules apply beyond the stated constraints.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\"Select which candidates to hire from candidates A, B, C, D, E.\"],\n    \"confirmed_constraints_and_rules\": [\n      \"All stated limits are strict and cannot be violated.\",\n      \"Number of selected candidates must not exceed 3.\",\n      \"At least 2 new employees must be hired.\",\n      \"Total payment to selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"At least one selected candidate must hold a Master's degree or higher.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary requirements per candidate.\",\n      \"Degree per candidate.\",\n      \"Work experience per candidate.\",\n      \"Maximum number of new employees: 3.\",\n      \"Budget: $35,000.\",\n      \"Minimum total work experience: 12 years.\",\n      \"Minimum number of new employees: 2.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the degree requirement is a hard constraint or a preference.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\"Select which candidates to hire from candidates A, B, C, D, E.\"],\n    \"confirmed_constraints_and_rules\": [\n      \"All stated limits are strict and cannot be violated.\",\n      \"Number of selected candidates must not exceed 3.\",\n      \"At least 2 new employees must be hired.\",\n      \"Total payment to selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"At least one selected candidate must hold a Master's degree or higher.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary requirements per candidate.\",\n      \"Degree per candidate.\",\n      \"Work experience per candidate.\",\n      \"Maximum number of new employees: 3.\",\n      \"Budget: $35,000.\",\n      \"Minimum total work experience: 12 years.\",\n      \"Minimum number of new employees: 2.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the selected candidates must meet any other team composition rule.\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Is the requirement that at least one selected candidate holds a Master's degree or higher a strict rule or a preference?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"It is a strict rule that must always be satisfied.\"},\n      {\"id\": \"B\", \"text\": \"It is a preference that can be violated if needed.\"},\n      {\"id\": \"C\", \"text\": \"It is not required at all.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Are there any other eligibility rules for candidates beyond the stated salary, degree, experience, and A/E conflict constraints?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"No other eligibility rules apply.\"},\n      {\"id\": \"B\", \"text\": \"Candidates must be currently authorized to work in the country.\"},\n      {\"id\": \"C\", \"text\": \"Candidates must have at least a Bachelor's degree.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Does the team need to satisfy any diversity or composition requirement beyond the degree rule?\",\n    \"options\": [\n      {\"id\": \"A\", \"text\": \"No additional composition requirement applies.\"},\n      {\"id\": \"B\", \"text\": \"At least one selected candidate must have no degree.\"},\n      {\"id\": \"C\", \"text\": \"At least one selected candidate must have a Doctoral degree.\"}\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The user confirmed a strict Master's-or-higher degree requirement, but it is still unclear whether this is a hard constraint or a preference, and whether other eligibility or composition rules apply. These unresolved business rules could change the feasible candidate sets and the optimal selection.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "All stated limits are strict and cannot be violated.",
+          "Number of selected candidates must not exceed 3.",
+          "At least 2 new employees must be hired.",
+          "Total payment to selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary requirements per candidate.",
+          "Degree per candidate.",
+          "Work experience per candidate.",
+          "Maximum number of new employees: 3.",
+          "Budget: $35,000.",
+          "Minimum total work experience: 12 years.",
+          "Minimum number of new employees: 2."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any other eligibility or policy rules apply beyond the stated constraints."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "All stated limits are strict and cannot be violated.",
+          "Number of selected candidates must not exceed 3.",
+          "At least 2 new employees must be hired.",
+          "Total payment to selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary requirements per candidate.",
+          "Degree per candidate.",
+          "Work experience per candidate.",
+          "Maximum number of new employees: 3.",
+          "Budget: $35,000.",
+          "Minimum total work experience: 12 years.",
+          "Minimum number of new employees: 2."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the degree requirement is a hard constraint or a preference."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "All stated limits are strict and cannot be violated.",
+          "Number of selected candidates must not exceed 3.",
+          "At least 2 new employees must be hired.",
+          "Total payment to selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary requirements per candidate.",
+          "Degree per candidate.",
+          "Work experience per candidate.",
+          "Maximum number of new employees: 3.",
+          "Budget: $35,000.",
+          "Minimum total work experience: 12 years.",
+          "Minimum number of new employees: 2."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the selected candidates must meet any other team composition rule."
+        ]
+      },
+      "deep_search_decision_evidence": "The user confirmed a strict Master's-or-higher degree requirement, but it is still unclear whether this is a hard constraint or a preference, and whether other eligibility or composition rules apply. These unresolved business rules could change the feasible candidate sets and the optimal selection.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Is the requirement that at least one selected candidate holds a Master's degree or higher a strict rule or a preference?",
+        "options": [
+          {
+            "id": "A",
+            "text": "It is a strict rule that must always be satisfied."
+          },
+          {
+            "id": "B",
+            "text": "It is a preference that can be violated if needed."
+          },
+          {
+            "id": "C",
+            "text": "It is not required at all."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Are there any other eligibility rules for candidates beyond the stated salary, degree, experience, and A/E conflict constraints?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No other eligibility rules apply."
+          },
+          {
+            "id": "B",
+            "text": "Candidates must be currently authorized to work in the country."
+          },
+          {
+            "id": "C",
+            "text": "Candidates must have at least a Bachelor's degree."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does the team need to satisfy any diversity or composition requirement beyond the degree rule?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No additional composition requirement applies."
+          },
+          {
+            "id": "B",
+            "text": "At least one selected candidate must have no degree."
+          },
+          {
+            "id": "C",
+            "text": "At least one selected candidate must have a Doctoral degree."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 re-confirms whether the Master's degree rule is strict or a preference, but the user already answered in Turn 3 that at least one selected candidate must hold a Master's degree or higher, and Turn 1 established that all stated limits are strict. This is largely a repeat of an already-asked gap and would not materially change the model. Q2 probes for additional eligibility rules beyond the stated salary, degree, experience, and A/E conflict constraints. This fills in a potentially missing hard-constraint or policy boundary and directly reduces silent-assumption risk, because the Agent would otherwise assume no other eligibility rules apply. Q3 asks about diversity or composition requirements beyond the degree rule, which is also a useful constraint-boundary question, but it is narrower and more speculative than Q2. Since the eligible formulation-gap frontier is empty, any candidate with frontier_gap_id NONE is acceptable; among the three, Q2 best targets an open business-rule gap that could change the feasible set and is not merely mathematically salient. Its options are clear, mutually exclusive, and answerable by a business user.\",\n  \"selected_question_id\": \"Q2\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 re-confirms whether the Master's degree rule is strict or a preference, but the user already answered in Turn 3 that at least one selected candidate must hold a Master's degree or higher, and Turn 1 established that all stated limits are strict. This is largely a repeat of an already-asked gap and would not materially change the model. Q2 probes for additional eligibility rules beyond the stated salary, degree, experience, and A/E conflict constraints. This fills in a potentially missing hard-constraint or policy boundary and directly reduces silent-assumption risk, because the Agent would otherwise assume no other eligibility rules apply. Q3 asks about diversity or composition requirements beyond the degree rule, which is also a useful constraint-boundary question, but it is narrower and more speculative than Q2. Since the eligible formulation-gap frontier is empty, any candidate with frontier_gap_id NONE is acceptable; among the three, Q2 best targets an open business-rule gap that could change the feasible set and is not merely mathematically salient. Its options are clear, mutually exclusive, and answerable by a business user.",
+          "selected_question_id": "Q2"
+        }
+      }
+    ],
+    "selected_question_id": "Q2",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Are there any other eligibility rules for candidates beyond the stated salary, degree, experience, and A/E conflict constraints?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No other eligibility rules apply."
+        },
+        {
+          "id": "B",
+          "text": "Candidates must be currently authorized to work in the country."
+        },
+        {
+          "id": "C",
+          "text": "Candidates must have at least a Bachelor's degree."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 5,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\"action\": \"ASK\", \"C1\": {\"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\", \"confirmed_decision_scope\": [\"Select which candidates to hire from A, B, C, D, E.\"], \"confirmed_constraints_and_rules\": [\"Select at most 3 candidates.\", \"Select at least 2 candidates.\", \"Total salary of selected candidates cannot exceed $35,000.\", \"Total work experience of selected candidates must be at least 12 years.\", \"At most one of candidate A and candidate E can be selected.\", \"At least one selected candidate must hold a Master's degree or higher.\", \"All stated limits are strict and cannot be violated.\"], \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E.\", \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\", \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\", \"Experience: A 3, B 10, C 4, D 3, E 7 years.\"], \"unresolved_business_assumptions\": [\"Not confirmed yet: whether any other candidate compatibility, exclusion, or must-include relationships exist beyond the A/E restriction.\"]}, \"C2\": {\"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\", \"confirmed_decision_scope\": [\"Select which candidates to hire from A, B, C, D, E.\"], \"confirmed_constraints_and_rules\": [\"Select at most 3 candidates.\", \"Select at least 2 candidates.\", \"Total salary of selected candidates cannot exceed $35,000.\", \"Total work experience of selected candidates must be at least 12 years.\", \"At most one of candidate A and candidate E can be selected.\", \"At least one selected candidate must hold a Master's degree or higher.\", \"All stated limits are strict and cannot be violated.\"], \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E.\", \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\", \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\", \"Experience: A 3, B 10, C 4, D 3, E 7 years.\"], \"unresolved_business_assumptions\": [\"Not confirmed yet: whether candidates must satisfy any eligibility rule beyond salary, experience, degree requirement, and the A/E restriction.\"]}, \"C3\": {\"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\", \"confirmed_decision_scope\": [\"Select which candidates to hire from A, B, C, D, E.\"], \"confirmed_constraints_and_rules\": [\"Select at most 3 candidates.\", \"Select at least 2 candidates.\", \"Total salary of selected candidates cannot exceed $35,000.\", \"Total work experience of selected candidates must be at least 12 years.\", \"At most one of candidate A and candidate E can be selected.\", \"At least one selected candidate must hold a Master's degree or higher.\", \"All stated limits are strict and cannot be violated.\"], \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E.\", \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\", \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\", \"Experience: A 3, B 10, C 4, D 3, E 7 years.\"], \"unresolved_business_assumptions\": [\"Not confirmed yet: whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.\"]}, \"Q1\": {\"frontier_gap_id\": \"G003\", \"question\": \"Are there any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction?\", \"options\": [{\"id\": \"A\", \"text\": \"No other compatibility, exclusion, or must-include relationships exist.\"}, {\"id\": \"B\", \"text\": \"Some candidates must be selected together as a pair.\"}, {\"id\": \"C\", \"text\": \"Some candidates cannot be selected together beyond the A/E restriction.\"}], \"allow_other\": true}, \"Q2\": {\"frontier_gap_id\": \"G004\", \"question\": \"Must candidates satisfy any eligibility rule beyond salary, experience, degree requirement, and the A/E restriction?\", \"options\": [{\"id\": \"A\", \"text\": \"No additional eligibility rules apply.\"}, {\"id\": \"B\", \"text\": \"Candidates without a degree are not eligible for hire.\"}, {\"id\": \"C\", \"text\": \"Candidates must meet a minimum individual work experience threshold.\"}], \"allow_other\": true}, \"Q3\": {\"frontier_gap_id\": \"G005\", \"question\": \"Does the A/E restriction imply any relationship beyond mutual exclusion?\", \"options\": [{\"id\": \"A\", \"text\": \"It is mutual exclusion only; no other relationship is implied.\"}, {\"id\": \"B\", \"text\": \"It also requires that at least one of A or E be selected.\"}, {\"id\": \"C\", \"text\": \"It also forbids certain combinations involving other candidates.\"}], \"allow_other\": true}, \"deep_search_decision_evidence\": \"The open gaps concern whether additional candidate relationships or eligibility rules exist beyond those already stated; these could change the feasible candidate sets and therefore the optimal selection.\"}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any other candidate compatibility, exclusion, or must-include relationships exist beyond the A/E restriction."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether candidates must satisfy any eligibility rule beyond salary, experience, degree requirement, and the A/E restriction."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates."
+        ]
+      },
+      "deep_search_decision_evidence": "The open gaps concern whether additional candidate relationships or eligibility rules exist beyond those already stated; these could change the feasible candidate sets and therefore the optimal selection.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Are there any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No other compatibility, exclusion, or must-include relationships exist."
+          },
+          {
+            "id": "B",
+            "text": "Some candidates must be selected together as a pair."
+          },
+          {
+            "id": "C",
+            "text": "Some candidates cannot be selected together beyond the A/E restriction."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G003"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Must candidates satisfy any eligibility rule beyond salary, experience, degree requirement, and the A/E restriction?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No additional eligibility rules apply."
+          },
+          {
+            "id": "B",
+            "text": "Candidates without a degree are not eligible for hire."
+          },
+          {
+            "id": "C",
+            "text": "Candidates must meet a minimum individual work experience threshold."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G004"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does the A/E restriction imply any relationship beyond mutual exclusion?",
+        "options": [
+          {
+            "id": "A",
+            "text": "It is mutual exclusion only; no other relationship is implied."
+          },
+          {
+            "id": "B",
+            "text": "It also requires that at least one of A or E be selected."
+          },
+          {
+            "id": "C",
+            "text": "It also forbids certain combinations involving other candidates."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G005"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"NO_NEW_GAP\",\n  \"search_summary\": \"The public conversation has already addressed the objective, hard/soft status of limits, degree requirement, and other eligibility rules. Remaining structural uncertainty is already captured by existing ledger entries on candidate relationships and eligibility rules.\",\n  \"updates\": []\n}",
+      "result": {
+        "decision": "NO_NEW_GAP",
+        "search_summary": "The public conversation has already addressed the objective, hard/soft status of limits, degree requirement, and other eligibility rules. Remaining structural uncertainty is already captured by existing ledger entries on candidate relationships and eligibility rules.",
+        "updates": [],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "OPEN",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": null
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "open_gap_ids": [
+        "G003",
+        "G004",
+        "G005"
+      ]
+    },
+    "selected_frontier_gap_id": "G003",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in entity-relation structure by checking for additional compatibility, exclusion, or must-include relationships beyond the known A/E restriction; this directly reduces silent-assumption risk about candidate interaction constraints. Q2 fills in constraint-set structure by checking for additional eligibility rules beyond salary, experience, degree, and A/E; this is also important but overlaps with the already-asked Turn 4 question about other eligibility rules. Q3 is narrower, focusing only on whether the A/E restriction implies more than mutual exclusion, which is a subset of Q1's broader entity-relation gap. Q1 best covers the open entity-relation gap G003 and is most likely to change the feasible decision space by revealing hidden candidate relationships, so it is the best next question.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in entity-relation structure by checking for additional compatibility, exclusion, or must-include relationships beyond the known A/E restriction; this directly reduces silent-assumption risk about candidate interaction constraints. Q2 fills in constraint-set structure by checking for additional eligibility rules beyond salary, experience, degree, and A/E; this is also important but overlaps with the already-asked Turn 4 question about other eligibility rules. Q3 is narrower, focusing only on whether the A/E restriction implies more than mutual exclusion, which is a subset of Q1's broader entity-relation gap. Q1 best covers the open entity-relation gap G003 and is most likely to change the feasible decision space by revealing hidden candidate relationships, so it is the best next question.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Are there any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No other compatibility, exclusion, or must-include relationships exist."
+        },
+        {
+          "id": "B",
+          "text": "Some candidates must be selected together as a pair."
+        },
+        {
+          "id": "C",
+          "text": "Some candidates cannot be selected together beyond the A/E restriction."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consumed": {
+      "gap_id": "G003",
+      "asked_turn": 5
+    }
+  },
+  {
+    "turn": 6,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\"action\": \"ASK\", \"C1\": {\"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\", \"confirmed_decision_scope\": [\"Select which candidates to hire from A, B, C, D, E.\"], \"confirmed_constraints_and_rules\": [\"Select at most 3 candidates.\", \"Select at least 2 candidates.\", \"Total salary cannot exceed $35,000.\", \"Total work experience must be at least 12 years.\", \"At most one of A and E can be selected.\", \"At least one selected candidate must hold a Master's degree or higher.\", \"All stated limits are strict.\"], \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E.\", \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\", \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\", \"Experience: A 3, B 10, C 4, D 3, E 7 years.\"], \"unresolved_business_assumptions\": [\"Not confirmed yet: whether any eligibility rule beyond salary, experience, and the A/E restriction applies, such as excluding no-degree candidates.\"]}, \"C2\": {\"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\", \"confirmed_decision_scope\": [\"Select which candidates to hire from A, B, C, D, E.\"], \"confirmed_constraints_and_rules\": [\"Select at most 3 candidates.\", \"Select at least 2 candidates.\", \"Total salary cannot exceed $35,000.\", \"Total work experience must be at least 12 years.\", \"At most one of A and E can be selected.\", \"At least one selected candidate must hold a Master's degree or higher.\", \"All stated limits are strict.\"], \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E.\", \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\", \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\", \"Experience: A 3, B 10, C 4, D 3, E 7 years.\"], \"unresolved_business_assumptions\": [\"Not confirmed yet: whether the A/E restriction is mutual exclusion only or also implies other must-include or forbidden-combination relationships.\"]}, \"C3\": {\"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\", \"confirmed_decision_scope\": [\"Select which candidates to hire from A, B, C, D, E.\"], \"confirmed_constraints_and_rules\": [\"Select at most 3 candidates.\", \"Select at least 2 candidates.\", \"Total salary cannot exceed $35,000.\", \"Total work experience must be at least 12 years.\", \"At most one of A and E can be selected.\", \"At least one selected candidate must hold a Master's degree or higher.\", \"All stated limits are strict.\"], \"known_inputs_entities_and_indices\": [\"Candidates A, B, C, D, E.\", \"Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.\", \"Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.\", \"Experience: A 3, B 10, C 4, D 3, E 7 years.\"], \"unresolved_business_assumptions\": [\"Not confirmed yet: whether any other eligibility rule or candidate relationship beyond those already stated applies.\"]}, \"Q1\": {\"frontier_gap_id\": \"G004\", \"question\": \"Does the team need to satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or excluding no-degree candidates?\", \"options\": [{\"id\": \"A\", \"text\": \"No additional eligibility rule applies beyond the stated constraints.\"}, {\"id\": \"B\", \"text\": \"Candidates with no degree are not eligible for selection.\"}, {\"id\": \"C\", \"text\": \"At least one selected candidate must hold a Bachelor's degree or higher.\"}], \"allow_other\": true}, \"Q2\": {\"frontier_gap_id\": \"G005\", \"question\": \"Does the A/E restriction imply any relationship among other candidates beyond simply not selecting both A and E together?\", \"options\": [{\"id\": \"A\", \"text\": \"It is only a mutual exclusion between A and E; no other relationship applies.\"}, {\"id\": \"B\", \"text\": \"It also means that if A is selected, E cannot be selected, and if E is selected, A cannot be selected, with no other implications.\"}, {\"id\": \"C\", \"text\": \"It also implies that some other candidate must be selected when A or E is selected.\"}], \"allow_other\": true}, \"Q3\": {\"frontier_gap_id\": \"G004\", \"question\": \"Are there any other candidate eligibility rules, such as work authorization or background requirements, that affect who can be selected?\", \"options\": [{\"id\": \"A\", \"text\": \"No other eligibility rules apply.\"}, {\"id\": \"B\", \"text\": \"Candidates must be authorized to work in the country.\"}, {\"id\": \"C\", \"text\": \"Candidates must pass a background check.\"}], \"allow_other\": true}, \"deep_search_decision_evidence\": \"The open gaps concern whether additional eligibility rules or candidate relationships exist beyond those already stated; these could change the feasible candidate sets and therefore the optimal selection.\"}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary cannot exceed $35,000.",
+          "Total work experience must be at least 12 years.",
+          "At most one of A and E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher.",
+          "All stated limits are strict."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any eligibility rule beyond salary, experience, and the A/E restriction applies, such as excluding no-degree candidates."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary cannot exceed $35,000.",
+          "Total work experience must be at least 12 years.",
+          "At most one of A and E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher.",
+          "All stated limits are strict."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the A/E restriction is mutual exclusion only or also implies other must-include or forbidden-combination relationships."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary cannot exceed $35,000.",
+          "Total work experience must be at least 12 years.",
+          "At most one of A and E can be selected.",
+          "At least one selected candidate must hold a Master's degree or higher.",
+          "All stated limits are strict."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salaries: A $8100, B $20000, C $21000, D $3000, E $8000.",
+          "Degrees: A Bachelor's, B Master's, C Doctoral, D No degree, E No degree.",
+          "Experience: A 3, B 10, C 4, D 3, E 7 years."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any other eligibility rule or candidate relationship beyond those already stated applies."
+        ]
+      },
+      "deep_search_decision_evidence": "The open gaps concern whether additional eligibility rules or candidate relationships exist beyond those already stated; these could change the feasible candidate sets and therefore the optimal selection.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Does the team need to satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or excluding no-degree candidates?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No additional eligibility rule applies beyond the stated constraints."
+          },
+          {
+            "id": "B",
+            "text": "Candidates with no degree are not eligible for selection."
+          },
+          {
+            "id": "C",
+            "text": "At least one selected candidate must hold a Bachelor's degree or higher."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G004"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Does the A/E restriction imply any relationship among other candidates beyond simply not selecting both A and E together?",
+        "options": [
+          {
+            "id": "A",
+            "text": "It is only a mutual exclusion between A and E; no other relationship applies."
+          },
+          {
+            "id": "B",
+            "text": "It also means that if A is selected, E cannot be selected, and if E is selected, A cannot be selected, with no other implications."
+          },
+          {
+            "id": "C",
+            "text": "It also implies that some other candidate must be selected when A or E is selected."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G005"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are there any other candidate eligibility rules, such as work authorization or background requirements, that affect who can be selected?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No other eligibility rules apply."
+          },
+          {
+            "id": "B",
+            "text": "Candidates must be authorized to work in the country."
+          },
+          {
+            "id": "C",
+            "text": "Candidates must pass a background check."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G004"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"NO_NEW_GAP\",\n  \"search_summary\": \"The public conversation has already addressed the objective (minimize total salary), hard/soft status of limits, degree requirement, other eligibility rules, and other candidate relationships. No genuinely new structural gaps remain beyond the existing ledger entries.\",\n  \"updates\": []\n}",
+      "result": {
+        "decision": "NO_NEW_GAP",
+        "search_summary": "The public conversation has already addressed the objective (minimize total salary), hard/soft status of limits, degree requirement, other eligibility rules, and other candidate relationships. No genuinely new structural gaps remain beyond the existing ledger entries.",
+        "updates": [],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "open_gap_ids": [
+        "G004",
+        "G005"
+      ]
+    },
+    "selected_frontier_gap_id": "G004",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 targets G004, asking whether any eligibility rule beyond salary, experience, and the A/E restriction applies, such as a degree requirement or excluding no-degree candidates. This fills in a hard constraint/business rule that could materially change the feasible set and reduce silent-assumption risk. Q2 targets G005, clarifying whether the A/E restriction implies any additional must-include or forbidden-combination relationships; this is also a constraint/entity-relation gap, but the prior turn already asked about other compatibility/exclusion/must-include relationships and the user answered none, so it is largely a repeated confirmation. Q3 also targets G004 but is broader and less directly tied to the known degree data; Q1 is more specific and answerable. Overall, Q1 best fills the most decision-relevant open constraint gap and reduces the risk that the model silently assumes no additional eligibility rules.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 targets G004, asking whether any eligibility rule beyond salary, experience, and the A/E restriction applies, such as a degree requirement or excluding no-degree candidates. This fills in a hard constraint/business rule that could materially change the feasible set and reduce silent-assumption risk. Q2 targets G005, clarifying whether the A/E restriction implies any additional must-include or forbidden-combination relationships; this is also a constraint/entity-relation gap, but the prior turn already asked about other compatibility/exclusion/must-include relationships and the user answered none, so it is largely a repeated confirmation. Q3 also targets G004 but is broader and less directly tied to the known degree data; Q1 is more specific and answerable. Overall, Q1 best fills the most decision-relevant open constraint gap and reduces the risk that the model silently assumes no additional eligibility rules.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Does the team need to satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or excluding no-degree candidates?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No additional eligibility rule applies beyond the stated constraints."
+        },
+        {
+          "id": "B",
+          "text": "Candidates with no degree are not eligible for selection."
+        },
+        {
+          "id": "C",
+          "text": "At least one selected candidate must hold a Bachelor's degree or higher."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consumed": {
+      "gap_id": "G004",
+      "asked_turn": 6
+    }
+  },
+  {
+    "turn": 7,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "error",
+        "error_type": "ValueError",
+        "error": "Deep-search raw payload must not include top-level question/options/allow_other.",
+        "raw_agent_response": "{\"action\": \"ASK\", \"question\": \"Is the requirement that at least one selected candidate holds a Master's or Doctoral degree a strict requirement, or can it be relaxed?\", \"options\": [{\"id\": \"A\", \"text\": \"It is a strict requirement that must always be satisfied.\"}, {\"id\": \"B\", \"text\": \"It can be relaxed if no feasible team satisfies it.\"}, {\"id\": \"C\", \"text\": \"It is a preference, not a hard requirement.\"}], \"allow_other\": true}"
+      },
+      {
+        "attempt": 2,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Budget $35,000.\",\n      \"Minimum total work experience 12 years.\",\n      \"Minimum number of new employees 2.\",\n      \"Maximum number of new employees 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether any other eligibility rules apply beyond salary, experience, degree-level requirement, and the A/E restriction.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Budget $35,000.\",\n      \"Minimum total work experience 12 years.\",\n      \"Minimum number of new employees 2.\",\n      \"Maximum number of new employees 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether the Master's-or-Doctoral degree requirement is the only additional eligibility rule.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"All stated limits are strict and cannot be violated.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Budget $35,000.\",\n      \"Minimum total work experience 12 years.\",\n      \"Minimum number of new employees 2.\",\n      \"Maximum number of new employees 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Not confirmed yet: whether any other candidate eligibility or compatibility rules exist beyond those already stated.\"\n    ]\n  },\n  \"Q1\": {\n    \"question\": \"Is the requirement that at least one selected candidate hold a Master's or Doctoral degree the only additional eligibility rule beyond salary, experience, and the A/E restriction?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"Yes, that is the only additional eligibility rule.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"No, there is also a rule excluding candidates with no degree.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"No, there is also a rule requiring at least one Bachelor's degree holder.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"question\": \"Does the Master's-or-Doctoral degree requirement mean the selected team must include at least one candidate with a Master's degree or higher?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"Yes, at least one selected candidate must hold a Master's or Doctoral degree.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"No, the requirement is that at least one selected candidate must hold a Doctoral degree.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"No, the requirement is that at least one selected candidate must hold a Bachelor's degree or higher.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"question\": \"Are there any other candidate compatibility, exclusion, or must-include relationships beyond the A/E restriction?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"No other compatibility, exclusion, or must-include relationships exist.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Some candidates must be selected together as a pair.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Some candidates cannot be selected together beyond the A/E restriction.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The user added a new eligibility rule requiring at least one selected candidate to hold a Master's or Doctoral degree, which was not previously confirmed. This changes the feasible candidate sets and must be clarified before modeling.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated.",
+          "At least one selected candidate must hold a Master's or Doctoral degree."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Budget $35,000.",
+          "Minimum total work experience 12 years.",
+          "Minimum number of new employees 2.",
+          "Maximum number of new employees 3."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any other eligibility rules apply beyond salary, experience, degree-level requirement, and the A/E restriction."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated.",
+          "At least one selected candidate must hold a Master's or Doctoral degree."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Budget $35,000.",
+          "Minimum total work experience 12 years.",
+          "Minimum number of new employees 2.",
+          "Maximum number of new employees 3."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether the Master's-or-Doctoral degree requirement is the only additional eligibility rule."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "All stated limits are strict and cannot be violated.",
+          "At least one selected candidate must hold a Master's or Doctoral degree."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Budget $35,000.",
+          "Minimum total work experience 12 years.",
+          "Minimum number of new employees 2.",
+          "Maximum number of new employees 3."
+        ],
+        "unresolved_business_assumptions": [
+          "Not confirmed yet: whether any other candidate eligibility or compatibility rules exist beyond those already stated."
+        ]
+      },
+      "deep_search_decision_evidence": "The user added a new eligibility rule requiring at least one selected candidate to hold a Master's or Doctoral degree, which was not previously confirmed. This changes the feasible candidate sets and must be clarified before modeling.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Is the requirement that at least one selected candidate hold a Master's or Doctoral degree the only additional eligibility rule beyond salary, experience, and the A/E restriction?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Yes, that is the only additional eligibility rule."
+          },
+          {
+            "id": "B",
+            "text": "No, there is also a rule excluding candidates with no degree."
+          },
+          {
+            "id": "C",
+            "text": "No, there is also a rule requiring at least one Bachelor's degree holder."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Does the Master's-or-Doctoral degree requirement mean the selected team must include at least one candidate with a Master's degree or higher?",
+        "options": [
+          {
+            "id": "A",
+            "text": "Yes, at least one selected candidate must hold a Master's or Doctoral degree."
+          },
+          {
+            "id": "B",
+            "text": "No, the requirement is that at least one selected candidate must hold a Doctoral degree."
+          },
+          {
+            "id": "C",
+            "text": "No, the requirement is that at least one selected candidate must hold a Bachelor's degree or higher."
+          }
+        ],
+        "allow_other": true
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Are there any other candidate compatibility, exclusion, or must-include relationships beyond the A/E restriction?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No other compatibility, exclusion, or must-include relationships exist."
+          },
+          {
+            "id": "B",
+            "text": "Some candidates must be selected together as a pair."
+          },
+          {
+            "id": "C",
+            "text": "Some candidates cannot be selected together beyond the A/E restriction."
+          }
+        ],
+        "allow_other": true
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 6,
+          "asked_turn": 6
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "status": "error",
+      "error_type": "ValueError",
+      "error": "ledger update 1 has invalid operation '': only ADD is supported"
+    },
+    "selected_frontier_gap_id": null,
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"Q1 fills in the remaining eligibility-rule boundary after the user's Turn 6 correction, directly targeting the unresolved assumption in C1/C2/C3 about whether the Master's-or-Doctoral requirement is the only additional rule. Q2 merely re-confirms the already-stated Master's-or-Doctoral requirement, so it adds little new structure and risks redundant confirmation. Q3 revisits candidate compatibility/exclusion relationships, which were already asked and answered in Turn 5, so it is largely a repeated confirmation. Q1 is the best choice because it resolves the highest-risk open business rule and prevents the Agent from silently assuming no further eligibility constraints exist.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "Q1 fills in the remaining eligibility-rule boundary after the user's Turn 6 correction, directly targeting the unresolved assumption in C1/C2/C3 about whether the Master's-or-Doctoral requirement is the only additional rule. Q2 merely re-confirms the already-stated Master's-or-Doctoral requirement, so it adds little new structure and risks redundant confirmation. Q3 revisits candidate compatibility/exclusion relationships, which were already asked and answered in Turn 5, so it is largely a repeated confirmation. Q1 is the best choice because it resolves the highest-risk open business rule and prevents the Agent from silently assuming no further eligibility constraints exist.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Is the requirement that at least one selected candidate hold a Master's or Doctoral degree the only additional eligibility rule beyond salary, experience, and the A/E restriction?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Yes, that is the only additional eligibility rule."
+        },
+        {
+          "id": "B",
+          "text": "No, there is also a rule excluding candidates with no degree."
+        },
+        {
+          "id": "C",
+          "text": "No, there is also a rule requiring at least one Bachelor's degree holder."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    }
+  },
+  {
+    "turn": 8,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at least 2 and at most 3 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Budget $35,000; minimum experience 12 years; minimum hires 2; maximum hires 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at least 2 and at most 3 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Budget $35,000; minimum experience 12 years; minimum hires 2; maximum hires 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at least 2 and at most 3 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidate A and candidate E can be selected.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\",\n      \"All stated limits are strict and cannot be violated.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Budget $35,000; minimum experience 12 years; minimum hires 2; maximum hires 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.\"\n    ]\n  },\n  \"Q1\": {\n    \"frontier_gap_id\": \"G005\",\n    \"question\": \"Does the restriction between candidates A and E only prevent selecting both together, or does it also create other selection relationships?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"It only prevents selecting both A and E together; no other relationship exists.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"It also means that if A is selected, E must be selected, or vice versa.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"It also means that selecting A or E forces some other candidate to be selected or excluded.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q2\": {\n    \"frontier_gap_id\": \"G005\",\n    \"question\": \"Are there any must-include or must-exclude relationships among candidates other than the A/E restriction?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"No other must-include or must-exclude relationships exist.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"There is at least one must-include relationship among other candidates.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"There is at least one must-exclude relationship among other candidates.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"Q3\": {\n    \"frontier_gap_id\": \"G005\",\n    \"question\": \"Does selecting candidate A or E impose any sequencing or ordering requirement on when other candidates can be selected?\",\n    \"options\": [\n      {\n        \"id\": \"A\",\n        \"text\": \"No sequencing or ordering requirement applies.\"\n      },\n      {\n        \"id\": \"B\",\n        \"text\": \"Selecting A requires selecting E first, or selecting E requires selecting A first.\"\n      },\n      {\n        \"id\": \"C\",\n        \"text\": \"Selecting A or E requires selecting some other candidate first.\"\n      }\n    ],\n    \"allow_other\": true\n  },\n  \"deep_search_decision_evidence\": \"The open gap G005 concerns whether the A/E restriction is only mutual exclusion or also implies must-include, sequencing, or forbidden-combination relationships among other candidates. This could change the decision scope and constraints, so clarification is needed before modeling.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "ASK",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at least 2 and at most 3 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's or Doctoral degree.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Budget $35,000; minimum experience 12 years; minimum hires 2; maximum hires 3."
+        ],
+        "unresolved_business_assumptions": [
+          "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at least 2 and at most 3 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's or Doctoral degree.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Budget $35,000; minimum experience 12 years; minimum hires 2; maximum hires 3."
+        ],
+        "unresolved_business_assumptions": [
+          "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at least 2 and at most 3 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidate A and candidate E can be selected.",
+          "At least one selected candidate must hold a Master's or Doctoral degree.",
+          "All stated limits are strict and cannot be violated."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary per candidate: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degree per candidate: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience per candidate: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Budget $35,000; minimum experience 12 years; minimum hires 2; maximum hires 3."
+        ],
+        "unresolved_business_assumptions": [
+          "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates."
+        ]
+      },
+      "deep_search_decision_evidence": "The open gap G005 concerns whether the A/E restriction is only mutual exclusion or also implies must-include, sequencing, or forbidden-combination relationships among other candidates. This could change the decision scope and constraints, so clarification is needed before modeling.",
+      "Q1": {
+        "action": "ASK",
+        "question": "Does the restriction between candidates A and E only prevent selecting both together, or does it also create other selection relationships?",
+        "options": [
+          {
+            "id": "A",
+            "text": "It only prevents selecting both A and E together; no other relationship exists."
+          },
+          {
+            "id": "B",
+            "text": "It also means that if A is selected, E must be selected, or vice versa."
+          },
+          {
+            "id": "C",
+            "text": "It also means that selecting A or E forces some other candidate to be selected or excluded."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G005"
+      },
+      "Q2": {
+        "action": "ASK",
+        "question": "Are there any must-include or must-exclude relationships among candidates other than the A/E restriction?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No other must-include or must-exclude relationships exist."
+          },
+          {
+            "id": "B",
+            "text": "There is at least one must-include relationship among other candidates."
+          },
+          {
+            "id": "C",
+            "text": "There is at least one must-exclude relationship among other candidates."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G005"
+      },
+      "Q3": {
+        "action": "ASK",
+        "question": "Does selecting candidate A or E impose any sequencing or ordering requirement on when other candidates can be selected?",
+        "options": [
+          {
+            "id": "A",
+            "text": "No sequencing or ordering requirement applies."
+          },
+          {
+            "id": "B",
+            "text": "Selecting A requires selecting E first, or selecting E requires selecting A first."
+          },
+          {
+            "id": "C",
+            "text": "Selecting A or E requires selecting some other candidate first."
+          }
+        ],
+        "allow_other": true,
+        "_frontier_gap_id": "G005"
+      }
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 6,
+          "asked_turn": 6
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"NO_NEW_GAP\",\n  \"search_summary\": \"The public conversation has already resolved the objective (minimize total salary), hard/soft status of limits, degree eligibility rules, and candidate relationship constraints. No genuinely new structural gap remains beyond the existing ledger entries.\",\n  \"updates\": []\n}",
+      "result": {
+        "decision": "NO_NEW_GAP",
+        "search_summary": "The public conversation has already resolved the objective (minimize total salary), hard/soft status of limits, degree eligibility rules, and candidate relationship constraints. No genuinely new structural gap remains beyond the existing ledger entries.",
+        "updates": [],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 6,
+          "asked_turn": 6
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "OPEN",
+          "created_turn": 3,
+          "updated_turn": 3,
+          "asked_turn": null
+        }
+      ],
+      "open_gap_ids": [
+        "G005"
+      ]
+    },
+    "selected_frontier_gap_id": "G005",
+    "selector_attempts": [
+      {
+        "attempt": 1,
+        "raw_selector_response": "{\n  \"evaluation_process\": \"All three candidates target the same open ledger gap G005, which concerns the exact nature of the A/E restriction and whether it implies additional must-include, must-exclude, or sequencing relationships. Q1 directly asks whether the A/E restriction is only mutual exclusion or also creates other selection relationships, which is the most faithful and complete framing of the gap. Q2 asks about must-include/must-exclude relationships among other candidates but does not clarify the A/E restriction itself, so it could leave the core ambiguity unresolved. Q3 focuses narrowly on sequencing/ordering, which is a less likely and less central interpretation of an 'at most one of A and E' rule. Q1 best reduces silent-assumption risk because the Agent might otherwise assume the A/E rule is pure mutual exclusion without confirming whether it also implies other relationships. Its options are clear, mutually exclusive, and answerable by a business user.\",\n  \"selected_question_id\": \"Q1\"\n}",
+        "status": "valid",
+        "selector_result": {
+          "evaluation_process": "All three candidates target the same open ledger gap G005, which concerns the exact nature of the A/E restriction and whether it implies additional must-include, must-exclude, or sequencing relationships. Q1 directly asks whether the A/E restriction is only mutual exclusion or also creates other selection relationships, which is the most faithful and complete framing of the gap. Q2 asks about must-include/must-exclude relationships among other candidates but does not clarify the A/E restriction itself, so it could leave the core ambiguity unresolved. Q3 focuses narrowly on sequencing/ordering, which is a less likely and less central interpretation of an 'at most one of A and E' rule. Q1 best reduces silent-assumption risk because the Agent might otherwise assume the A/E rule is pure mutual exclusion without confirming whether it also implies other relationships. Its options are clear, mutually exclusive, and answerable by a business user.",
+          "selected_question_id": "Q1"
+        }
+      }
+    ],
+    "selected_question_id": "Q1",
+    "fallback_used": false,
+    "public_agent_payload": {
+      "action": "ASK",
+      "question": "Does the restriction between candidates A and E only prevent selecting both together, or does it also create other selection relationships?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It only prevents selecting both A and E together; no other relationship exists."
+        },
+        {
+          "id": "B",
+          "text": "It also means that if A is selected, E must be selected, or vice versa."
+        },
+        {
+          "id": "C",
+          "text": "It also means that selecting A or E forces some other candidate to be selected or excluded."
+        }
+      ],
+      "allow_other": true
+    },
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_payload_entered_detector_user_transcript_judge": true
+    },
+    "ledger_consumed": {
+      "gap_id": "G005",
+      "asked_turn": 8
+    }
+  },
+  {
+    "turn": 9,
+    "agent_attempts": [
+      {
+        "attempt": 1,
+        "status": "valid",
+        "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"C1\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Select which candidates to hire from candidates A, B, C, D, and E.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Select at most 3 candidates.\",\n      \"Select at least 2 candidates.\",\n      \"Total salary of selected candidates cannot exceed $35,000.\",\n      \"Total work experience of selected candidates must be at least 12 years.\",\n      \"At most one of candidates A and E can be selected.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\",\n      \"All stated limits are strict and cannot be violated.\",\n      \"No other eligibility rules apply beyond salary, experience, degree, and the A/E restriction.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidates A, B, C, D, E.\",\n      \"Salary requirements: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.\",\n      \"Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.\",\n      \"Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.\",\n      \"Maximum number of new employees: 3.\",\n      \"Budget: $35,000.\",\n      \"Minimum total work experience: 12 years.\",\n      \"Minimum number of new employees: 2.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"No important unresolved business assumption remains.\"\n    ]\n  },\n  \"C2\": {\n    \"confirmed_business_goal\": \"Minimize total salary paid to selected candidates.\",\n    \"confirmed_decision_scope\": [\n      \"Choose a subset of the five candidates to hire.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"Headcount between 2 and 3 inclusive.\",\n      \"Total salary at most $35,000.\",\n      \"Total experience at least 12 years.\",\n      \"Cannot select both A and E.\",\n      \"At least one selected candidate must have a Master's or Doctoral degree.\",\n      \"All limits are hard constraints.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Candidate set: A, B, C, D, E.\",\n      \"Candidate salaries, degrees, and experience years are given.\",\n      \"Budget $35,000; minimum experience 12 years; headcount limits 2 and 3.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"No important unresolved business assumption remains.\"\n    ]\n  },\n  \"C3\": {\n    \"confirmed_business_goal\": \"Find the lowest-cost feasible hiring selection.\",\n    \"confirmed_decision_scope\": [\n      \"Decide which candidates are selected for hiring.\"\n    ],\n    \"confirmed_constraints_and_rules\": [\n      \"At most 3 and at least 2 selected candidates.\",\n      \"Salary budget cap of $35,000.\",\n      \"Minimum combined work experience of 12 years.\",\n      \"A and E are mutually exclusive.\",\n      \"At least one selected candidate must hold a Master's or Doctoral degree.\",\n      \"No other eligibility or compatibility rules apply.\"\n    ],\n    \"known_inputs_entities_and_indices\": [\n      \"Five candidates A through E with known salary, degree, and experience.\",\n      \"Budget, experience, and headcount parameters are known.\"\n    ],\n    \"unresolved_business_assumptions\": [\n      \"No important unresolved business assumption remains.\"\n    ]\n  },\n  \"deep_search_decision_evidence\": \"The objective, decision scope, hard constraints, eligibility rules, and candidate relationships have all been explicitly confirmed. No unresolved business-structure assumption remains that could change the objective, decision scope, constraints, entity boundaries, time structure, or business policy.\",\n  \"summary\": \"Confirmed: select 2 to 3 candidates from A, B, C, D, E to minimize total salary, subject to a $35,000 salary budget, at least 12 total years of experience, at most one of A and E, and at least one selected candidate holding a Master's or Doctoral degree. All limits are strict, and no other eligibility or compatibility rules apply. Remaining minor assumption: the problem is a one-time selection with no additional timing or grouping structure.\"\n}"
+      }
+    ],
+    "agent_payload": {
+      "action": "READY_TO_MODEL",
+      "C1": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Select which candidates to hire from candidates A, B, C, D, and E."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Select at most 3 candidates.",
+          "Select at least 2 candidates.",
+          "Total salary of selected candidates cannot exceed $35,000.",
+          "Total work experience of selected candidates must be at least 12 years.",
+          "At most one of candidates A and E can be selected.",
+          "At least one selected candidate must hold a Master's or Doctoral degree.",
+          "All stated limits are strict and cannot be violated.",
+          "No other eligibility rules apply beyond salary, experience, degree, and the A/E restriction."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidates A, B, C, D, E.",
+          "Salary requirements: A $8,100; B $20,000; C $21,000; D $3,000; E $8,000.",
+          "Degrees: A Bachelor's; B Master's; C Doctoral; D No degree; E No degree.",
+          "Work experience: A 3 years; B 10 years; C 4 years; D 3 years; E 7 years.",
+          "Maximum number of new employees: 3.",
+          "Budget: $35,000.",
+          "Minimum total work experience: 12 years.",
+          "Minimum number of new employees: 2."
+        ],
+        "unresolved_business_assumptions": [
+          "No important unresolved business assumption remains."
+        ]
+      },
+      "C2": {
+        "confirmed_business_goal": "Minimize total salary paid to selected candidates.",
+        "confirmed_decision_scope": [
+          "Choose a subset of the five candidates to hire."
+        ],
+        "confirmed_constraints_and_rules": [
+          "Headcount between 2 and 3 inclusive.",
+          "Total salary at most $35,000.",
+          "Total experience at least 12 years.",
+          "Cannot select both A and E.",
+          "At least one selected candidate must have a Master's or Doctoral degree.",
+          "All limits are hard constraints."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Candidate set: A, B, C, D, E.",
+          "Candidate salaries, degrees, and experience years are given.",
+          "Budget $35,000; minimum experience 12 years; headcount limits 2 and 3."
+        ],
+        "unresolved_business_assumptions": [
+          "No important unresolved business assumption remains."
+        ]
+      },
+      "C3": {
+        "confirmed_business_goal": "Find the lowest-cost feasible hiring selection.",
+        "confirmed_decision_scope": [
+          "Decide which candidates are selected for hiring."
+        ],
+        "confirmed_constraints_and_rules": [
+          "At most 3 and at least 2 selected candidates.",
+          "Salary budget cap of $35,000.",
+          "Minimum combined work experience of 12 years.",
+          "A and E are mutually exclusive.",
+          "At least one selected candidate must hold a Master's or Doctoral degree.",
+          "No other eligibility or compatibility rules apply."
+        ],
+        "known_inputs_entities_and_indices": [
+          "Five candidates A through E with known salary, degree, and experience.",
+          "Budget, experience, and headcount parameters are known."
+        ],
+        "unresolved_business_assumptions": [
+          "No important unresolved business assumption remains."
+        ]
+      },
+      "deep_search_decision_evidence": "The objective, decision scope, hard constraints, eligibility rules, and candidate relationships have all been explicitly confirmed. No unresolved business-structure assumption remains that could change the objective, decision scope, constraints, entity boundaries, time structure, or business policy.",
+      "summary": "Confirmed: select 2 to 3 candidates from A, B, C, D, E to minimize total salary, subject to a $35,000 salary budget, at least 12 total years of experience, at most one of A and E, and at least one selected candidate holding a Master's or Doctoral degree. All limits are strict, and no other eligibility or compatibility rules apply. Remaining minor assumption: the problem is a one-time selection with no additional timing or grouping structure."
+    },
+    "gap_search": {
+      "ledger_before": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 6,
+          "asked_turn": 6
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 8,
+          "asked_turn": 8
+        }
+      ],
+      "status": "valid",
+      "raw_response": "{\n  \"decision\": \"NO_NEW_GAP\",\n  \"search_summary\": \"The public conversation has already resolved the objective (minimize total salary), hard/soft status of limits, degree eligibility rules, and candidate relationship rules. No structurally new business gap remains from the initial request or public turns.\",\n  \"updates\": []\n}",
+      "result": {
+        "decision": "NO_NEW_GAP",
+        "search_summary": "The public conversation has already resolved the objective (minimize total salary), hard/soft status of limits, degree eligibility rules, and candidate relationship rules. No structurally new business gap remains from the initial request or public turns.",
+        "updates": [],
+        "duplicate_skipped": 0
+      },
+      "applied_updates": [],
+      "ledger_after": [
+        {
+          "category": "constraint_set",
+          "description": "Whether any minimum degree or education requirement applies to selected candidates, since degrees are provided but no degree rule is stated.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G001",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 3,
+          "asked_turn": 3
+        },
+        {
+          "category": "hard_soft_policy",
+          "description": "Whether the budget, experience, and headcount limits are hard constraints or can be relaxed with penalties.",
+          "evidence_quote": "Total payment to selected candidates cannot exceed the budget of $35,000, and their total work experience must be at least 12 years.",
+          "gap_id": "G002",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 1,
+          "asked_turn": 1
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether there are any other candidate compatibility, exclusion, or must-include relationships beyond the stated A/E restriction.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G003",
+          "status": "ASKED",
+          "created_turn": 1,
+          "updated_turn": 5,
+          "asked_turn": 5
+        },
+        {
+          "category": "constraint_set",
+          "description": "Whether candidates must satisfy any eligibility rule beyond salary, experience, and the A/E restriction, such as a required degree level or exclusion of no-degree candidates.",
+          "evidence_quote": "Candidate degrees: A: Bachelor's, B: Master's, C: Doctoral, D: No degree, E: No degree.",
+          "gap_id": "G004",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 6,
+          "asked_turn": 6
+        },
+        {
+          "category": "entity_relation",
+          "description": "Whether the A/E restriction is mutual exclusion only or also implies any must-include, sequencing, or forbidden-combination relationship among other candidates.",
+          "evidence_quote": "at most one of candidate A and E can be selected.",
+          "gap_id": "G005",
+          "status": "ASKED",
+          "created_turn": 3,
+          "updated_turn": 8,
+          "asked_turn": 8
+        }
+      ],
+      "open_gap_ids": []
+    },
+    "public_ready_payload": {
+      "action": "READY_TO_MODEL",
+      "summary": "Confirmed: select 2 to 3 candidates from A, B, C, D, E to minimize total salary, subject to a $35,000 salary budget, at least 12 total years of experience, at most one of A and E, and at least one selected candidate holding a Master's or Doctoral degree. All limits are strict, and no other eligibility or compatibility rules apply. Remaining minor assumption: the problem is a one-time selection with no additional timing or grouping structure."
+    },
+    "ledger_open_at_ready": 0,
+    "visibility": {
+      "internal_fields_entered_detector": false,
+      "internal_fields_entered_user_simulator": false,
+      "internal_fields_entered_transcript": false,
+      "internal_fields_entered_judge": false,
+      "public_ready_entered_transcript_judge": true
+    }
+  }
+]

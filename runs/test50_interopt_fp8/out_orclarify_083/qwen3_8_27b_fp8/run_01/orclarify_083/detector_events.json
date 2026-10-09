@@ -1,0 +1,81 @@
+[
+  {
+    "turn": 1,
+    "agent_response": "QUESTION: What is the standard shift length for waiters, and at which specific times can a shift start (e.g., every 4 hours, every hour, or any time)?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"What is the standard shift length for waiters, and at which specific times can a shift start (e.g., every 4 hours, every hour, or any time)?\",\n      \"why_it_matters\": \"The shift length and start times determine the number of decision variables and how coverage is calculated across the 24-hour cycle, directly impacting the minimum number of waiters required.\",\n      \"answerability\": \"A business user can realistically answer this by stating their standard shift policy.\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 1.0\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are there any restrictions on consecutive shifts or mandatory rest periods that a waiter must observe between working shifts?\",\n      \"why_it_matters\": \"Rest period constraints can significantly increase the number of waiters needed to cover the same demand, as they limit the flexibility of assigning shifts to the same individual.\",\n      \"answerability\": \"A business user can realistically answer this by stating their labor policy.\",\n      \"overask_risk\": \"This might be a secondary constraint if the primary goal is just minimizing headcount without complex scheduling rules.\",\n      \"selection_score\": 0.8\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Is the goal to minimize the total number of unique waiters employed (headcount) or the total number of waiter-shifts worked (labor hours)?\",\n      \"why_it_matters\": \"Minimizing headcount implies a fixed roster where each waiter works a specific pattern, while minimizing shifts implies a flexible pool where any waiter can work any shift, changing the objective function and variable definitions.\",\n      \"answerability\": \"A business user can clarify their cost structure (fixed salary vs. hourly wage).\",\n      \"overask_risk\": \"The prompt explicitly says 'minimize the total number of waiters employed', which strongly implies headcount, making this question potentially redundant.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The shift length and start times are the most fundamental missing pieces. Without knowing how long a shift is and when it can start, it is impossible to define the decision variables or the coverage constraints. This is a P0 gap.\",\n  \"public_question\": \"What is the standard shift length for waiters, and at which specific times can a shift start (e.g., every 4 hours, every hour, or any time)?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 2,\n  \"is_atomic\": false,\n  \"atomic_questions\": [\n    \"What is the standard shift length for waiters?\",\n    \"At which specific times can a shift start (e.g., every 4 hours, every hour, or any time)?\"\n  ],\n  \"rationale\": \"The response asks for two distinct pieces of information: the duration of a shift and the allowed start times. A user could specify the length without specifying the start times, or vice versa.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 2,
+      "is_atomic": false,
+      "atomic_questions": [
+        "What is the standard shift length for waiters?",
+        "At which specific times can a shift start (e.g., every 4 hours, every hour, or any time)?"
+      ],
+      "rationale": "The response asks for two distinct pieces of information: the duration of a shift and the allowed start times. A user could specify the length without specifying the start times, or vice versa."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 2,
+    "agent_response": "QUESTION: Is the objective to minimize the total number of unique waiters on the payroll (headcount), or the total number of 8-hour shifts scheduled per day?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Is the objective to minimize the total number of unique waiters on the payroll (headcount), or the total number of 8-hour shifts scheduled per day?\",\n      \"why_it_matters\": \"If waiters can work multiple shifts in a day (e.g., two 8-hour shifts with a break), minimizing headcount allows reusing staff, while minimizing shifts treats each 8-hour block as a separate resource unit. This changes the variable definitions and objective function significantly.\",\n      \"answerability\": \"A business user can clarify their cost structure: do they pay a fixed salary per person (headcount) or an hourly wage per shift worked (shifts)?\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 1.0\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"Are waiters allowed to work more than one 8-hour shift in a 24-hour period?\",\n      \"why_it_matters\": \"If waiters cannot work consecutive or multiple shifts, the problem simplifies to a standard set covering problem where each waiter works exactly one shift per day. If they can, the model must track individual waiter availability or allow multiple shift assignments per person.\",\n      \"answerability\": \"A business user can state their labor policy regarding maximum shifts per day.\",\n      \"overask_risk\": \"This is closely related to Q1 but focuses on feasibility rather than objective. However, Q1 is more direct about the optimization goal.\",\n      \"selection_score\": 0.8\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any constraints on the maximum number of hours a waiter can work per week or per day?\",\n      \"why_it_matters\": \"If there are weekly limits, the model might need to be extended to a weekly horizon or include additional constraints on total hours, which could affect the minimum headcount required.\",\n      \"answerability\": \"A business user can state their labor law compliance requirements.\",\n      \"overask_risk\": \"The request is for a 24-hour schedule, implying a daily model. Weekly constraints might be out of scope unless specified.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The distinction between minimizing headcount and minimizing shifts is critical. The prompt says 'minimize the total number of waiters employed', which suggests headcount, but in many scheduling problems, 'employed' can be ambiguous if staff are reusable. Clarifying this ensures the objective function is correctly defined.\",\n  \"public_question\": \"Is the objective to minimize the total number of unique waiters on the payroll (headcount), or the total number of 8-hour shifts scheduled per day?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Is the objective to minimize the total number of unique waiters on the payroll (headcount), or the total number of 8-hour shifts scheduled per day?\"\n  ],\n  \"rationale\": \"The response asks for a single policy choice between two mutually exclusive objectives, which constitutes one semantically independent question.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Is the objective to minimize the total number of unique waiters on the payroll (headcount), or the total number of 8-hour shifts scheduled per day?"
+      ],
+      "rationale": "The response asks for a single policy choice between two mutually exclusive objectives, which constitutes one semantically independent question."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 3,
+    "agent_response": "QUESTION: Does the scheduling horizon cover a single day where each waiter works at most one 8-hour shift, or a full week where waiters may work multiple shifts (e.g., 5 days a week) and the goal is to minimize the total unique staff hired for that week?",
+    "raw_agent_response": "{\n  \"action\": \"ASK\",\n  \"candidate_questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"Does the scheduling horizon cover a single day where each waiter works at most one 8-hour shift, or a full week where waiters may work multiple shifts (e.g., 5 days a week) and the goal is to minimize the total unique staff hired for that week?\",\n      \"why_it_matters\": \"If it is a single-day model, the minimum headcount is determined by the peak concurrent demand. If it is a weekly model, the problem becomes a complex rostering optimization where shift patterns, rest days, and weekly hour limits significantly impact the total headcount required.\",\n      \"answerability\": \"A business user can clarify the time horizon of their staffing plan (daily vs. weekly).\",\n      \"overask_risk\": \"\",\n      \"selection_score\": 1.0\n    },\n    {\n      \"id\": \"Q2\",\n      \"question\": \"If the horizon is a single day, are waiters allowed to work two 8-hour shifts in one day (e.g., 2:00-10:00 and 14:00-22:00)?\",\n      \"why_it_matters\": \"If waiters can work double shifts, the minimum headcount could be lower than if each waiter is limited to one shift per day. This changes the feasible region and the objective function.\",\n      \"answerability\": \"A business user can state their policy on double shifts.\",\n      \"overask_risk\": \"This is only relevant if the horizon is a single day. If the horizon is weekly, this is a sub-constraint. Q1 is more fundamental.\",\n      \"selection_score\": 0.7\n    },\n    {\n      \"id\": \"Q3\",\n      \"question\": \"Are there any specific shift patterns or preferences that waiters must follow (e.g., no night shifts, fixed days off)?\",\n      \"why_it_matters\": \"Shift preferences or restrictions can limit the feasible assignments, potentially increasing the required headcount.\",\n      \"answerability\": \"A business user can list any known restrictions.\",\n      \"overask_risk\": \"This might be too detailed for an initial formulation. The core structure (horizon and shift limits) is more critical.\",\n      \"selection_score\": 0.5\n    }\n  ],\n  \"selected_question_id\": \"Q1\",\n  \"selection_rationale\": \"The distinction between a daily and weekly horizon is the most significant structural ambiguity. It determines whether the problem is a simple daily covering problem or a complex weekly rostering problem. This must be resolved before any other constraints can be properly defined.\",\n  \"public_question\": \"Does the scheduling horizon cover a single day where each waiter works at most one 8-hour shift, or a full week where waiters may work multiple shifts (e.g., 5 days a week) and the goal is to minimize the total unique staff hired for that week?\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"question\",\n  \"question_count\": 1,\n  \"is_atomic\": true,\n  \"atomic_questions\": [\n    \"Does the scheduling horizon cover a single day where each waiter works at most one 8-hour shift, or a full week where waiters may work multiple shifts (e.g., 5 days a week) and the goal is to minimize the total unique staff hired for that week?\"\n  ],\n  \"rationale\": \"The response presents a single binary choice regarding the scheduling horizon and associated constraints, which constitutes one semantically independent clarification question.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "question",
+      "question_count": 1,
+      "is_atomic": true,
+      "atomic_questions": [
+        "Does the scheduling horizon cover a single day where each waiter works at most one 8-hour shift, or a full week where waiters may work multiple shifts (e.g., 5 days a week) and the goal is to minimize the total unique staff hired for that week?"
+      ],
+      "rationale": "The response presents a single binary choice regarding the scheduling horizon and associated constraints, which constitutes one semantically independent clarification question."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  },
+  {
+    "turn": 4,
+    "agent_response": "READY_TO_MODEL\n\nFormulatable confidence: 0.950\n\nConfidence rationale: The request is sufficiently specified. The user explicitly stated that the horizon is a single day and that each waiter works **at most one** 8-hour shift. This constraint resolves the ambiguity about consecutive shifts or double shifts. The shift start times are fixed to the 6 interval boundaries. The objective is to minimize the total number of unique waiters (which, given the 'at most one shift' constraint, is equivalent to minimizing the total number of shifts scheduled). The demand requirements are provided for all 6 intervals. No further P0/P1 ambiguities remain.\n\nSummary: Minimize the total number of waiters employed in a single-day 24-hour schedule. Waiters work 8-hour continuous shifts starting at 2:00, 6:00, 10:00, 14:00, 18:00, or 22:00. Each waiter works at most one shift per day. The number of waiters on duty must meet or exceed the minimum requirements for each 4-hour interval: 4 (2-6), 8 (6-10), 10 (10-14), 7 (14-18), 12 (18-22), and 4 (22-2).",
+    "raw_agent_response": "{\n  \"action\": \"READY_TO_MODEL\",\n  \"formulatable_confidence\": 0.95,\n  \"confidence_rationale\": \"The request is sufficiently specified. The user explicitly stated that the horizon is a single day and that each waiter works **at most one** 8-hour shift. This constraint resolves the ambiguity about consecutive shifts or double shifts. The shift start times are fixed to the 6 interval boundaries. The objective is to minimize the total number of unique waiters (which, given the 'at most one shift' constraint, is equivalent to minimizing the total number of shifts scheduled). The demand requirements are provided for all 6 intervals. No further P0/P1 ambiguities remain.\",\n  \"summary\": \"Minimize the total number of waiters employed in a single-day 24-hour schedule. Waiters work 8-hour continuous shifts starting at 2:00, 6:00, 10:00, 14:00, 18:00, or 22:00. Each waiter works at most one shift per day. The number of waiters on duty must meet or exceed the minimum requirements for each 4-hour interval: 4 (2-6), 8 (6-10), 10 (10-14), 7 (14-18), 12 (18-22), and 4 (22-2).\"\n}",
+    "agent_parse_ok": true,
+    "agent_parse_error": "",
+    "detector_raw": "{\n  \"action\": \"ready_to_model\",\n  \"question_count\": 0,\n  \"is_atomic\": true,\n  \"atomic_questions\": [],\n  \"rationale\": \"The response contains the stop action READY_TO_MODEL and provides a summary and confidence rationale without asking any clarification questions.\"\n}",
+    "retry_count": 0,
+    "detector_result": {
+      "action": "ready_to_model",
+      "question_count": 0,
+      "is_atomic": true,
+      "atomic_questions": [],
+      "rationale": "The response contains the stop action READY_TO_MODEL and provides a summary and confidence rationale without asking any clarification questions."
+    },
+    "accepted": true,
+    "entered_transcript": true
+  }
+]

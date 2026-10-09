@@ -1,0 +1,40 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "binary_purchase_constraint",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are you allowed to purchase more than one of the same restaurant, or is each restaurant available only once?",
+      "rationale": "The agent asked about purchasing each restaurant at most once, which is related to the all-or-nothing constraint, but did not explicitly ask whether fractional/partial purchases are allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "conditional_exclusion_restaurant_D_and_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any dependency or restriction between purchasing Restaurant D and Restaurant A."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "All restaurants are independent, with no conditional exclusion between Restaurant D and Restaurant A.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about restrictions between restaurants and then modeled/evaluated combinations including B+D without considering the D→not A dependency."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while P1 hidden slots remained unresolved: it did not fully clarify binary purchase semantics and never asked about the conditional exclusion between D and A."
+  },
+  "summary": "The agent clarified basic availability, units, and objective, but missed the conditional exclusion between Restaurants D and A and only partially addressed binary purchase semantics, then stopped prematurely and produced a solution that ignored the hidden dependency."
+}
