@@ -1,0 +1,64 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a signed contract must remain active for all months of its term or whether partial usage is allowed; it only restated the consecutive-months start rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Does the constraint that \"at least two different contracts (with different lengths) must be signed\" mean that the set of contract lengths used across all warehouses must contain at least two distinct values, or does it mean that at least two individual contract instances must be signed regardless of their lengths?",
+      "rationale": "The agent engaged the diversity requirement only after the user volunteered it in turn 6; its question clarifies the meaning of an already-revealed constraint rather than asking whether diversification is required, so it does not fully cover the slot's key meaning."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Does the constraint that \"the number of distinct warehouse contracts signed cannot exceed 3\" mean that the total number of individual contract instances (across all warehouses and lengths) must be 3 or fewer, or does it mean that the number of distinct warehouses used must be 3 or fewer?",
+      "rationale": "The count cap was surfaced by the user in turn 6; the agent's follow-up only interprets the meaning of the revealed constraint and never independently inquires about a limit on distinct contract lengths."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the required area figures in Table 1-14, does each value represent the minimum area that must be covered in that specific month, or is it an exact target that must be met precisely without exceeding it?",
+      "rationale": "Directly asks whether monthly demand must be met exactly with no excess, matching the slot's semantic rule."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and all months, or is there a different goal such as maximizing unused capacity or minimizing the number of contracts?",
+      "rationale": "Explicitly confirms the optimization goal is minimizing total rental cost, matching the slot's semantic rule."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A contract, once signed for a given length, is used/committed for all months of its coverage period rather than being usable for only some of its months.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "H1 was never asked or confirmed; the READY_TO_MODEL coverage formulation ('sum of areas from all active contracts covering a specific month') implicitly treats every signed contract as active across its entire term."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The two P0 slots (H4 exact demand, H5 objective) were clearly resolved, but the P1 diversity requirement (H2) was only partially recovered: it was surfaced by the user rather than probed by the agent, so it remained unresolved when the agent declared READY_TO_MODEL."
+  },
+  "summary": "The agent cleanly confirmed the two P0 facts (exact demand satisfaction and cost-minimization objective), but it recovered the P1 diversity rule and P2 count cap only through a vague catch-all question that the user answered voluntarily, and it never probed the full-coverage obligation. It stopped after partial recovery of H2, making the stop slightly premature."
+}

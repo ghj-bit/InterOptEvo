@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "no_production_during_training_period",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Regarding the training process, do skilled workers continue to produce food while they are training new workers, or are they fully occupied with training and cannot produce during the 2-week training period?",
+      "rationale": "The agent asked about skilled trainers' production during training, but did not ask whether trainees also refrain from production; the hidden slot covers both trainer and trainees."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total cost (wages, overtime, and late-delivery compensation) while meeting all demand and training requirements, or is there a different objective such as maximizing profit or minimizing workforce size?",
+      "rationale": "The agent explicitly asked about the optimization objective and whether it is total cost minimization."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Trainees do not contribute to production during their 2-week training period.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed that skilled workers/trainers cannot produce while training; it did not ask or receive confirmation about trainee production during training, yet the READY summary limits production capacity to skilled workers not in training."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "H2 was resolved, but H1 was only partially resolved: trainer production during training was confirmed, while trainee production during training remained unconfirmed when the agent entered READY_TO_MODEL."
+  },
+  "summary": "The agent recovered the objective and many operational details well, but its training-period production question covered only skilled trainers, not trainees, leaving a P1 hidden fact partially unresolved before stopping.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

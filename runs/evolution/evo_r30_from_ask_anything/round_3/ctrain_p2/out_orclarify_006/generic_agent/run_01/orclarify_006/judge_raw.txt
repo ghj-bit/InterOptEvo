@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, particularly the rule that Product I cannot be produced in Q2. Its READY_TO_MODEL summary allows Production_{I,t} for all quarters."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Regarding the backlog at the end of the fourth quarter, is it required that all backlogs must be cleared (i.e., no remaining unmet demand) by the end of the fourth quarter, or is it acceptable to have a remaining",
+      "rationale": "The agent explicitly asked whether all unmet demand/backlog must be cleared by the end, which covers the requirement that contract reservations must eventually be fulfilled. Turn 3 also asked about late-delivery carry-forward handling."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in every quarter, including Q2; no quarter-specific production restriction exists.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the Product I Q2 production restriction, but its READY_TO_MODEL summary lists production variables for each product and quarter and includes only general capacity constraints, implicitly allowing Q2 production."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "H2 was resolved, but P1 hidden slot H1 (Product I cannot be produced in Q2) was never asked or confirmed before entering READY_TO_MODEL."
+  },
+  "summary": "The agent clarified demand and backlog semantics well, resolving H2, but missed the P1 quarter-specific Product I production restriction and silently assumed Product I could be produced in Q2, making the stop premature."
+}

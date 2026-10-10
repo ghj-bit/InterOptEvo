@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "corn_minimum_twice_wheat",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are there any other limits on how many acres can be planted with each specific crop, such as a maximum or minimum for corn, wheat, soybeans, or sorghum?",
+      "rationale": "The agent asked a vague catch-all about per-crop limits, but never asked about a ratio or multiplier linking corn and wheat acreage, such as corn >= 2 * wheat."
+    },
+    {
+      "slot_id": "H2",
+      "name": "wheat_three_times_sorghum",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are there any other limits on how many acres can be planted with each specific crop, such as a maximum or minimum for corn, wheat, soybeans, or sorghum?",
+      "rationale": "The agent did not ask whether wheat and sorghum are linked by a fixed ratio, nor did it inquire about a constraint like wheat = 3 * sorghum."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no additional constraint linking corn and wheat acreage, such as corn being at least twice wheat.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a corn-wheat ratio, and its READY_TO_MODEL confirmed-facts summary retained only the soybean/sorghum relationship."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no fixed wheat-to-sorghum ratio, such as wheat = 3 * sorghum.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about wheat and sorghum being linked by a fixed ratio, and the READY_TO_MODEL summary did not include that hidden constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL after only clarifying the total-land and soybean/sorghum relationship, leaving both P1 hidden crop-relationship constraints unresolved."
+  },
+  "summary": "The agent clarified the total-land and soybean/sorghum relationship but failed to probe the hidden corn-wheat and wheat-sorghum relational constraints. It then stopped prematurely, implicitly assuming no such additional crop relationships, leaving the model materially incomplete.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

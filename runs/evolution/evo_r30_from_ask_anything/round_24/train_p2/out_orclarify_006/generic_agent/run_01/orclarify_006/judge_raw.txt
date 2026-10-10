@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Across all 15 turns the agent asked only about cost definitions, capacity hardness, inventory semantics, delay calculation, and integrality. It never asked about quarter-specific production restrictions or whether Product I can be produced in Q2."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Regarding the delay compensation, is it possible for demand to be unmet in any quarter (resulting in a delay penalty), or is it a hard requirement that all demand must be met in the quarter it is due?",
+      "rationale": "The agent explicitly probed whether late/unmet delivery is permitted and how it is penalized, and follow-up turns 12/14 pinned the cumulative-shortage semantics, covering the backlogging/late-delivery meaning of the slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I may be produced in every quarter, including Q2 (no quarter-specific production restriction exists).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production limits for any product; the READY_TO_MODEL understanding lists only capacity, ending-inventory, and non-negativity constraints, silently omitting the Product I / Q2 restriction."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent declared READY_TO_MODEL while the P1 Product-I-cannot-be-produced-in-Q2 restriction was never raised or confirmed, so a materially important constraint remained unresolved."
+  },
+  "summary": "The agent thoroughly clarified cost definitions, capacity hardness, inventory semantics, delay calculus, and integrality, but never probed for quarter-specific production restrictions, silently leaving the Product I / Q2 prohibition unresolved when it stopped. The delivery/late-penalty semantics were reasonably recovered via the cumulative-shortage questions."
+}

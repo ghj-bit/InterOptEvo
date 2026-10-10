@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "For the constraint that each student can work no more than 2 shifts per week, does a \"shift\" refer to any day on which the student works at least one hour, or does it refer to a specific time block within a day?",
+      "rationale": "The agent clarified the meaning of a 'shift' (a day with at least one hour), which addresses one failure mode, but the existence/value of the weekly shift limit was volunteered by the user in turn 8 rather than asked by the agent; the agent never proactively asked about a cap on working days per week."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 10 generic_agent",
+      "evidence_quote": "For the constraint that no more than 3 students can be scheduled for duty each day, does this mean that on any given day, at most 3 students can have non-zero hours, or does it mean that at any specific hour within the day, at most 3 students can be on duty simultaneously?",
+      "rationale": "The agent explicitly inquired about the semantics of the daily cap on the count of distinct students, directly covering the slot's key meaning (distinct students with non-zero hours per day)."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the objective of the scheduling plan to minimize the total weekly labor cost (sum of wages times hours worked), or is there a different primary goal such as maximizing fairness or minimizing total hours?",
+      "rationale": "The agent directly asked about the optimization objective and confirmed it is to minimize total weekly labor cost."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 objective was explicitly confirmed (turn 2) and both P1 constraints were surfaced and clarified (turn 9 for shift definition, turn 10 for the daily distinct-student cap), so the agent stopped after the key hidden facts were effectively resolved."
+  },
+  "summary": "The agent ran a focused clarification dialogue, explicitly confirming the optimization objective and the interpretations of the daily-hour and minimum-hour limits, and surfaced and clarified the two additional weekly/daily constraints; the only weakness is that the weekly shift-limit constraint was volunteered by the user rather than directly asked, giving a partial hit for H1.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8571428571428571,
+    "earned_weight": 6.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

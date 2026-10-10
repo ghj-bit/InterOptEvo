@@ -1,0 +1,64 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "project1_investment_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Can you invest in project (1) at the beginning of each of the three years, or is it restricted to only the first year?",
+      "rationale": "Directly asks about the multi-year investment timing for project (1), matching the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "project1_reinvestment_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the 20% annual profit from project (1) paid out each year without the principal being returned, or is the principal also returned at the end of the investment period?",
+      "rationale": "Asks about principal return timing, a related cash-flow issue, but does not explicitly ask whether proceeds can be reinvested the following year."
+    },
+    {
+      "slot_id": "H3",
+      "name": "project2_recovery_timing",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the 150% total return from project (2) received as a single lump sum at the end of the third year, or is it paid out in installments over the three years?",
+      "rationale": "Queries the timing of the project (2) return but offers end of year 3 or installments; does not confirm the end-of-year-2 recovery."
+    },
+    {
+      "slot_id": "H4",
+      "name": "project3_investment_timing",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Can you invest in project (3) at the beginning of each of the three years, or is it restricted to only the first year?",
+      "rationale": "Asks about timing restriction but suggests first-year restriction instead of the actual second-year-only window; touches the slot but misses key meaning."
+    },
+    {
+      "slot_id": "H5",
+      "name": "project4_investment_timing",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Can you invest in project (4) at the beginning of each of the three years, or is it restricted to only the first year?",
+      "rationale": "Asks about timing restriction but suggests first-year restriction instead of the actual third-year-only window; touches the slot but misses key meaning."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The entire amount (principal + profit) from project (1) can be reinvested the following year.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly asked about reinvestment; the user simulator volunteered this fact in response to a question about principal return, and the agent treated it as confirmed in the ready-to-model summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2", "H3", "H4", "H5"],
+    "rationale": "Agent entered READY_TO_MODEL while several P1 slots were only partially addressed: reinvestment rule (H2) was never explicitly asked, and project timing slots H3-H5 were queried with incorrect year options, leaving the specific recovery/investment windows unconfirmed by the agent's questions."
+  },
+  "summary": "The agent recovered the project (1) multi-year timing, but only partially addressed the project (1) reinvestment rule and the specific recovery/investment windows for projects (2)-(4), often suggesting incorrect year options and relying on volunteered information. It stopped prematurely with unresolved P1 slots and silently assumed the reinvestment rule."
+}

@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "No pre-READY_TO_MODEL question asks about a minimum profit requirement or a $10,000 lower bound on weekly profit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Is the contractual requirement to produce at least 15 units of Model B per week a hard minimum that must be met in every feasible plan?",
+      "rationale": "The agent explicitly asked about the minimum Model B quantity of 15 units per week, though the fact was first surfaced by a broad prior question."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent only asked whether Process I had a hard 150-hour ceiling, not whether Process I time must equal exactly 150 hours."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum weekly profit target, such as total profit being at least $10,000.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum profit requirement, and the READY_TO_MODEL formulation omits such a constraint without marking it as an open assumption."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is constrained by at most 150 hours, not exactly 150 hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only whether 150 hours was a hard ceiling and did not confirm an exact-150 requirement; the READY_TO_MODEL model then uses a less-than-or-equal constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2, and no P0 or P1 hidden slots remained unresolved when the agent entered READY_TO_MODEL; the missed items are minor boundary/interpretation issues."
+  },
+  "summary": "The agent recovered the Model B minimum but missed the minimum profit target and the exact Process I time requirement, both P2 details. It did not stop prematurely, though it did ask several repeated low-value questions before finalizing."
+}

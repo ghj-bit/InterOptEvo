@@ -1,0 +1,97 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "min_weekly_production_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Model A has a minimum weekly production requirement, nor explicitly marked this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_weekly_production_B",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Model B has a minimum weekly production requirement, nor explicitly marked this as an assumption needing confirmation."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_overtime_process_II",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "When production exceeds the 70-hour regular capacity for Process II, is the overtime processing time for Process II subject to any maximum limit, or is it unlimited?",
+      "rationale": "The agent explicitly asked whether overtime for Process II has a maximum limit, matching the hidden slot's key meaning."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum weekly production requirement for Model A.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production lower bound for Model A, but the final model omits any such constraint."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no minimum weekly production requirement for Model B.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production lower bound for Model B, but the final model omits any such constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slots for minimum weekly production of Model A and Model B had not been asked or resolved."
+  },
+  "summary": "The agent recovered the overtime cap for Process II but failed to ask about the minimum weekly production requirements for Models A and B, then stopped with those P1 facts unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.3333333333333333,
+    "earned_weight": 2.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 6.0,
+        "score": 0.3333333333333333
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

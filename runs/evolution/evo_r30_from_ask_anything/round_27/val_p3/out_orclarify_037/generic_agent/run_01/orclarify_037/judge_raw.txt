@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a $10,000 minimum-profit target or any lower bound on weekly profit. Turn 8's catch-all asked about other constraints but mentioned minimum Model B production, maximum production, and labor, not profit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Is the contractual requirement to produce at least 15 units of Model B per week a hard constraint that must be strictly satisfied, or is it a soft target that can be violated with a penalty?",
+      "rationale": "The agent first asked about minimum production for Model B in Turn 8, then explicitly referenced and confirmed the at least 15 units per week requirement in Turn 9. This covers the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is the 150-hour maximum weekly capacity for Process I a hard ceiling that cannot be exceeded, or can it also be exceeded with overtime?",
+      "rationale": "The agent asked about Process I's 150-hour capacity as an upper bound/hard ceiling, but never asked whether Process I time must be exactly 150 hours rather than merely at most 150."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No minimum weekly profit target or $10,000 lower bound is required.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a profit lower bound, and the READY_TO_MODEL confirmed facts list only maximizes profit without any minimum-profit constraint."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time must be at most 150 hours, not exactly 150 hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked whether the 150-hour Process I capacity was a hard ceiling; it never confirmed an exact-150 equality, yet modeled it as 4x_A + 6x_B ≤ 150."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2. No P0 or P1 slot remained unresolved when the agent entered READY_TO_MODEL, so stopping was appropriate despite the remaining P2 gaps on minimum profit and exact Process I time."
+  },
+  "summary": "The agent clarified several ambiguities and recovered the Model B minimum-production requirement, but it silently omitted the $10,000 minimum-profit target and treated Process I as a ≤150 capacity rather than confirming exact 150-hour use. Because the missed slots are only P2, the stopping decision was still appropriate."
+}

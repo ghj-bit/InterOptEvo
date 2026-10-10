@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Is the $10,000 minimum weekly profit a hard constraint that must be met",
+      "rationale": "The agent explicitly asked whether the $10,000 minimum weekly profit requirement exists and is binding, matching the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 10 generic_agent",
+      "evidence_quote": "Is the requirement to produce at least 15 units of Model B per week a hard [constraint]",
+      "rationale": "The agent explicitly asked about the minimum production quantity of 15 units of Model B per week, matching the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Is the 150-hour capacity for Process I a hard upper limit that cannot be exceeded, or is it also a baseline that can be extended with [overtime]",
+      "rationale": "The question addressed the nature of the 150-hour Process I constraint (upper bound vs. flexible) but never asked whether it must be exactly 150 hours (equality), leaving the key meaning of the slot uncovered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is only an upper bound (4x_A + 6x_B <= 150), not a requirement to use exactly 150 hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The exact-150 (equality) requirement was never confirmed; the agent's only question offered an upper-bound-vs-extendable framing, so the unconfirmed <= interpretation was carried into the model summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2. H1 and H2 were explicitly confirmed via dedicated questions and H3 was at least partially addressed; no P0/P1 slots remained unresolved at READY_TO_MODEL."
+  },
+  "summary": "The agent resolved the two P2 business constraints (minimum profit and minimum Model B production) through explicit confirmation questions after a broad catch-all, and partially probed the Process I constraint but missed its exact-equality aspect. With only P2 slots in play, stopping was appropriate, though the Process I equality requirement was silently treated as an upper bound.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8333333333333334,
+    "earned_weight": 2.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 2.5,
+        "total_weight": 3.0,
+        "score": 0.8333333333333334
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

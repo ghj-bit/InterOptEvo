@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as options for tonight's dinner, or should the selection be restricted to the four fiber-containing vegetables (okra, carrots, celery, cabbage)?",
+      "rationale": "The agent touched the protein-selection issue by asking whether proteins are in scope at all, but it did not explicitly ask the governing rule (whether exactly one protein must be chosen or whether multiple proteins may be combined); the 'exactly one' rule was volunteered by the user rather than requested."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about the minimum number of vegetable types or whether at least two different vegetables must be selected; its questions focused on protein, weight, budget, fiber sources, and per-item weight/cost bounds."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "That there is no requirement to select a minimum number of different vegetable types (no vegetable-variety constraint).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum vegetable variety rule, yet its confirmed understanding lists no such constraint, implicitly assuming none applies."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 vegetable-variety slot (H2) was never queried or confirmed; H1 was effectively resolved because the user's answer supplied the exactly-one-protein rule."
+  },
+  "summary": "The agent confirmed weight, budget, fiber sources, and protein handling, but never probed the minimum vegetable-variety requirement (H2) and relied on a user-volunteered protein rule rather than asking for it directly, then stopped with H2 still unresolved."
+}

@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether Product I has any quarter-specific production restriction, including the ban on producing Product I in Q2. It later modeled x_{I,t} for all quarters."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the contract reservation figures in Table 1-10 hard minimum delivery requirements that must be met each quarter (with any shortfall incurring the stated delay compensation), or are they target values where the factory may choose to deliver less and pay the delay cost as a trade-off?",
+      "rationale": "The agent explicitly asked whether contract reservations are hard delivery requirements or optional target values subject to delay-cost trade-offs, which targets the requirement to fulfill contract reservations."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in the second quarter; no quarter-specific production ban applies to Product I.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about production restrictions for specific quarters, including Product I in Q2, but its READY_TO_MODEL model structure includes production variables x_{p,t} for all products and all quarters."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden constraint that Product I cannot be produced in Q2 remained unresolved."
+  },
+  "summary": "The agent recovered the contract-reservation fulfillment semantics but missed the Product I Q2 production restriction and stopped ready to model with that P1 issue unresolved, silently allowing Product I production in Q2.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

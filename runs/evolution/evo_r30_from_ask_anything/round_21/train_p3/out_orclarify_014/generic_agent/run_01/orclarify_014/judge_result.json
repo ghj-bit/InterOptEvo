@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the protein options (chicken, salmon, tofu) also restricted to whole 100g units, or can they be purchased in any continuous amount?",
+      "rationale": "The agent explicitly asked whether protein items are discrete 100g packs or continuous quantities, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Are there any minimum quantity requirements for any specific protein or vegetable option, such as requiring at least one pack of a certain vegetable or a minimum weight of a certain protein?",
+      "rationale": "The agent touched the broader issue of minimum vegetable requirements, but did not ask about the number of distinct vegetable types or a minimum variety count."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to include at least three distinct vegetable types; the vegetable-type variety constraint is omitted from the model.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent's only related question asked about minimum quantities for specific items, not the number of distinct vegetable types, so the absence of a variety requirement was never confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent resolved H1 but stopped at READY_TO_MODEL while the P1 minimum-vegetable-types requirement remained unresolved."
+  },
+  "summary": "The agent correctly clarified that protein can be purchased continuously, but it only partially probed and then omitted the at-least-three-distinct-vegetable-types constraint. It stopped prematurely with an unresolved P1 hidden slot.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 3.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

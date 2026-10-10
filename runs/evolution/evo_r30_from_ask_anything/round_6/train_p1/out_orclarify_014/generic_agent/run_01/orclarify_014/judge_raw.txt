@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase any continuous weight (for example, 150 grams of chicken), or must the protein also be bought in discrete 100-gram units like the vegetables",
+      "rationale": "The agent explicitly asked whether proteins are continuous or discrete, directly targeting the hidden slot's key meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Does the requirement to select at least three different types of vegetables mean that you must purchase at least one pack of each of three distinct vegetable types?",
+      "rationale": "The agent touched the vegetable-type requirement, but only as a follow-up to the user's volunteered reveal of the 'at least three vegetable types' rule; the agent's own question was about operationalizing the pack requirement rather than independently asking whether a minimum number of distinct vegetable types is required."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "H1 was clearly resolved, but H2 (the minimum number of distinct vegetable types) was never proactively discovered by the agent; it surfaced only because the user simulator volunteered it, and the agent's own question addressed only its operationalization, leaving the P1 slot only partially recovered when the agent declared READY_TO_MODEL."
+  },
+  "summary": "The agent cleanly recovered the protein purchase-unit slot and confirmed budget and weight ceilings, but it failed to proactively ask about the minimum vegetable-type requirement, which was only elicited because the user simulator volunteered it; the agent then stopped while that P1 slot remained only partially established through its own questions."
+}

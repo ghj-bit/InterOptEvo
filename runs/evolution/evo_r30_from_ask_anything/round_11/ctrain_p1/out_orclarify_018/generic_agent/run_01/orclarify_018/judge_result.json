@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unclear_production_time_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the 110 hours of weekly production time a fixed total available across both shifts, or is it the regular-time capacity with overtime hours available on top of it?",
+      "rationale": "The agent asked about the role of the 110 hours, which is related, but did not ask whether fully utilizing 110 hours is a hard constraint or a soft goal with a specific priority, as required by the hidden slot's key meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unclear_overtime_limit_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is there a maximum limit on how many overtime hours can be worked per week, or is overtime unlimited?",
+      "rationale": "The agent asked whether an overtime limit exists, which is related, but did not ask whether the 10-hour limit is a strict constraint or a soft target, nor about its priority in the objective hierarchy."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Fully utilizing the 110 regular-time hours is not a modeling goal; the 110 hours plus 10 overtime hours merely form a capacity ceiling of 120 total hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed whether full utilization of 110 hours is a soft goal or has priority relative to minimizing overtime; it treated the hours only as a capacity limit in the READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The 10-hour overtime limit is a hard constraint that cannot be violated, rather than a prioritized goal that can be traded off.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only whether a maximum overtime limit exists, not whether it is strict or soft; the READY_TO_MODEL summary then listed 'Overtime hours cannot exceed 10 hours' as a hard constraint without confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1",
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while both P0 hidden slots remained only partially explored: it never clarified whether full utilization of 110 hours is a soft goal with priority, and never clarified whether the 10-hour overtime limit is a strict constraint or a prioritized soft goal."
+  },
+  "summary": "The agent asked several useful clarification questions about capacity, rates, constraints, and objective direction, but it missed the key goal-programming distinctions for full utilization of 110 hours and the overtime limit, then stopped with those P0 ambiguities unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 3.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 6.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

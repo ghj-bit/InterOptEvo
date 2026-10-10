@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "sequential_machine_order_constraint",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Do the three products all need to be processed on the machines in the same fixed sequence, specifically Machine 1 then Machine 2 then Machine 3?",
+      "rationale": "Directly asks whether all products follow the same fixed machine sequence, fully covering the hidden constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_processing_cycle",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the primary objective of the schedule, such as minimizing the total completion time (makespan) for all three products?",
+      "rationale": "Touches the objective and mentions makespan, but does not explicitly clarify whether 'total processing cycle' means makespan rather than another metric such as sum of completion times."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Total processing cycle is equivalent to total completion time / makespan.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The user only restated 'total processing cycle' and never confirmed it meant makespan; the agent then treated makespan as the objective in READY_TO_MODEL."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "H1 was resolved, but the P0 objective clarification H2 remained only partially clarified and was silently assumed to be makespan when the agent stopped."
+  },
+  "summary": "The agent directly recovered the machine-sequence constraint but only partially clarified the objective ambiguity and stopped while still assuming 'total processing cycle' meant makespan.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 4.5,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 4.5,
+        "total_weight": 6.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

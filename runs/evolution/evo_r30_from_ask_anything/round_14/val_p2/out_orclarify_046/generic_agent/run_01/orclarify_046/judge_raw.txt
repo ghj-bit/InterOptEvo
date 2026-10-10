@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "You mentioned a limit of 2 shifts per week, but we previously established that the 14 hours are divided into 14 one-hour slots. Does \"2 shifts\" mean a student can work on at most 2 different days per week, or does it mean something else?",
+      "rationale": "The agent explicitly asked whether the shift limit means a cap on the number of distinct working days per week, which directly targets the hidden slot's key meaning (limit on shifts/days per student per week)."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a daily cap on the number of distinct students assigned to duty. The only related question (turn 10) was a vague catch-all about 'any other constraints' that does not clearly target this slot, and the fact was volunteered by the user simulator."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of the scheduling plan — are we minimizing total weekly labor cost, minimizing total hours worked, or something else?",
+      "rationale": "The agent's first question directly asks about the optimization objective and specifically offers minimizing total labor cost as an option, matching the semantic hit rule."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The P0 objective slot (H3) and P1 shift/day-limit slot (H1) were resolved through explicit questions, but the P1 daily distinct-student cap (H2) was never specifically asked about — it was only obtained via a vague catch-all that the user simulator filled in, leaving a P1 slot unresolved at READY_TO_MODEL."
+  },
+  "summary": "The agent clearly recovered the objective (H3) and clarified the weekly shift/day limit (H1) with targeted follow-ups, but it never specifically probed the per-day distinct-student cap (H2), getting it only through a generic 'any other constraints' question; it then stopped with that P1 slot unresolved."
+}

@@ -1,0 +1,40 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the decision variables limited to the four vegetable items (okra, carrots, celery, cabbage), or can the three meat items (salmon, beef, pork) also be selected as part of the dinner?",
+      "rationale": "The agent touched protein selection by asking whether meats can be part of the dinner, and later asked whether exactly one meat item is a hard constraint, but it did not itself ask whether exactly one protein must be selected versus multiple proteins being combinable; that fact was volunteered by the user simulator."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum number of vegetable types or whether at least two vegetables must be selected. It only asked about vegetable variable continuity and then omitted any vegetable-variety constraint."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum vegetable-variety constraint is required; any number of vegetable types, including fewer than two, may be selected.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the minimum number of vegetable types, and the READY_TO_MODEL summary lists only continuous vegetable weights without any requirement that at least two vegetable types be selected."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while H2 was completely unasked and H1 was only partially addressed after the exactly-one-protein fact was volunteered by the user rather than explicitly elicited by the agent."
+  },
+  "summary": "The agent clarified several useful boundary details, but it missed the minimum vegetable-variety rule entirely and only partially covered the exactly-one-protein selection rule before stopping."
+}

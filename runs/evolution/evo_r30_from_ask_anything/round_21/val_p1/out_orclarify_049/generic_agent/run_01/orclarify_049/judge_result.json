@@ -1,0 +1,117 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a signed contract must be kept for its entire term or whether partial use is allowed. Turn 2 only asked which months a contract covers, and Turn 13 asked only whether a month's area can be split across warehouses, neither of which addresses the full-period obligation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "When you say \"at least two different contracts (with different lengths) must be signed,\" does this mean at least two distinct contract lengths must be used (e.g., a 1-month and a 2-month contract), or does it mean at least two separate contract instances must be signed regardless of length?",
+      "rationale": "The diversification requirement was not proactively asked about; it surfaced only through a broad catch-all question in Turn 7 (\"any other constraints...\", which is penalized). The agent then clarified its meaning in Turn 8 and its hard status in Turn 11, so the topic is touched but not independently recovered."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "When you say \"the number of distinct warehouse contracts signed cannot exceed 3,\" does this refer to the number of distinct contract lengths used (e.g., you can use at most 3 different lengths out of the 4 available), or does it refer to the total number of individual contract instances signed across all warehouses?",
+      "rationale": "Like H2, the cap was revealed only via the Turn 7 catch-all question, after which the agent clarified its meaning (Turn 9) and hardness (Turn 12). Related issue touched but not proactively inquired about."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Is the required area in Table 1-14 a minimum that must be met or exceeded each month, or is it an exact target that must be matched precisely?",
+      "rationale": "The agent explicitly asked whether monthly demand must be matched exactly or whether surplus/shortfall is permitted, matching the slot's key meaning."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and all months?",
+      "rationale": "The agent explicitly confirmed the minimization objective in its first question."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed contract of length L is committed for its entire term (area A_L is active for months 1..L); partial usage of a signed contract is not considered.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether a contract must be kept for all months of its period or whether partial usage is allowed, yet its flow-balance model (A_1+A_2+A_3+A_4=1500, etc.) treats each contract as fully committed across its coverage months."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Both P0 slots (H4 exact demand satisfaction and H5 cost-minimization objective) were explicitly confirmed. The P1 slot H2 (diversification) was elicited by a broad catch-all question rather than a targeted ask (hence its partial hit), but the agent then clarified and confirmed it as a hard constraint, so no core P0/P1 issue remained unresolved at stop. The only untouched slot, H1, is P2."
+  },
+  "summary": "The agent cleanly recovered the two critical P0 facts (objective and exact demand satisfaction) and clarified the length/fee structure, but it only surfaced the hidden diversification and max-contract-length requirements through a broad catch-all question rather than targeted inquiries, and it never asked whether a signed contract must be used for its full term (H1, P2). Overall the elicited constraints were confirmed and the agent stopped without leaving core P0/P1 issues unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 7.5,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 2,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 2.0,
+        "score": 0.25
+      },
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

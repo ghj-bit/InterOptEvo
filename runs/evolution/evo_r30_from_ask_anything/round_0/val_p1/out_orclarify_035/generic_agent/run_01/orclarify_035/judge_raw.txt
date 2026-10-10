@@ -1,0 +1,28 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_vat_sequence",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Can a single batch be split across multiple vats, or must each batch be processed entirely on one vat?",
+      "rationale": "The agent asked about whether a batch is split across vats, which touches on multi-vat processing, but did not ask whether the vat order is fixed as vat 1, then vat 2, then vat 3."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Every batch must visit the vats in the fixed sequence: vat 1, then vat 2, then vat 3.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never directly asked about the required vat sequence; the sequence was volunteered in response to a different question about splitting/one-vat processing, so it was not confirmed through the agent's own questioning."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while H1 was only partially covered, because it did not directly ask about the fixed vat processing sequence."
+  },
+  "summary": "The agent asked several useful scheduling questions and correctly summarized a flow-shop model, but it never directly asked about the required vat sequence. It relied on the user simulator volunteering that hidden fact, leaving H1 only partially recovered."
+}

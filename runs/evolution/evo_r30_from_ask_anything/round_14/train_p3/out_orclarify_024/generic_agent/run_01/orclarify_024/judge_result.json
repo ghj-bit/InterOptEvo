@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "van_ev_mutual_exclusion",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Are there any additional constraints or requirements beyond the pollution limit, minimum truck trips, and delivery target that I should include in the model?",
+      "rationale": "The agent only issued a vague catch-all question about 'additional constraints'; it never explicitly asked whether vans and EVs can be used together or must be mutually exclusive. The mutual-exclusion fact surfaced only because the simulator volunteered it, which per the rules does not earn full credit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_pollution_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize total transportation cost, and if so, what is the cost per trip for each vehicle type (truck, van, motorcycle, electric vehicle)?",
+      "rationale": "The agent directly asked about the objective function, clarifying whether the goal was cost minimization or something else, which is semantically equivalent to confirming the minimize-pollution objective."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The P0 objective slot (H2) was resolved, but the P1 mutual-exclusivity slot (H1) was only partially recovered via a vague catch-all question rather than a targeted inquiry, so it remained unconfirmed by the agent's own question when it entered READY_TO_MODEL."
+  },
+  "summary": "The agent resolved the P0 objective (minimize total pollution) cleanly, but recovered the P1 van/EV mutual-exclusivity constraint only through a generic 'any additional constraints?' question, which the user happened to answer. The model would be business-valid given the revealed constraint, yet the agent did not proactively target this key slot.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

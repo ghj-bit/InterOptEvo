@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the demand figures in Table 4-3 (e.g., 1000 for Specialty 1 in Donghai), are these hard constraints that must be met exactly, or are they maximum capacities that can be underfilled?",
+      "rationale": "The agent explicitly asked whether demand must be met exactly versus being a capacity that can be underfilled, directly probing the exact-equality issue and obtaining confirmation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "is this a separate optimization problem to be solved after the first two objectives are satisfied, or is it part of the same lexicographic multi-objective model where minimizing the number of people not in their preferred city is the third priority level (p3)?",
+      "rationale": "The agent referenced a lexicographic multi-objective structure and the placement of p3, but never explicitly asked to confirm the full preemptive priority order p1 > p2 > p3; the strict ordering was volunteered by the user simulator in Turn 3."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while the P0 priority-order slot was not explicitly confirmed through the agent's own questions; the lexicographic order was only volunteered by the user simulator, so a major hidden slot remained unresolved."
+  },
+  "summary": "The agent directly recovered the exact demand equality condition (H1) but did not explicitly ask about the lexicographic priority order (H2), relying instead on the user simulator's volunteered statement. It stopped prematurely with the P0 priority-order slot unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7,
+    "earned_weight": 3.5,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

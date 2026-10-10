@@ -1,0 +1,102 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is there a specific total budget cap for the entire order, or is the goal to minimize the total cost while meeting the table count requirements?",
+      "rationale": "The agent explicitly asked about the optimization goal, offering minimize total cost as candidate, matching the objective slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "A_requires_min_B_tables",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a conditional rule linking an order from Supplier A to a minimum number of tables from Supplier B; its per-supplier question did not cover this linkage."
+    },
+    {
+      "slot_id": "H3",
+      "name": "B_requires_C_order",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether ordering from Supplier B requires ordering from Supplier C."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Ordering from Supplier A carries no obligation to order a minimum number of tables from Supplier B (A and B are independent).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the A-to-B conditional rule and listed only total table-count constraints, implicitly treating A and B as independent."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Ordering from Supplier B does not require ordering from Supplier C (B and C are independent).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the B-to-C conditional rule and treated the suppliers as fully independent in its READY_TO_MODEL constraints."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2",
+      "H3"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while both P1 conditional-linkage slots (H2, H3) remained unresolved; the objective P0 slot was resolved."
+  },
+  "summary": "The agent correctly recovered the objective (H1) but stopped after only two questions, never probing the conditional supplier linkage constraints (H2, H3), resulting in a premature stop and silent independence assumptions.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.42857142857142855,
+    "earned_weight": 3.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2",
+      "H3"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2",
+      "H3"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

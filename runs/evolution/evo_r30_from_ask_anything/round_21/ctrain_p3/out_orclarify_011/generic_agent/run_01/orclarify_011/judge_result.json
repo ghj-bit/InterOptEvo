@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_profit_maximization_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "What is the primary objective of the production plan: to minimize total weekly cost, to maximize total weekly profit, or to find any feasible production mix that satisfies all constraints",
+      "rationale": "The agent explicitly asked about the optimization objective, including whether to maximize weekly profit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "missing_idle_time_minimization_objective",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about idle time, unused capacity, or a secondary multi-objective requirement for the manufacturing, assembly, or inspection processes. The broad catch-all question about other constraints did not target this hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The only objective is to maximize weekly profit; there is no additional objective to minimize process idle time with cost-proportional weights.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about idle-time minimization or any multi-objective formulation, and the READY_TO_MODEL summary omitted this requirement entirely while treating profit maximization as the complete objective."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent resolved the P0 objective question but stopped at READY_TO_MODEL while the P1 idle-time minimization objective remained unasked and unresolved."
+  },
+  "summary": "The agent correctly recovered the main profit-maximization objective but missed the secondary idle-time minimization requirement and stopped with that P1 hidden slot unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 3.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as options for this dinner, or should the selection be limited to the four fiber-containing vegetables (okra, carrots, celery, cabbage)?",
+      "rationale": "The agent asked about protein availability/limitation, a related issue, but did not explicitly ask whether exactly one protein is required or whether multiple proteins can be combined; the exactly-one rule was volunteered by the user simulator."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "No question or explicit assumption check about the minimum number of vegetable types; the agent never asked whether at least two vegetables must be selected."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum vegetable-variety constraint applies; the meal plan can be formulated without requiring at least two vegetable types.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "H2 was never asked or confirmed, yet the READY_TO_MODEL summary lists constraints and states no assumptions remain, effectively omitting any variety requirement."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while H1 was only partially addressed and H2 was never asked, leaving P1 hidden slots unresolved."
+  },
+  "summary": "The agent clarified several boundary/data assumptions, but it missed the minimum vegetable-types constraint and only indirectly touched the protein selection rule before stopping prematurely.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

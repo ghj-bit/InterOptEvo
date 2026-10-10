@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 12 generic_agent",
+      "evidence_quote": "Is the constraint that Product I cannot be produced in the second quarter a hard constraint (production must be exactly zero), or is it a soft constraint where producing Product I in the second quarter incurs a penalty?",
+      "rationale": "The agent explicitly asked about the Product I Q2 production restriction and confirmed it as a hard constraint before READY_TO_MODEL."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the delay compensation cost (20 yuan per unit per quarter for Products I and II, 10 yuan per unit per quarter for Product III) incurred for each unit of demand that is not delivered in the quarter it is due, and does this cost accumulate for each subsequent quarter the unit remains undelivered?",
+      "rationale": "The agent touched late-delivery compensation handling but did not explicitly confirm that all contract reservations must eventually be delivered, nor did it distinguish backlogging from lost sales."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "All contract reservations are firm and late-delivered units remain as backlogged demand incurring cumulative compensation; whether unmet reservations must eventually be fulfilled versus lost was not confirmed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about delay-cost accumulation but never explicitly confirmed the requirement that all contract reservations must still be delivered if late, so the READY summary treats demand fulfillment semantics as settled without a clear answer."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent reached READY_TO_MODEL while P1 slot H2 was only partially addressed; the eventual-delivery/backlogging semantics of contract reservations were not fully resolved."
+  },
+  "summary": "The agent asked many useful clarifying questions and resolved most modeling details, including the Product I Q2 restriction, but it stopped with the contract-reservation fulfillment/backlogging semantics only partially clarified.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 3.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

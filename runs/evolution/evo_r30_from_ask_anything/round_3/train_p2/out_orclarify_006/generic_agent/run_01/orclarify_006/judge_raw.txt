@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, and in particular never asked whether Product I can be produced in Q2. The generic question about zero production in any quarter does not cover this specific prohibition."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Since the contract reservations are exact delivery requirements, are you allowed to backorder units (i.e., deliver them in a later quarter than the quarter they are due) and pay the delay compensation, or must every quarter's contract be fully satisfied from production in that same quarter or from inventory carried forward from previous quarters?",
+      "rationale": "The agent explicitly asked whether late delivery/backordering is allowed and whether contract reservations must be fulfilled, then later confirmed that end-of-Q4 backorders must be zero. This covers the demand fulfillment semantics."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in every quarter, including Q2, and no quarter-specific production restriction applies.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether Product I is prohibited from production in Q2, and the READY_TO_MODEL summary omits any such restriction while treating production quantities as available for each product in each quarter."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden constraint that Product I cannot be produced in Q2 remained unresolved and was silently omitted from the confirmed understanding."
+  },
+  "summary": "The agent adequately clarified contract delivery/backlogging semantics, recovering H2, but failed to ask about the quarter-specific Product I production prohibition and stopped with that P1 restriction unresolved."
+}

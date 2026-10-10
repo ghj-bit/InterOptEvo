@@ -1,0 +1,55 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total cost of the tables, or is there another objective such as maximizing the number of tables or meeting a specific supplier mix?",
+      "rationale": "The agent explicitly asked about the optimization objective and confirmed it should be minimizing total cost."
+    },
+    {
+      "slot_id": "H2",
+      "name": "A_requires_min_B_tables",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent only asked about individual supplier minimum/maximum order limits and whether suppliers could receive zero orders. It did not ask whether ordering from Supplier A requires at least 30 tables from Supplier B."
+    },
+    {
+      "slot_id": "H3",
+      "name": "B_requires_C_order",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether ordering from Supplier B requires also ordering from Supplier C. The individual supplier limit question does not cover this cross-supplier conditional rule."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement linking an order from Supplier A to a minimum number of tables ordered from Supplier B.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the A-to-B conditional constraint, yet the READY_TO_MODEL summary lists constraints without such a linkage and states that all critical facts were confirmed."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "There is no requirement that an order from Supplier B implies an order from Supplier C.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the B-to-C conditional constraint, yet the READY_TO_MODEL summary omits it and treats supplier orders as independent."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2",
+      "H3"
+    ],
+    "rationale": "The agent resolved the P0 objective question but entered READY_TO_MODEL without asking about the two P1 conditional supplier-link constraints."
+  },
+  "summary": "The agent correctly recovered the objective but missed both conditional supplier linkage constraints, then stopped with those P1 slots unresolved and silently treated the suppliers as independent."
+}

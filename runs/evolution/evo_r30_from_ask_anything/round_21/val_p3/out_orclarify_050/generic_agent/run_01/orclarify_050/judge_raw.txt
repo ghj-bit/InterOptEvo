@@ -1,0 +1,28 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "purchase_at_month_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements for the plan, such as minimum purchase or sales quantities, or restrictions on when purchases and sales can occur?",
+      "rationale": "The agent touched the timing issue with a broad question about restrictions on when purchases and sales can occur, but did not explicitly ask whether purchases happen at the beginning/start of each month, so the key slot meaning is not fully covered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Purchase timing within the month is irrelevant; inventory capacity is enforced only on end-of-month inventory using an aggregate monthly balance.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "H1 was never confirmed, and the READY_TO_MODEL summary assumed end-of-month capacity and a monthly flow balance without explicitly marking purchase timing or intra-month capacity as needing confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent went to READY_TO_MODEL while the P1 purchase-timing slot remained unresolved and was not explicitly confirmed or clearly flagged as an open assumption."
+  },
+  "summary": "The agent asked several relevant clarifying questions but only vaguely touched purchase timing and then stopped with H1 unresolved, silently modeling aggregate end-of-month inventory."
+}

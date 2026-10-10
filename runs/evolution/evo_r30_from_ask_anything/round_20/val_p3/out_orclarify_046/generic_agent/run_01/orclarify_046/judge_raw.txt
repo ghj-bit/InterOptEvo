@@ -1,0 +1,41 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Are there any additional constraints or requirements not mentioned in the brief, such as limits on the number of days a student can work, requirements for specific students to cover certain time slots, or restrictions on consecutive days off?",
+      "rationale": "The agent explicitly asked about limits on the number of days a student can work, which is semantically equivalent to the weekly shift/working-day cap."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not proactively ask whether there is a daily cap on the number of distinct students assigned. The constraint was volunteered by the user in turn 7; the later turn 9 question only clarified the already-revealed fact."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total weekly labor cost (sum of wage times hours for all students), or is there a different primary goal such as maximizing fairness or minimizing total hours worked?",
+      "rationale": "The agent explicitly asked about the optimization objective and proposed minimizing total weekly labor cost."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent stopped with READY_TO_MODEL after resolving the P0 objective slot and H1, but H2 (max students per day) was not recovered by an agent question; it was only volunteered by the user. Under the slot-hit rules, this leaves an unresolved P1 slot at stopping time."
+  },
+  "summary": "The agent recovered the objective and the weekly shift cap well, but failed to proactively ask about the daily limit on distinct students; it only clarified that constraint after the user volunteered it. Thus the interaction stopped with an unresolved P1 hidden slot."
+}

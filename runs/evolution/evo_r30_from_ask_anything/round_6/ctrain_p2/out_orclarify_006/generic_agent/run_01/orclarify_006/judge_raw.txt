@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, and in particular never asked whether Product I may be produced in Q2. Its READY summary later assumes production quantities for all three products in each of the four quarters."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the \"contract reservations\" in the table, are these quantities that must be delivered to customers in that specific quarter (meaning any shortfall results in the stated delay compensation), or are they minimum production targets that must be met",
+      "rationale": "The agent touched on delivery obligation and later asked about late-penalty calculation, but it did not explicitly confirm that all contract reservations must ultimately be fulfilled even if late, nor whether unmet demand is backlogged rather than lost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the Q2 production restriction for Product I, yet the READY summary lists integer production quantities for each of the three products in each of the four quarters."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Unmet contract reservations can be fulfilled in later quarters and incur delay penalties, without explicitly confirming whether all reservations must eventually be delivered rather than treated as lost.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about late-penalty calculation but did not explicitly confirm the firm backlogging requirement that all contract reservations must ultimately be satisfied."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "At READY_TO_MODEL, the P1 Q2 production restriction for Product I had not been asked or confirmed, and the P1 contract-reservation fulfillment semantics were only partially probed."
+  },
+  "summary": "The agent clarified many cost, capacity, integrality, and inventory details, but missed the quarter-specific Product I restriction and only partially addressed whether all contract reservations must ultimately be delivered. It then stopped with P1 hidden facts still unresolved."
+}

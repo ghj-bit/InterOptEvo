@@ -1,0 +1,82 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not proactively ask about quarter-specific production restrictions or Product I in Q2. The fact only surfaced after the broad catch-all question 'Are there any other constraints or requirements not yet mentioned,' and the later confirmation question was only possible because the user simulator volunteered the hidden fact."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Regarding the \"delay compensation\" cost, if a product's demand for a specific quarter is not fully met by the end of that quarter, is the penalty calculated based on the number of units short multiplied by the delay rate for each quarter the units remain undelivered",
+      "rationale": "The agent asked about how unmet demand is penalized over multiple quarters, which touches late-delivery handling, but did not explicitly confirm whether all contract reservations must eventually be fulfilled or whether unmet demand could instead be lost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Unmet demand remains backlogged and can be delivered in future quarters, rather than being lost or treated as optional.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed the delay-penalty calculation for units short; it did not explicitly confirm that all contract reservations must eventually be delivered, yet it modeled backlogged units as deliverable in later quarters."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 Product I Q2 production restriction had not been proactively recovered and the P1 contract-reservation delivery semantics were only partially clarified."
+  },
+  "summary": "The agent clarified many modeling details but missed the proactive Product I Q2 restriction and only partially resolved the requirement that all contract reservations must eventually be delivered. It stopped with unresolved P1 hidden slots.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

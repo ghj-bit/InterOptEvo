@@ -1,0 +1,100 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the number of trained pilots produced in a given year equal to the number of fighter jets allocated to training in that same year, or does each training jet produce a different number of pilots (for example, multiple pilots per jet or a fixed pilot count per jet)?",
+      "rationale": "The agent explicitly asked how many pilots each training jet produces per year, directly covering the per-jet training capacity."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask how many combat jets a trained pilot can operate or otherwise clarify the pilot-to-combat-jet relationship."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask when the training program starts or how many years training lasts. Turn 2 only asked about whether newly produced jets can be used for training in the same year, not about the training program's start year or duration."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Training starts in year 1 and runs through year 2, so pilots can be trained in both years and counted cumulatively by the end of year 2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed the training program's start year or duration, yet its READY_TO_MODEL formulation assumes training occurs in years 1 and 2."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H3"
+    ],
+    "rationale": "The agent resolved the P0 training-capacity slot but stopped at READY_TO_MODEL while the P1 training start/duration slot remained unasked and unresolved."
+  },
+  "summary": "The agent successfully clarified the key per-jet training capacity, but it stopped before clarifying the training program's start year and duration, silently assuming a two-year training timeline.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 3.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 1.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H3"
+    ],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [
+      "H2"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H3"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

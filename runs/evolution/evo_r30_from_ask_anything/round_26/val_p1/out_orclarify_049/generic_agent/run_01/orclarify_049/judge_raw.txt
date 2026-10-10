@@ -1,0 +1,64 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about start month and number of contracts per warehouse, but never asked whether a signed contract must be used for its entire term or could be used partially."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Does the \"at least two different contracts\" constraint require at least two different contract lengths to be used, or at least two separate warehouse contracts regardless of length?",
+      "rationale": "The agent engaged the diversity requirement, but only reactively: the constraint was volunteered by the simulator in turn 10 after a vague catch-all, and the agent never proactively asked whether contract lengths must be diversified."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 12 generic_agent",
+      "evidence_quote": "Does the \"cannot exceed 3\" constraint limit the number of distinct contract lengths used, or the total number of warehouse contracts signed?",
+      "rationale": "The agent clarified the scope of the cap only after the simulator volunteered it, rather than asking about a limit on the number of distinct contracts itself."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are the required area figures in Table 1-14 minimums that must be met or exceeded in each month, or are they exact targets that must be matched precisely?",
+      "rationale": "Directly asks whether monthly demand must be matched exactly versus met-or-exceeded, covering the exact-satisfaction slot."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and all months?",
+      "rationale": "Directly confirms the optimization objective is total rental-cost minimization."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed warehouse contract must be used for its entire term (all months of its length), with no partial usage.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether partial usage of a signed contract is allowed, yet its confirmed understanding treats contracts as fixed-length commitments covering their full term."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The P0 slots (exact demand, cost objective) were resolved, but the P1 diversity requirement was never proactively recovered; it was only volunteered by the simulator and clarified afterward, so at READY_TO_MODEL a P1 slot remained unresolved."
+  },
+  "summary": "The agent cleanly confirmed the P0 slots (cost objective and exact demand satisfaction) with direct questions, but never queried full-term contract coverage (H1) and only addressed the diversity and max-contract constraints reactively after the simulator volunteered them through a vague catch-all, leaving the P1 diversity slot unresolved at stopping."
+}

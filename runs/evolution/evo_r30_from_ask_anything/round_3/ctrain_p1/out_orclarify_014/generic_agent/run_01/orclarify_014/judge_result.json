@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase any amount in 100g units (so the quantity of each protein is a non-negative integer number of 100g portions), or are proteins purchased in some other fixed unit or as a continuous weight",
+      "rationale": "The agent explicitly asked about the protein purchase unit and whether proteins are continuous or discrete/fixed packs."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether at least a minimum number of distinct vegetable types must be selected, and did not explicitly flag this as an unconfirmed assumption."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to select at least three different types of vegetables.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum distinct vegetable-type requirement, and the READY_TO_MODEL summary omits the hidden constraint entirely."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while P1 hidden slot H2 about the minimum number of distinct vegetable types remained unresolved."
+  },
+  "summary": "The agent clarified several important interpretation details, including the protein purchase quantity type, but missed the P1 requirement about selecting at least three different vegetable types and then stopped prematurely.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

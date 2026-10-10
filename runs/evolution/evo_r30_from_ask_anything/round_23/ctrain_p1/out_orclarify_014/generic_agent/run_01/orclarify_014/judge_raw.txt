@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the protein options (chicken, salmon, tofu) also constrained to whole 100g units, or can they be purchased in any continuous amount?",
+      "rationale": "The agent explicitly asked whether protein quantities are discrete 100g units or continuous, directly targeting the hidden purchase-unit fact."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Are there any minimum quantity requirements for any specific protein or vegetable option that must be included in the dinner plan?",
+      "rationale": "The question touches minimum/inclusion requirements, but it asks about specific protein or vegetable options rather than a minimum number of distinct vegetable types, so it only partially targets H2."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "H2, a P1 hidden slot, was only partially targeted by a broad minimum-requirements question before READY_TO_MODEL, so a P1 coverage gap remained when the agent stopped."
+  },
+  "summary": "The agent directly clarified the protein purchase unit (H1) and confirmed the other constraints, but its probe for the minimum vegetable-type requirement (H2) was a broad catch-all rather than a distinct-type question. It therefore stopped with a P1 coverage gap, even though the simulator supplied the missing fact."
+}

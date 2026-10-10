@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase any continuous weight (for example, 150g of chicken), or must proteins also be bought in discrete 100g units like the vegetables",
+      "rationale": "The agent explicitly asked whether proteins are continuous or discrete 100g units, directly matching the semantic hit rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are there any minimum or maximum quantity requirements for any specific protein or vegetable option, such as a requirement to include at least one type of protein",
+      "rationale": "The question touched on minimum requirements for items and on including a protein type, but did not ask about a minimum number of distinct vegetable types, so the key meaning of the hidden slot was not covered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no constraint requiring a minimum number of distinct vegetable types to be selected.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed per-item quantity limits and a protein-inclusion question; the user never confirmed anything about a minimum count of distinct vegetable types, yet the agent concluded 'No other constraints' exist."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot about a minimum number of distinct vegetable types remained unresolved (only partially covered), so it stopped with an open P1 fact."
+  },
+  "summary": "The agent cleanly recovered the protein purchase-unit fact (H1) but only partially probed and then silently assumed away the minimum distinct-vegetable-types requirement (H2), stopping prematurely with an unresolved P1 slot."
+}

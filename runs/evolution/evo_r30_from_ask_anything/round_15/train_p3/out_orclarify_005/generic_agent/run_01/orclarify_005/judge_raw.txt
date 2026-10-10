@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as options for the dinner, or should the selection be limited to the four vegetable items (okra, carrots, celery, cabbage) that have fiber data provided?",
+      "rationale": "The agent asked only whether proteins are available, not the selection rule such as exactly one protein or whether multiple proteins may be combined. The exactly-one rule was volunteered by the user simulator, so it does not count as a hit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Can you select any subset of the four vegetable items (okra, carrots, celery, cabbage), or must you include all four vegetables in the meal?",
+      "rationale": "The agent touched the vegetable-selection cardinality issue by asking about any subset versus all four, but it did not explicitly ask about the minimum number of vegetable types. The at-least-two requirement was volunteered by the user simulator."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while both P1 hidden slots were not fully recovered through agent questions: H1 was never asked about, and H2 was only partially addressed. The relevant facts were supplied by the user simulator rather than elicited by the agent."
+  },
+  "summary": "The agent asked several useful boundary questions and correctly incorporated user-provided facts, but it failed to explicitly ask about the exactly-one-protein rule and only partially probed the minimum vegetable-types rule before stopping. The stopping was premature with respect to the P1 hidden-slot recovery standard."
+}

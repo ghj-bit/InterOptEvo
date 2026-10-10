@@ -1,0 +1,64 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about the start/consecutive-month structure (turn 7) and about excess area (turn 3), but never asked whether a signed contract must remain active/used for the entire term or whether partial usage is allowed."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "For the constraint 'at least two different contracts (with different lengths) must be signed,' does this mean at least two distinct contract lengths must be used across all warehouses, or does it mean at least two separate contract instances (even if same length) must be signed?",
+      "rationale": "The agent explicitly checked whether the plan must use at least two distinct contract lengths, covering the slot's key meaning."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 12 generic_agent",
+      "evidence_quote": "For the constraint 'the number of distinct warehouse contracts signed cannot exceed 3,' does this mean at most 3 total contract instances across all warehouses, or at most 3 distinct warehouses can be used?",
+      "rationale": "The agent directly inquired about the cap on the number of contracts and clarified its interpretation."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the required area in each month (e.g., 1500 in Month 1), is this a minimum area that must be covered, or an exact amount that must be matched precisely?",
+      "rationale": "The agent explicitly asked whether demand must be matched exactly, and reinforced it in turn 3 about oversupply."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and months, or is there another goal such as minimizing the number of contracts or maximizing flexibility?",
+      "rationale": "The agent directly confirmed the cost-minimization objective before modeling."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "That a signed k-month contract necessarily spans and covers all k months of its term (no partial usage of a signed contract).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether a contract must be kept/used for its entire term, yet its confirmed structure states 'A k-month contract covers months 1 through k' without confirmation of this full-coverage obligation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0 slots (H4 demand exactness, H5 objective) and the P1 slot (H2 length diversity) were resolved before READY_TO_MODEL; the only unasked slot (H1) is P2 and does not change core correctness."
+  },
+  "summary": "The agent recovered the core hidden facts (cost objective, exact demand satisfaction, contract-length diversity, and the contract-count cap) through targeted questions and confirmed the start/consecutive-month structure; it never probed the full-coverage obligation (P2), which it implicitly assumed in its READY_TO_MODEL summary. Stopping was appropriate given all P0/P1 slots were resolved."
+}

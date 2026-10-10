@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Are there any additional constraints or requirements not mentioned in the brief, such as minimum production quantities per quarter, capacity limits per product, or restrictions on how many quarters a unit can be delayed",
+      "rationale": "The agent probed for extra constraints, which happened to surface the Product I Q2 ban, but it did not explicitly ask about quarter-specific production restrictions (e.g., whether Product I can be made in Q2), so this is only a vague catch-all rather than a targeted hit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Can production in a given quarter be used to satisfy demand from a previous quarter (i.e., can you produce in Q2 to cover a Q1 contract that was not met in Q1), or must each quarter's contract demand be satisfied only by production in that same quarter",
+      "rationale": "The agent explicitly asked about whether late (cross-quarter) fulfillment is allowed and how it is handled, which directly covers the demand-fulfillment / late-delivery semantics of H2."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Before READY_TO_MODEL the agent had already resolved the two P1 facts: H2 was explicitly asked (turn 4) and H1 was disclosed and incorporated correctly via the additional-constraints probe (turn 9). The only weakness is that the H1 probe was a broad catch-all (partial specificity), not a genuine unresolved slot, and the repeated 150-unit question is a minor redundancy that does not keep a P0/P1 slot open."
+  },
+  "summary": "The agent ran a solid clarification sequence, confirming hours aggregation, cost timing, cross-quarter flow, and integer domain, and it obtained the Product I Q2 ban and the late-delivery requirement before modeling. Its only flaw is that the Product I Q2 restriction was elicited through a generic 'any other constraints' question rather than a targeted one, and it redundantly repeated the 150-unit inventory question."
+}

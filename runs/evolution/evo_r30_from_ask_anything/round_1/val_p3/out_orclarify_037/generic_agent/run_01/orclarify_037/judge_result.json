@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 13 generic_agent",
+      "evidence_quote": "Is the $10,000 total weekly profit a hard lower bound",
+      "rationale": "The agent explicitly asked about the $10,000 weekly profit lower bound before READY_TO_MODEL, even though the value first appeared after a vague catch-all prompt."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Is the 15-unit minimum for Model B a hard lower bound that",
+      "rationale": "The agent explicitly asked about the minimum production requirement for Model B and confirmed the 15-unit hard lower bound."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is the 150-hour maximum weekly processing capacity for Process I a hard upper limit that cannot be",
+      "rationale": "The agent touched the Process I time requirement but asked only about it as an upper limit, not whether it must be exactly 150 hours; the exact equality was supplied by the user."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2, and the agent confirmed the minimum profit target and Model B minimum before READY_TO_MODEL. The Process I exact-time question was incomplete, but that remains only a P2 boundary issue and was answered by the user."
+  },
+  "summary": "The agent clarified the main constraints and recovered most hidden business rules through explicit questions, including the Model B minimum and profit floor. It stopped appropriately after resolving all P0/P1-level issues, with only a partial probe on the P2 Process I exact-time requirement.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8333333333333334,
+    "earned_weight": 2.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 2.5,
+        "total_weight": 3.0,
+        "score": 0.8333333333333334
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

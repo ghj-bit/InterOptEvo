@@ -1,0 +1,89 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 6 and turn 7 generic_agent",
+      "evidence_quote": "Are there any other constraints, such as requiring a... / Does the constraint \"each student can work no more than 2 shifts per week\" mean that a student can be assigned to duty on at most 2 days per week?",
+      "rationale": "The agent used a vague catch-all ('any other constraints') and only clarified the 2-shifts-per-week rule after the user volunteered it in turn 6; it never proactively asked about a shift/working-day cap, so the slot is only partially recovered."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 6 and turn 8 generic_agent",
+      "evidence_quote": "Are there any other constraints, such as requiring a... / Does the constraint \"no more than 3 different students can be scheduled for duty on any given day\" mean that at most 3 different students can be assigned to duty?",
+      "rationale": "The daily distinct-student cap was surfaced only through the agent's broad 'any other constraints' probe; the agent then confirmed its meaning but did not proactively ask about a per-day student limit, so partial."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the objective of the scheduling plan, such as minimizing total weekly labor cost, ensuring fairness, or simply finding any feasible schedule?",
+      "rationale": "The agent explicitly asked about the optimization objective before any modeling, matching the semantic hit rule for the cost-minimization objective."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent never produced a READY_TO_MODEL state, a final model, or any final answer; the conversation degraded into repeated/truncated vague questions (turns 9-30) and simply ended, and the two P1 slots were only partially recovered."
+  },
+  "summary": "The agent recovered the P0 objective clearly and clarified the two P1 business constraints, but only after a vague catch-all probe that let the user volunteer them; it then looped through many repeated/truncated low-value questions and never reached a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7142857142857143,
+    "earned_weight": 5.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

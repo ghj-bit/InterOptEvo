@@ -1,0 +1,93 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "Turn 12 generic_agent",
+      "evidence_quote": "Are there any constraints on the number of days per week a student can work, or can a student work on any subset of the five days as long as their daily hours do not exceed the table limits and their weekly total meets the minimum?",
+      "rationale": "The agent directly asked about a limit on the number of working days/shifts per student per week, and then clarified the meaning of the at-most-2-shifts constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a daily cap on the number of distinct students assigned to duty; questions about splitting the day among multiple students did not target the hidden maximum-students-per-day constraint."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "Turn 2 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total weekly labor cost (sum of wage times hours for all students), or is there another goal such as maximizing fairness or minimizing total hours worked?",
+      "rationale": "The agent explicitly asked about the optimization objective and confirmed minimizing total weekly labor cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No daily limit applies to the number of distinct students who can be assigned duty on a given day; any number of students may be scheduled on the same day as long as exactly 14 hours are covered and individual daily maxima are respected.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a maximum number of distinct students per day, and the READY_TO_MODEL summary omitted any such constraint without marking it as an open assumption."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL after resolving H1 and H3, but P1 hidden slot H2 about the daily cap on distinct students remained unresolved."
+  },
+  "summary": "The agent successfully clarified the objective and the weekly shift/day limit, but it stopped before asking about the maximum number of distinct students allowed per day, leaving a P1 hidden slot unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7142857142857143,
+    "earned_weight": 5.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

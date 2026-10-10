@@ -1,0 +1,64 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Agent never asked whether a signed contract must be used for its entire term; it only asked about variable types/capacity. The full-term obligation is silently assumed in READY_TO_MODEL coverage equations."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The only question that could have uncovered this was the vague catch-all in turn 9; the user then volunteered the two-contract-length rule. The later clarification in turn 10 only interpreted the volunteered constraint, so it does not count as a proactive hit."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask about a cap on distinct contract lengths; the cap was volunteered by the user in turn 9, and turn 11 only clarified the volunteered constraint's interpretation."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are the required area values in Table 1-14 minimums that must be met or exceeded each month, or are they exact targets that must be matched precisely?",
+      "rationale": "Directly asks whether demand must be matched exactly, which is the hidden slot's key meaning."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and all months?",
+      "rationale": "Directly confirms the optimization goal."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed contract of a given length must be used for every month in its consecutive term; partial usage within the contracted term is not allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether contracts require full-term coverage, and the user did not confirm it. The assumption appears in the READY_TO_MODEL coverage equations (e.g., x2 contributes to both months 1 and 2)."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "P0 slots H4 and H5 were resolved, but the P1 contract-length-diversity slot was not proactively asked; the user volunteered it and the agent only clarified it after disclosure. The agent stopped at READY_TO_MODEL with H2 unresolved."
+  },
+  "summary": "The agent resolved the two P0 hidden slots and several modeling details, but missed the P1 contract-length-diversity slot by relying on a vague catch-all and user volunteering; it also silently assumed full contract-term coverage. It stopped prematurely with H2 unresolved."
+}

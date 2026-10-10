@@ -1,0 +1,57 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a signed contract must be kept/used for its entire term or whether partial usage is allowed. The generic catch-all in turn 5 (limits on warehouses, minimum contract sizes, dependencies between lengths) does not target this obligation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Are there any other constraints or rules not mentioned in the brief, such as limits on the number of warehouses, minimum contract sizes, or dependencies between different contract lengths?",
+      "rationale": "The agent only touched length diversity through a vague catch-all and then merely clarified the scope of the constraint after the user volunteered it (turn 6). It never itself asked whether at least two distinct lengths are required or a single type is acceptable, so the key meaning was not proactively covered."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Are there any other constraints or rules not mentioned in the brief, such as limits on the number of warehouses, minimum contract sizes, or dependencies between different contract lengths?",
+      "rationale": "The agent mentioned 'limits on the number of warehouses' in a vague catch-all and then clarified the counts after the user volunteered the cap (turn 7), but it never itself asked about a maximum number of distinct contract types."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the required area figures (e.g., 1500 in Month 1), are these minimum areas that must be covered, or exact targets that must be met precisely?",
+      "rationale": "Directly asks whether demand must be met exactly with no surplus or deficit."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and months, or is there a different goal such as maximizing flexibility or minimizing the number of contracts?",
+      "rationale": "Explicitly asks for and confirms the optimization objective as minimizing total rental cost."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "Both P0 slots were resolved, but the P1 risk-management constraint (at least two distinct contract lengths) was never proactively asked about by the agent and was only partially covered via a vague catch-all, so a P1 slot remained unresolved when it entered READY_TO_MODEL."
+  },
+  "summary": "The agent cleanly confirmed the two P0 hidden slots (exact demand satisfaction and cost-minimization objective) and reasonably clarified the data units, but it failed to proactively probe the coverage obligation (H1) and only stumbled onto the length-diversity and max-contract hidden rules (H2/H3) through a vague catch-all after the user volunteered them, stopping with an unresolved P1 slot."
+}

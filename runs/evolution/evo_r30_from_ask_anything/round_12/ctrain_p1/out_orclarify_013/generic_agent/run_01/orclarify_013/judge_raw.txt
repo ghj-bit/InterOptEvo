@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "corn_minimum_twice_wheat",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are there any other limits on how many acres can be planted with each specific crop, such as a maximum or minimum for corn, wheat, soybeans, or sorghum?",
+      "rationale": "The agent asked a vague catch-all about per-crop limits, but never asked about a ratio or multiplier linking corn and wheat acreage, such as corn >= 2 * wheat."
+    },
+    {
+      "slot_id": "H2",
+      "name": "wheat_three_times_sorghum",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are there any other limits on how many acres can be planted with each specific crop, such as a maximum or minimum for corn, wheat, soybeans, or sorghum?",
+      "rationale": "The agent did not ask whether wheat and sorghum are linked by a fixed ratio, nor did it inquire about a constraint like wheat = 3 * sorghum."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no additional constraint linking corn and wheat acreage, such as corn being at least twice wheat.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a corn-wheat ratio, and its READY_TO_MODEL confirmed-facts summary retained only the soybean/sorghum relationship."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no fixed wheat-to-sorghum ratio, such as wheat = 3 * sorghum.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about wheat and sorghum being linked by a fixed ratio, and the READY_TO_MODEL summary did not include that hidden constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL after only clarifying the total-land and soybean/sorghum relationship, leaving both P1 hidden crop-relationship constraints unresolved."
+  },
+  "summary": "The agent clarified the total-land and soybean/sorghum relationship but failed to probe the hidden corn-wheat and wheat-sorghum relational constraints. It then stopped prematurely, implicitly assuming no such additional crop relationships, leaving the model materially incomplete."
+}

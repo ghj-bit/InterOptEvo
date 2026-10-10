@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the branch demand figures in Table 4-3, are they exact requirements that must be met precisely, or are they maximum capacities that can be under-filled if necessary?",
+      "rationale": "The agent directly asked whether branch demand is exact rather than inequality-based, covering the key exact-equality meaning of H1."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 15 generic_agent",
+      "evidence_quote": "Is the objective function to minimize the sum of the penalties for missing the preferred specialty target and the preferred city target, or is it to minimize the number of assigned personnel who do not get their preferred city while treating the preferred specialty target as a secondary constraint?",
+      "rationale": "The agent asked about objective weighting and primary/secondary treatment of goals, but never explicitly asked whether p1, p2, and p3 follow a strict lexicographic/preemptive order."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The final model outline assumes a weighted-sum or primary/secondary objective structure rather than a strict lexicographic priority order p1 > p2 > p3.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never obtained confirmation of the priority structure; the user never confirmed lexicographic ordering, and the READY_TO_MODEL model outline adopts a weighted-sum/multiobjective formulation while merely noting that lexicographic formulation is left open."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent stopped with the P0 priority-order slot unresolved. It asked related objective-weighting questions but never established the required lexicographic p1 > p2 > p3 ordering."
+  },
+  "summary": "The agent clarified demand exactness and several assignment/objective details, but failed to resolve the core P0 priority structure before entering READY_TO_MODEL. It repeated objective-weighting questions without ever asking about lexicographic preemptive ordering.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7,
+    "earned_weight": 3.5,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "min_weekly_production_A",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Is there a minimum weekly production requirement for Model A?",
+      "rationale": "The agent explicitly asked about a minimum weekly production requirement for Model A, matching the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_weekly_production_B",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is there a minimum weekly production requirement for Model B?",
+      "rationale": "The agent explicitly asked about a minimum weekly production requirement for Model B, matching the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_overtime_process_II",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is the overtime processing time for Process II subject to a maximum weekly limit?",
+      "rationale": "The agent explicitly asked whether Process II overtime has a maximum weekly limit, matching the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Each unit is processed entirely in either regular or overtime in Process II, with no splitting between regular and overtime hours for the same unit.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked about this in turns 10 and 11, but the user simulator did not confirm it; the agent then treated the no-splitting assumption as confirmed in the READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All P0/P1 hidden slots were resolved before READY_TO_MODEL; the remaining unresolved point about splitting units in Process II is not one of the listed hidden slots and does not prevent an appropriate stop."
+  },
+  "summary": "The agent recovered all three hidden P1 slots through direct questions and stopped appropriately, though it silently treated the unresolved no-splitting assumption for Process II as confirmed in its final understanding.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 6.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 3,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

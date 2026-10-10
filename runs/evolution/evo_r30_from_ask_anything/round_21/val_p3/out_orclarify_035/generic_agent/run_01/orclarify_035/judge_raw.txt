@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_vat_sequence",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Can a single batch be split across multiple vats, or must each batch be processed entirely in exactly one vat?",
+      "rationale": "The agent touched whether a batch uses multiple vats, but never asked whether all batches must visit vat 1, then vat 2, then vat 3 in a fixed sequence. The final model instead treats the problem as unrelated parallel machines."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each batch is processed entirely on exactly one vat, so there is no required fixed vat sequence of vat 1 -> vat 2 -> vat 3.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed the hidden vat-sequence constraint; it asked only about splitting/one-vat processing and then assumed a parallel-machine structure in READY_TO_MODEL."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent stopped while the P1 vat-sequence constraint remained unresolved and then presented a model assuming each batch is assigned to one vat only."
+  },
+  "summary": "The agent clarified several scheduling details, but it failed to recover the fixed vat-sequence constraint and stopped prematurely with a parallel-machine model. H1 was only partially touched and then silently assumed away."
+}

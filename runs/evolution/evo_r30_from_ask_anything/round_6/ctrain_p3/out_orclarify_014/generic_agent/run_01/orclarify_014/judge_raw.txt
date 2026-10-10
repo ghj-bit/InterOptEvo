@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), can you purchase any continuous weight (for example, 150g of chicken), or must protein also be bought in discrete 100g units like the vegetables",
+      "rationale": "The agent explicitly asked whether proteins are continuous or discrete/100g-pack based, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether there is a minimum number of distinct vegetable types required; the READY_TO_MODEL formulation omits this possible constraint."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to select at least three different vegetable types.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum distinct vegetable type requirement, but the READY_TO_MODEL constraints omit it and state that all formulation-critical facts were confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot about a minimum number of distinct vegetable types remained unresolved."
+  },
+  "summary": "The agent correctly resolved the protein purchase quantity type, but missed the hidden P1 constraint requiring at least three distinct vegetable types and prematurely finalized the model."
+}

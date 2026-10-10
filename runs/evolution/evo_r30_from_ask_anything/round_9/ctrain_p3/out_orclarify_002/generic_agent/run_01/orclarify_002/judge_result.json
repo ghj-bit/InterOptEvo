@@ -1,0 +1,111 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked how many pilots each training jet can train per year. Its Turn 1 question only checked whether pilots become available in the same year or later, implicitly assuming a one-pilot-per-jet relationship rather than asking about per-jet training capacity."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask how many combat jets a trained pilot can operate or whether there is any pilot-to-combat-jet limitation."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the number of trained pilots produced in a given year equal to the number of fighter jets allocated to training in that same year, or does a jet allocated to training in year t produce a pilot that is only available in a later year (for example, year t+1)?",
+      "rationale": "The agent touched the training timeline by asking about same-year versus later availability, but did not explicitly ask when training starts or how long the training program lasts."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each fighter jet allocated to training produces exactly one trained pilot in the same year, so the objective is x1 + x2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked how many pilots each training jet can train per year; it only checked same-year versus later availability and then treated the one-pilot-per-jet mapping as true in the READY_TO_MODEL model."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Training/pilot availability happens within the same year as jet allocation, with no multi-year training duration or start-year delay.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not confirm the training start year or training duration. Its Turn 1 question only addressed same-year availability, not the full timeline required by the hidden slot."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1"
+    ],
+    "unresolved_p1_slots": [
+      "H3"
+    ],
+    "rationale": "Before READY_TO_MODEL, the agent left the P0 per-jet training capacity unresolved and only partially addressed the P1 training duration/start slot. It then proceeded to a final model and solution."
+  },
+  "summary": "The agent clarified production limits, allocation flexibility, and same-year pilot availability, but it never recovered the critical per-jet training capacity and did not fully resolve the training timeline. It stopped with unresolved P0/P1 hidden slots and silently assumed one pilot per training jet per year.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.16666666666666666,
+    "earned_weight": 1.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 0.0,
+        "total_weight": 3.0,
+        "score": 0.0
+      },
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 1.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [
+      "H2"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1"
+    ],
+    "unresolved_p1_slots_from_scores": [
+      "H3"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

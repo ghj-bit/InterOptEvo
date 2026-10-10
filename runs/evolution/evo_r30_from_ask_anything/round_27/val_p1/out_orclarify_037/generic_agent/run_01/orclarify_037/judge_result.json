@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a $10,000 minimum weekly profit target or any profit lower bound; no related question or assumption check appears in the transcript."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is the weekly production quantity for Model B required to be at least some minimum number of units, or is it allowed to be zero?",
+      "rationale": "The agent explicitly probed for a minimum production requirement for Model B, matching the hidden slot's key meaning."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Is the 150-hour capacity for Process I a maximum limit that cannot be exceeded, or is it a minimum requirement that must be fully utilized?",
+      "rationale": "The agent directly asks whether Process I is a hard capacity ceiling or a must-be-fully-utilized (equality) requirement, targeting the exact-150 interpretation."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "No P0 or P1 slots exist in this case (all hidden slots are P2), yet the agent got stuck repeating the same Process I capacity/equality question roughly a dozen times (turns 9-30), continuing with redundant low-value questions instead of moving to a model or a clear final state."
+  },
+  "summary": "The agent covered most hidden facts reasonably (Model B minimum, Process I equality) but completely missed the minimum profit target, and critically degenerated into an endless repetition loop on the Process I question, never reaching a final modeling state.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6666666666666666,
+    "earned_weight": 2.0,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 2.0,
+        "total_weight": 3.0,
+        "score": 0.6666666666666666
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

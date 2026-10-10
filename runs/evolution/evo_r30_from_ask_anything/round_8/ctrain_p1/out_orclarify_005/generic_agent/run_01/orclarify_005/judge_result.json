@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as selectable foods for this dinner, or should the selection be limited to the four vegetables (okra, carrots, celery, cabbage) that have fiber data provided",
+      "rationale": "The agent asked about protein availability/selectability, which is related, but did not explicitly ask whether exactly one protein must be chosen or whether multiple proteins can be combined."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum number or variety of vegetable types, and no explicit assumption check for this hidden slot appears before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Exactly one protein source from salmon, beef, or pork must be selected.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked whether proteins were available, not whether exactly one must be chosen; it then listed the exactly-one rule as confirmed understanding."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "At least two different vegetable types from okra, carrots, celery, and cabbage must be selected.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum number of vegetable types; it then listed the at-least-two rule as confirmed understanding."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slots on the protein selection rule and minimum vegetable variety had not been directly asked/confirmed; H1 was only partial and H2 was not asked."
+  },
+  "summary": "The agent asked about food availability and continuous portion sizes but missed direct questions on the exactly-one protein rule and minimum vegetable variety; it then treated those constraints as confirmed and stopped prematurely.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

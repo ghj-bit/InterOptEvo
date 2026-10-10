@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase them in any continuous weight (for example, 150g of chicken), or must they also be bought in fixed 100g increments like the vegetables",
+      "rationale": "The agent explicitly asked whether proteins can be bought in continuous quantities or fixed 100g increments, directly covering the purchase-quantity type."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Do you have a minimum amount of protein or vegetables you must include in the dinner, or is the only requirement to maximize total protein within the budget and weight limits",
+      "rationale": "The agent asked about a minimum amount of vegetables, which is related, but did not ask about a minimum number of distinct vegetable types or varieties, so the key meaning of H2 was not fully covered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to select at least three different vegetable types.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The user only confirmed no minimum amount of protein or vegetables; the agent did not confirm the absence of a minimum distinct-vegetable-type requirement."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while H2, a P1 hidden slot about requiring at least three distinct vegetable types, was only partially addressed and remained unresolved."
+  },
+  "summary": "The agent correctly resolved the protein purchase-quantity question but only partially probed the minimum vegetable-type requirement, then proceeded to READY_TO_MODEL with an unconfirmed assumption that no minimum distinct vegetable types were required."
+}

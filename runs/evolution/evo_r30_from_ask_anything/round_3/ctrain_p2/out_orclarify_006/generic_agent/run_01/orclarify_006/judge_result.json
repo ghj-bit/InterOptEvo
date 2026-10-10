@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, particularly the rule that Product I cannot be produced in Q2. Its READY_TO_MODEL summary allows Production_{I,t} for all quarters."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Regarding the backlog at the end of the fourth quarter, is it required that all backlogs must be cleared (i.e., no remaining unmet demand) by the end of the fourth quarter, or is it acceptable to have a remaining",
+      "rationale": "The agent explicitly asked whether all unmet demand/backlog must be cleared by the end, which covers the requirement that contract reservations must eventually be fulfilled. Turn 3 also asked about late-delivery carry-forward handling."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in every quarter, including Q2; no quarter-specific production restriction exists.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the Product I Q2 production restriction, but its READY_TO_MODEL summary lists production variables for each product and quarter and includes only general capacity constraints, implicitly allowing Q2 production."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "H2 was resolved, but P1 hidden slot H1 (Product I cannot be produced in Q2) was never asked or confirmed before entering READY_TO_MODEL."
+  },
+  "summary": "The agent clarified demand and backlog semantics well, resolving H2, but missed the P1 quarter-specific Product I production restriction and silently assumed Product I could be produced in Q2, making the stop premature.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

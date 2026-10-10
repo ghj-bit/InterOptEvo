@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether any product has quarter-specific production restrictions, nor specifically whether Product I can be produced in Q2. Questions about capacity (turn 9), per-quarter quantity limits (turn 12), storage (turn 14), and other constraints (turn 15) do not target the Product I / Q2 restriction."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are the contract reservation figures in Table 1-10 minimum delivery requirements that must be met each quarter, or are they target values that can be exceeded or missed (with the delay compensation covering any shortfall)?",
+      "rationale": "The agent explicitly probed the demand fulfillment semantics, and turn 5 further clarified whether unmet reservations become backlog to be fulfilled later or are simply lost, covering the requirement and late-delivery handling."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "That there are no quarter-specific production restrictions, i.e., Product I can be produced in every quarter including Q2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for any product, yet in READY_TO_MODEL it asserted 'No other constraints' with no mention of a Product I Q2 restriction, implicitly assuming all products are producible in all quarters."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 slot H1 (Product I cannot be produced in Q2) remained entirely unasked and unconfirmed, treating all quarters as equally available for production."
+  },
+  "summary": "The agent clarified the demand/delay semantics well (H2), but never probed quarter-specific production restrictions (H1) and stopped with that P1 slot unresolved, silently assuming Product I could be produced in Q2."
+}

@@ -1,0 +1,70 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase any continuous weight (for example, 150g of chicken), or must protein also be bought in discrete 100g units",
+      "rationale": "The agent explicitly asked whether proteins are continuous weight or discrete 100g packs, exactly matching the hidden slot's semantic rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent / turn 4 generic_agent",
+      "evidence_quote": "Are there any other constraints or preferences for tonight's dinner, such as a requirement to include at least one type of protein ... Is the requirement to include at least three different types of vegetables a hard constraint that must be strictly satisfied",
+      "rationale": "The agent only used a vague catch-all that pointed at protein variety; the three-vegetable-types requirement was volunteered by the user simulator. The agent then followed up only on whether that volunteered requirement is hard, so it never itself elicited the minimum distinct-vegetable-type requirement."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Both P1 slots ended up confirmed before READY_TO_MODEL (proteins continuous via turn 1; at least three distinct vegetable types as a hard constraint via turns 3-4), and the final model reflects both, so no P0/P1 fact was left unresolved at stopping."
+  },
+  "summary": "The agent cleanly recovered the protein purchase-unit fact and correctly verified the protein-variety and vegetable-variety constraints, though the minimum-three-vegetable-types requirement was elicited mainly through a vague catch-all plus a user-volunteered fact rather than a direct question; overall the interaction resolved the material P1 facts before modeling.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 3.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

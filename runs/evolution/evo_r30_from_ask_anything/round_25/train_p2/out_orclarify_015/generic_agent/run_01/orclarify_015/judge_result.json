@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Since slow repair is cheaper than fast repair, is the objective to minimize the total cost of purchases and repairs over all stages, or is there a different optimization goal such as minimizing the number of tools purchased?",
+      "rationale": "The agent explicitly asked what the optimization goal is, directly targeting the objective slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "mandatory_repair_after_each_stage",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are the tools sent for slow repair at the end of stage j the same tools that are available at the start of stage j, or are they a separate pool of broken tools that must be repaired before they can be used?",
+      "rationale": "The question probes the tool/repair lifecycle and mentions tools that 'must be repaired before they can be used', but its primary framing is pool identity ('same tools vs separate pool') rather than an explicit ask about whether all used tools must be repaired after every stage, so it only partially covers the slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "fast_repair_return_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "When a tool is sent for fast repair at the end of stage j, does it become available at the start of stage j + q, or at the end of stage j + q?",
+      "rationale": "The agent explicitly asked about the exact point in time when fast-repaired tools return, exactly matching the slot."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 objective was explicitly confirmed (turn 6), the P1 fast-repair timing was explicitly confirmed (turn 4), and the P1 repair rule was effectively elicited via the turn 3 lifecycle question, so all core P0/P1 facts were addressed before READY_TO_MODEL. Remaining unknowns (initial inventory, variable domain, repair exclusivity, re-routing) were correctly disclosed as explicit assumptions rather than silently assumed."
+  },
+  "summary": "The agent ran a focused interview that confirmed the objective (H1), the fast-repair return timing (H3), and the tool-repair lifecycle (H2, though framed around pool identity), while transparently flagging genuinely unresolved details as explicit assumptions; stopping with READY_TO_MODEL was appropriate.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8571428571428571,
+    "earned_weight": 6.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

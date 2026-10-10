@@ -1,0 +1,86 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Are there any additional constraints or requirements not yet mentioned, such as limits on the number of days a student can work per week, requirements for specific students to be available on specific days, or rules about consecutive days off?",
+      "rationale": "The agent explicitly asked about a weekly limit on working days/shifts and later confirmed it meant at most 2 distinct days per week."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not specifically ask about a daily cap on the number of distinct students assigned. The daily cap was volunteered by the user and only clarified afterward, so it does not count as proactive hidden-slot recovery."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total weekly labor cost (sum of each student's hours multiplied by their hourly wage), or is there a different goal such as maximizing fairness or minimizing total hours worked?",
+      "rationale": "The agent explicitly asked about the optimization objective and named minimizing total weekly labor cost / gross pay."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "H1 and H3 were elicited and confirmed, but H2 was not proactively asked; it was only obtained because the user volunteered it. Based on the slot-hit recovery results, H2 remains an unresolved P1 at READY_TO_MODEL."
+  },
+  "summary": "The agent handled the objective and weekly shift-limit clarification well, but missed the daily distinct-student cap and only learned it from the user's volunteered answer, so the clarification process was incomplete on one P1 hidden slot.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7142857142857143,
+    "earned_weight": 5.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

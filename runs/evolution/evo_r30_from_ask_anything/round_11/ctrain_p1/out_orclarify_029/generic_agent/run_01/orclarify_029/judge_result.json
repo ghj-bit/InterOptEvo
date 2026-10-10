@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the highest-priority goal of fully meeting the demand in Table 4-3, is the demand for each branch-specialty combination ... a hard requirement that must be met exactly, or is it a target that should be met as closely as possible ...?",
+      "rationale": "The agent explicitly asked whether the branch-specialty demand must be met exactly or is only a target, directly covering the exact-vs-lower-bound distinction."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the two goals of having 8000 personnel meet their preferred specialty and 8000 meet their preferred city, are these two 8000 figures intended to be achieved simultaneously as two separate targets in a single multi-objective model, or is the preferred-city goal the primary objective ... while the preferred-specialty goal is treated as a constraint that must be satisfied?",
+      "rationale": "The agent probed the relationship between the two 8000 goals, which is related to priority structure, but it did not explicitly ask about a strict lexicographic/preemptive order with p1 highest, then p2, then p3."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "H1 was resolved, but the P0 priority-order slot H2 was only partially asked: the agent never explicitly confirmed the lexicographic p1 > p2 > p3 preemptive structure before reaching READY_TO_MODEL."
+  },
+  "summary": "The agent fully clarified the exact demand equality condition H1, but only partially probed H2's lexicographic priority structure before stopping. It reached READY_TO_MODEL with the P0 priority-order slot not fully explicitly confirmed.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7,
+    "earned_weight": 3.5,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

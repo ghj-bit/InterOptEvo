@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Agent never asked about quarter-specific production restrictions or whether Product I can be produced in Q2; READY_TO_MODEL omits this constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Regarding the delay compensation cost, is this cost incurred for any units of demand that are not delivered by the end of the quarter in which they were originally required (i.e., backorders), or is it a penalty applied to the difference between the contract reservation and the actual delivery whenever the actual delivery is less than the reservation",
+      "rationale": "Explicitly asked whether late/undelivered demand is handled as backorders or as a shortfall penalty, which confirms late delivery is permitted and reservations are carried forward."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all quarters, including Q2.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions and the READY_TO_MODEL constraint list omits the Q2 ban for Product I, while stating no assumptions remain."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "Agent entered READY_TO_MODEL while the P1 Product I Q2 production restriction remained unasked and unresolved."
+  },
+  "summary": "The agent clarified most demand, cost, and capacity semantics well, but missed the hidden quarter-specific production restriction for Product I, leading to an incomplete model basis.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

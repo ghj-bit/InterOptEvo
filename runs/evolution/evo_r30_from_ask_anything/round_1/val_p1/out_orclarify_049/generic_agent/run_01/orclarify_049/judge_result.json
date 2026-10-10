@@ -1,0 +1,124 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Can the area rented from a single warehouse vary from month to month within its contract period, or must the area rented from each warehouse be constant across all months that its contract covers?",
+      "rationale": "The agent probed whether usage must be constant across the contract's months, which is related to full-term usage, but never directly asked whether a signed contract must remain active/paid for every month of its term versus allowing partial usage."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "No question asks whether contracts of at least two distinct lengths are required; the only catch-all (turn 15) targets setup/area limits and does not target length diversification."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Does the limit of 3 apply to the total number of warehouses rented ... or does it apply to the total number of distinct contract types used across all warehouses (e.g., you can rent 5 warehouses but they can only use at most 3 different contract lengths)?",
+      "rationale": "The agent explicitly inquired about a limit on the number of distinct contract types/lengths, matching the slot's key meaning."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 13 generic_agent",
+      "evidence_quote": "Can the total rented area for a given month exceed the required area for that month, or must the total rented area exactly match the required area for each month?",
+      "rationale": "Directly asks whether monthly demand must be met exactly with no surplus/deficit."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total rental cost across all warehouses and all months, or is there another objective such as minimizing the number of contracts or maximizing unused capacity?",
+      "rationale": "Explicitly confirms that the objective is minimizing total rental cost."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed contract of length L is treated as obligating full coverage of months 1 through L with no partial usage.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only asked whether the rented area is constant across the contract period; it never confirmed whether a signed contract must be kept for its whole term rather than partially used."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No requirement exists that the plan use at least two distinct contract lengths; any combination (including a single contract type) is allowed.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about contract-length diversification, and the final understanding omits any such constraint, implicitly assuming it does not exist."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The P0 slots (objective, exact demand) were resolved, but the P1 contract-length diversity slot was never addressed, so the agent stopped with a materially relevant hidden slot unresolved."
+  },
+  "summary": "The agent resolved the core objective and exact-demand slots and clarified contract structure, mutual exclusion, and the distinct-contract-type limit, but it never probed the required diversity of contract lengths (P1) and only partially addressed full-term contract coverage. It stopped (READY_TO_MODEL) with the diversity requirement still unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 7.5,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 3,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 1.5,
+        "total_weight": 2.0,
+        "score": 0.75
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

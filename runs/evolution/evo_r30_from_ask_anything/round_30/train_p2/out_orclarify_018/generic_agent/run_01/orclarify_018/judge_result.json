@@ -1,0 +1,79 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unclear_production_time_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the 110-hour weekly production time limit a hard ceiling that cannot be exceeded without incurring overtime, or is it the regular shift capacity where any production beyond it counts as overtime?",
+      "rationale": "The question addresses the nature of the 110-hour limit as a ceiling versus capacity, but does not ask whether fully utilizing 110 hours is a required goal or its priority relative to other objectives."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unclear_overtime_limit_goal",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Is the 10-hour overtime limit a hard ceiling that cannot be exceeded, or is it a soft target that can be violated with a penalty?",
+      "rationale": "Directly asks whether the overtime limit is strict or soft, covering the key meaning of the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The 110-hour regular shift capacity is only an upper bound; there is no goal or requirement to fully utilize the 110 hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed whether full utilization of 110 hours is required; the user only said 110 is regular capacity and beyond it is overtime, not that the 110 hours must be fully used."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while P0 slot H1 (whether 110-hour utilization is a goal or constraint) remained unresolved; H2 was resolved."
+  },
+  "summary": "The agent clarified several details, including the overtime limit nature, but missed the crucial distinction that the 110 hours may need to be fully utilized as a prioritized goal, and stopped prematurely.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 4.5,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 4.5,
+        "total_weight": 6.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

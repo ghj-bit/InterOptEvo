@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "robot_doll_mutual_exclusion",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether manufacturing robots prevents making dolls or otherwise inquire about restrictions between robots and dolls before READY_TO_MODEL."
+    },
+    {
+      "slot_id": "H2",
+      "name": "doll_model_car_quantity_limit",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether doll production is capped by the number of model cars or mention the dolls versus model cars quantity relationship before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Robots and dolls can be manufactured simultaneously; there is no mutual-exclusion constraint between them.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the robot-doll business rule, and the final READY_TO_MODEL model includes no constraint preventing simultaneous robot and doll production."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Doll production is not capped by or linked to model car production.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a dolls-versus-model-cars quantity limit, and the final READY_TO_MODEL model contains no such linking constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while two P1 hidden business constraints remained unasked and unconfirmed, so the stop was premature."
+  },
+  "summary": "The agent clarified the model-car/building-block implication and variable-domain issues, but missed the two P1 business constraints on robot-doll mutual exclusion and doll production versus model car production, then declared all critical facts confirmed."
+}

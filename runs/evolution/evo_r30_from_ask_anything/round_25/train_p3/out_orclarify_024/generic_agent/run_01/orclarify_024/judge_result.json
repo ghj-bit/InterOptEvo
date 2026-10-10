@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "van_ev_mutual_exclusion",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Are there any upper limits on the number of trips for any vehicle type, or are the only constraints the pollution ceiling, the truck trip floor, and the delivery floor?",
+      "rationale": "The agent asked a vague catch-all about additional constraints but never specifically probed whether vans and electric vehicles are mutually exclusive or can be combined, so the mutual-exclusion clause was never surfaced."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_pollution_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total number of trips across all vehicle types, or is the goal to minimize total cost, total pollution, or something else?",
+      "rationale": "The agent explicitly asked about the objective function, offering minimizing pollution among options, directly covering the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Vans and electric vehicles may both be used simultaneously with no mutual-exclusion restriction.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether vans and EVs are mutually exclusive; it then listed only the three stated constraints and declared 'No additional constraints,' thereby assuming the two vehicle types can coexist."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL with the P1 van/EV mutual-exclusion slot unresolved, having only asked a vague catch-all about extra constraints without specifically confirming the exclusivity rule."
+  },
+  "summary": "The agent cleanly recovered the objective (H2) and other modeling details, but never specifically probed the van/EV mutual-exclusion restriction (H1) and stopped with that P1 slot unresolved, silently assuming the two vehicle types can be combined.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 3.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

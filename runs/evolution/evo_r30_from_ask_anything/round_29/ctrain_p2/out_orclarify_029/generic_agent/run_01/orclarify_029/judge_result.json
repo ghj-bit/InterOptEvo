@@ -1,0 +1,84 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are the demand figures in Table 4-3 hard constraints that must be met exactly, or are they targets that can be exceeded or underfilled?",
+      "rationale": "The agent explicitly asks whether Table 4-3 demand must be met exactly or may be exceeded/underfilled, directly covering the exact-equality versus lower-bound distinction."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the objective to minimize the number of people not assigned to their preferred city, or is it a multi-objective problem that also tries to maximize the number of people assigned to their preferred specialty?",
+      "rationale": "The agent touched the multi-objective nature of the problem, but did not explicitly ask whether the priorities are lexicographic/preemptive with p1 first, then p2, then p3. The strict priority order came from the simulator's answer rather than the agent's question."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The three objectives follow a strict lexicographic priority order: p1, then p2, then p3.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly asked about lexicographic/preemptive priority ordering. The simulator volunteered the strict priority order in the response, and the agent then marked it as Confirmed in the READY_TO_MODEL summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent stopped after READY_TO_MODEL while H2, a P0 hidden slot, was only partially recovered through its own questioning. The lexicographic priority structure was not explicitly asked about, even though it is central to the formulation."
+  },
+  "summary": "The agent directly confirmed exact demand equality and several goal definitions, but it failed to explicitly probe the lexicographic priority order and relied on the simulator's volunteered statement of that P0 fact. It then stopped with the priority structure treated as confirmed.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7,
+    "earned_weight": 3.5,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

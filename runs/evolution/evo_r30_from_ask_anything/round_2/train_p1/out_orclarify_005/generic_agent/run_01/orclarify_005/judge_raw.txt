@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether exactly one protein source must be selected or whether salmon, beef, and pork can be combined. It also did not mark this as an assumption needing confirmation before READY_TO_MODEL."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether at least two vegetable types must be selected, nor did it explicitly mark this hidden requirement as needing confirmation before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Any combination and amount of salmon, beef, and pork may be selected; there is no exactly-one-protein-source constraint.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The prior clarification questions did not confirm the protein selection rule, but the READY_TO_MODEL summary treats all seven foods as continuous variables with zero selection allowed and no minimum inclusion requirements."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no minimum vegetable variety requirement, so fewer than two vegetable types could be selected.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about minimum vegetable types, yet the READY_TO_MODEL summary states that zero selection is allowed and there are no minimum inclusion requirements."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while both unresolved hidden slots, H1 and H2, are P1 constraints that materially affect the intended meal-planning model."
+  },
+  "summary": "The agent clarified several data and formulation details, but missed both hidden discrete/variety constraints and silently assumed unrestricted protein and vegetable selection in its final understanding."
+}

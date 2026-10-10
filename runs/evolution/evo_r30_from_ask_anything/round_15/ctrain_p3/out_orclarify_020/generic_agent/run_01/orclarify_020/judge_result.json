@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "robot_doll_mutual_exclusion",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether manufacturing robots precludes dolls. It only asked a generic catch-all about 'any other constraints', and the robot/doll exclusivity was volunteered by the user in response, so no credit is given."
+    },
+    {
+      "slot_id": "H2",
+      "name": "doll_model_car_quantity_limit",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Regarding the constraint that the number of dolls produced cannot be more than the number of model cars produced, does this limit apply regardless of whether model cars are produced, meaning if zero model cars are produced then zero dolls must also be produced?",
+      "rationale": "The agent did explicitly address the doll/model-car quantity relationship and its boundary, but only after the constraint was volunteered by the user in response to a vague catch-all; it was not independently elicited, so it earns only partial credit."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "Per the slot hit results, P1 slots H1 (no) and H2 (partial) were not independently recovered before the agent entered READY_TO_MODEL; both facts only surfaced because the user volunteered them, so the stop was premature with respect to hidden-slot recovery."
+  },
+  "summary": "The agent asked solid questions on the visible unit (model-car/building-block implication) and general integer/minimum/upper-limit issues, but only a vague catch-all elicited the two hidden constraints (robot/doll exclusivity and doll <= model cars). H1 was recovered only by volunteering, and H2 only after the leak, so hidden-slot recovery was weak even though the final formulation happened to be correct.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as options for this dinner, or should the selection be restricted to the four vegetable items (okra, carrots, celery, cabbage)?",
+      "rationale": "The agent touched the protein-selection topic (whether proteins are options at all) and later clarified its semantics in turn 9, but never proactively asked the key question of how many proteins may be chosen (exactly one vs. any combination). The 'exactly one' rule was volunteered by the simulator, not elicited."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "When you say \"at least two of the four vegetable items,\" does that mean at least two vegetables must each have a positive (nonzero) gram amount, or is it acceptable for a vegetable to be selected but have zero grams?",
+      "rationale": "The agent questioned the meaning/positivity of the vegetable rule, but it never asked about the minimum number of vegetable types to include; the 'at least two kinds' rule was volunteered by the simulator rather than asked for."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent reached READY_TO_MODEL without ever proactively asking the two P1 hidden-slot questions (exactly-one-protein rule, minimum vegetable variety). Those facts entered the model only because the simulator volunteered them, so per the hit results they were not fully recovered by the agent's own questioning, leaving P1 slots unresolved at the point of stopping."
+  },
+  "summary": "The agent probed the objective, weight/budget strictness, and selection positivity well, but never proactively asked how many proteins or how many vegetable types must be selected; it obtained the exactly-one-protein and at-least-two-vegetables rules only because the simulator volunteered them, yielding partial slot recovery and a stop with those P1 facts un-recovered by its own questions.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

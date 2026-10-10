@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "van_ev_mutual_exclusion",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 14 generic_agent",
+      "evidence_quote": "Is the requirement to choose either vans or electric vehicles, but not both, a hard constraint that must be strictly followed, or is it a soft preference that can be relaxed if needed?",
+      "rationale": "The agent only asked about the hardness of the van/EV mutual-exclusion requirement after the simulator had already volunteered it; it did not independently ask whether vans and electric vehicles may be mixed or must be mutually exclusive."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_pollution_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize total transportation cost, or is the goal simply to find any feasible plan that satisfies the pollution, trip-count, and delivery constraints?",
+      "rationale": "The agent directly asked about the objective function, prompting the user to confirm that the objective is minimizing total pollution."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The objective P0 slot was resolved, but the van/EV mutual-exclusion P1 slot was only partially recovered: it was volunteered after a vague catch-all question, and the agent then only checked its hardness. The agent entered READY_TO_MODEL with this P1 issue not fully recovered."
+  },
+  "summary": "The agent successfully clarified the objective and several constraint details, but only partially recovered the van/EV mutual-exclusion rule after the simulator volunteered it. It stopped with that P1 hidden slot not fully recovered.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

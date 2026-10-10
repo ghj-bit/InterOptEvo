@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "corn_minimum_twice_wheat",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "For the constraint that corn acreage must be at least twice wheat acreage, is this a minimum",
+      "rationale": "The agent never independently asked whether a corn-wheat relationship exists; the constraint was volunteered by the simulator in turn 3 in response to a vague catch-all ('any other constraints... such as minimum or maximum acreage for specific crops'). The agent only asked a confirming follow-up (turn 5) about an already-revealed fact, so this is a partial touch rather than true slot recovery."
+    },
+    {
+      "slot_id": "H2",
+      "name": "wheat_three_times_sorghum",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "For the constraint that wheat acreage must be three times sorghum acreage, is this an exact equality",
+      "rationale": "Same pattern: the wheat-sorghum ratio was volunteered by the simulator in turn 3, not elicited by a slot-targeted question. The agent's turn 4 question only confirms the equality form of an already-disclosed fact, so coverage is partial."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "Both P1 relational constraints (corn >= 2*wheat; wheat = 3*sorghum) were only partially recovered: they were volunteered by the simulator in response to a vague catch-all question and were never independently surfaced by a slot-targeted agent question before READY_TO_MODEL, so they remain unresolved P1 slots at stop time."
+  },
+  "summary": "The agent asked good boundary questions (land as hard max, integrality) and confirmed the two relational constraints, but it recovered corn>=2*wheat and wheat=3*sorghum only because the simulator volunteered them after a vague 'any other constraints?' prompt, then merely confirmed their form; it entered READY_TO_MODEL with those P1 slots not independently elicited."
+}

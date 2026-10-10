@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase any fractional amount of each (for example, 150g of chicken), or must the protein also be bought in whole 100g units",
+      "rationale": "Directly asks whether proteins can be bought in fractional/continuous quantities versus whole 100g units, matching the semantic hit rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Are there any minimum quantity requirements for any specific protein or vegetable option",
+      "rationale": "Touches the space of minimum vegetable requirements but is a broad catch-all about per-option minimum quantities rather than explicitly asking about a minimum number of distinct vegetable types; it does not clearly target the distinct-type count constraint."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL while H2 (minimum distinct vegetable types) was only partially recovered; its broad question about 'minimum quantity requirements' did not clearly target the count-of-distinct-types constraint, so this P1 slot remained unresolved at stop."
+  },
+  "summary": "The agent clearly resolved the protein purchase-unit question (H1) and the budget/weight hard-constraint checks, but only obliquely probed the minimum-vegetable-types rule (H2) with a vague quantity question before declaring READY_TO_MODEL, leaving a P1 slot not cleanly confirmed by the agent's own questioning."
+}

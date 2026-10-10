@@ -1,0 +1,98 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked what objective to optimize before declaring READY_TO_MODEL; it merely stated 'Minimize total cost' in the final summary."
+    },
+    {
+      "slot_id": "H2",
+      "name": "mandatory_repair_after_each_stage",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Are the tools that are sent for repair at the end of stage j drawn from the tools that were available during stage j, meaning they are removed from the available pool after stage j ends?",
+      "rationale": "The question touched the repair/removal relationship, but did not explicitly ask whether all tools used in a stage must be repaired after each stage."
+    },
+    {
+      "slot_id": "H3",
+      "name": "fast_repair_return_timing",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "When a tool is sent for fast repair at the end of stage j and returns at the start of stage j+q, is it immediately available to count toward stage j+q's requirement, or does it only become available starting from stage j+q+1?",
+      "rationale": "The agent explicitly asked about the exact timing/availability of fast-repaired tools, matching the hidden slot."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The objective is to minimize total cost over the planning horizon, including new tool purchases, slow repairs, and fast repairs.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or explicitly confirmed the optimization objective before declaring READY_TO_MODEL."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1"
+    ],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL at turn 14 while the P0 objective slot was never asked and the P1 mandatory-repair slot was only partially covered."
+  },
+  "summary": "The agent clarified several repair-timing mechanics but missed the core objective and only partially probed mandatory repair, then stopped prematurely despite unresolved P0/P1 hidden facts.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.42857142857142855,
+    "earned_weight": 3.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 0.0,
+        "total_weight": 3.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1"
+    ],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

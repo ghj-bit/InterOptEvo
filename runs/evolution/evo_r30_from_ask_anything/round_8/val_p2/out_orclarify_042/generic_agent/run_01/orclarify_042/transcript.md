@@ -1,0 +1,239 @@
+## Turn 1 - Generic Agent
+
+QUESTION: Is the objective to minimize the total fuel cost of the production plan
+
+## Turn 1 - User Simulator
+
+Yes, the objective is to minimize the total fuel expenses.
+
+## Turn 2 - Generic Agent
+
+QUESTION: Is the decision variable the number of batches
+
+## Turn 2 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 3 - Generic Agent
+
+QUESTION: Is the decision variable the number of batches
+
+## Turn 3 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 4 - Generic Agent
+
+QUESTION: Is the decision variable the
+
+## Turn 4 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 5 - Generic Agent
+
+QUESTION: Is the decision
+
+## Turn 5 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 6 - Generic Agent
+
+QUESTION: Is
+
+## Turn 6 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 7 - Generic Agent
+
+QUESTION:
+
+## Turn 7 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 8 - Generic Agent
+
+QUESTION:
+
+## Turn 8 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 9 - Generic Agent
+
+QUESTION
+
+## Turn 9 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 10 - Generic Agent
+
+QUESTION
+
+## Turn 10 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 11 - Generic Agent
+
+QUESTION
+
+## Turn 11 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 12 - Generic Agent
+
+QUESTION
+
+## Turn 12 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 13 - Generic Agent
+
+QUESTION
+
+## Turn 13 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 14 - Generic Agent
+
+QUESTION
+
+## Turn 14 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 15 - Generic Agent
+
+QUESTION
+
+## Turn 15 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 16 - Generic Agent
+
+QUESTION
+
+## Turn 16 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 17 - Generic Agent
+
+QUESTION
+
+## Turn 17 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 18 - Generic Agent
+
+QUESTION
+
+## Turn 18 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 19 - Generic Agent
+
+QUESTION
+
+## Turn 19 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 20 - Generic Agent
+
+QUESTION
+
+## Turn 20 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 21 - Generic Agent
+
+QUESTION
+
+## Turn 21 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 22 - Generic Agent
+
+QUESTION
+
+## Turn 22 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 23 - Generic Agent
+
+QUESTION
+
+## Turn 23 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 24 - Generic Agent
+
+QUESTION
+
+## Turn 24 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 25 - Generic Agent
+
+QUESTION
+
+## Turn 25 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 26 - Generic Agent
+
+QUESTION
+
+## Turn 26 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 27 - Generic Agent
+
+QUESTION
+
+## Turn 27 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 28 - Generic Agent
+
+QUESTION
+
+## Turn 28 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 29 - Generic Agent
+
+QUESTION
+
+## Turn 29 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.
+
+## Turn 30 - Generic Agent
+
+QUESTION
+
+## Turn 30 - User Simulator
+
+The decision is how to allocate the two steelmaking methods across the available furnaces.

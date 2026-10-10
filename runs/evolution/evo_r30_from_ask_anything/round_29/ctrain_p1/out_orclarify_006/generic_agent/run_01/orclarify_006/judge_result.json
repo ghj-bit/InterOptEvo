@@ -1,0 +1,70 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements I should know about, such as minimum production quantities per quarter, workforce limits, or restrictions on which products can be produced in which quarters?",
+      "rationale": "The question explicitly names product/quarter production restrictions as a category, which is close to the slot, but it is a multi-topic catch-all that does not name Product I or the second quarter specifically; the constraint itself only surfaced because the user volunteered it in the answer. This touches the key issue without fully targeting it, so partial rather than yes."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the 'contract reservations' in the table, are these quantities that must be delivered to customers in that specific quarter (i.e., demand that must be met on time), or are they minimum production targets that can be produced and held in inventory?",
+      "rationale": "The agent directly probed the fulfillment semantics of the contract reservations (firm on-time demand vs. optional/production targets), and follow-up turns 3-4 confirmed that late delivery is permitted and how the delay penalty accrues, covering the slot's key meaning."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Both P1 slots were resolved before READY_TO_MODEL: the demand/bac+klogging semantics were confirmed in turn 2, and the Product I Q2 prohibition was elicited in turn 9 and fully pinned down in turn 10 (production = 0), and both facts are correctly carried into the ready-to-model summary. Only the phrasing of the H1 question is imperfect, so stopping was appropriate."
+  },
+  "summary": "The agent ran a focused clarification interview that pinned down capacity accounting, demand/late-delivery semantics, penalty accrual, holding cost scope, and end-inventory meaning, and it also surfaced the Product I Q2 production ban; the only weakness is that the equipment restriction was found via a broad multi-topic 'any other constraints' question rather than a targeted Product I / Q2 probe.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 3.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 3.0,
+        "total_weight": 4.0,
+        "score": 0.75
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

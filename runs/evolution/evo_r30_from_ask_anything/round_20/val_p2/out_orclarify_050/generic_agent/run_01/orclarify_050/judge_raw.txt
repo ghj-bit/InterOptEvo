@@ -1,0 +1,28 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "purchase_at_month_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Is the warehouse capacity limit of 500 units a constraint on the inventory level at the end of each month, or on the total inventory held at any point during the month?",
+      "rationale": "The agent asked about the timing/scope of the capacity constraint, which is related to when inventory peaks, but did not explicitly ask when purchases occur within the month (e.g., beginning vs end)."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The timing of purchases within each month does not need to be specified; the monthly inventory balance equation and end-of-month capacity check are sufficient.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether purchases occur at the beginning or end of the month, and the user only confirmed that capacity applies at month-end, not the purchase timing."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL without explicitly resolving the P1 purchase-timing slot; the related capacity-timing question did not confirm when purchases occur."
+  },
+  "summary": "The agent clarified many boundary facts (objective, limits, integrality, horizon inventory) but missed the specific purchase-timing hidden fact, only touching the related capacity-timing issue before declaring READY_TO_MODEL."
+}

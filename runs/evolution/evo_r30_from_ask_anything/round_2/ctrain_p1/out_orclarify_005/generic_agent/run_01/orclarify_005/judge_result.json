@@ -1,0 +1,81 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork allowed to be included in the dinner selection, or should the selection be limited to the four fiber-containing vegetables?",
+      "rationale": "The agent touched the protein-inclusion issue, but its question only asked whether proteins are allowed at all rather than the actual selection rule (whether exactly one protein must be chosen, or whether multiple proteins can be combined). The 'exactly one' rule came from the user simulator's volunteered elaboration, so the slot's key meaning was not fully targeted by the agent."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum number of vegetable types or any vegetable-variety requirement; the closest question concerned protein inclusion, not vegetable diversity."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum vegetable-variety constraint applies; vegetables (okra, carrots, celery, cabbage) can be selected arbitrarily with no requirement for at least two kinds.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum number of vegetable types, and its READY_TO_MODEL constraint list omits any vegetable-variety requirement, treating the absence of such a constraint as settled fact."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent declared READY_TO_MODEL while the P1 minimum-vegetable-types slot (H2) had never been raised or confirmed, and its model silently omitted any vegetable-variety constraint."
+  },
+  "summary": "The agent over-focused on repeatedly asking about variable integrality (five times) and protein fiber content, but never probed the minimum vegetable-variety rule and only obliquely touched the protein-selection rule, then stopped with the P1 vegetable slot unresolved, making the interaction materially incomplete.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

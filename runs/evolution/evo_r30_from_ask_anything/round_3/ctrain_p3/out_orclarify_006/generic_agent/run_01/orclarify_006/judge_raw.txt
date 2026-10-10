@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "None of the agent's six questions (capacity hardness, reservation meaning, delay penalty mechanics, holding cost base, final inventory exactness, integrality) ask about quarter-specific production restrictions for any product. The agent never probed whether Product I can be produced in Q2, and the READY_TO_MODEL summary omits any such restriction."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the \"contract reservations\" in the table, are these the minimum quantities that must be delivered to customers in each quarter (meaning any shortfall incurs the delay compensation), or are they the total quantities that must be produced in each quarter regardless of delivery timing?",
+      "rationale": "The agent explicitly probed the demand/delivery semantics, distinguishing firm minimum delivery with delay compensation from merely total production. Followed by turn 3 asking how late-delivery penalties are handled, this covers whether reservations are firm and how late delivery is handled."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in every quarter, including Q2, with no equipment/quarter restriction.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions; the READY_TO_MODEL constraint list omits any 'Product I cannot be produced in Q2' condition and instead allows production in all quarters."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H1 (Product I cannot be produced in Q2) remained unresolved; it was never asked about and was silently assumed away."
+  },
+  "summary": "The agent recovered the delivery-semantics slot (H2) through clear questions about firm reservations and late-delivery penalties, but completely missed the quarter-specific production restriction slot (H1), silently assuming Product I can be produced in Q2, and then stopped with this P1 slot unresolved."
+}

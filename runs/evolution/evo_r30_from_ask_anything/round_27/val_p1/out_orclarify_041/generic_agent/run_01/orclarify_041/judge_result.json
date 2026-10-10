@@ -1,0 +1,61 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "no_borrowing_cash_only",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "At the beginning of Year 2, is the available cash for investment equal to the 500,000 yuan initial capital plus the returns from any Year 1 investments that matured at the end of Year 1?",
+      "rationale": "The agent probed the cash-flow composition (turns 6-7), which indirectly confirms the 'only cash on hand / matured proceeds can be used' restriction, but it never explicitly asked whether borrowing/loans are allowed, so the slot's full key meaning is only partly covered."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The only P1 slot (H1) concerns funds being limited to cash on hand; the agent confirmed via turns 6-7 that available cash comes solely from matured investments with no extra capital, so the model does not overestimate funds. The remaining gap is only the explicit 'borrowing' wording, and the agent also explicitly flagged the two genuinely unconfirmed items (cash carry-over, integrality) as assumptions."
+  },
+  "summary": "The agent asked many targeted clarifying questions, confirmed the cash-flow structure that implies the no-borrowing/cash-only restriction, and explicitly surfaced the two unresolved items as stated assumptions before entering READY_TO_MODEL. The only weakness is that it never explicitly asked about borrowing, leaving H1 only partially covered.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 1.0,
+    "total_weight": 2.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 1,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 1,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

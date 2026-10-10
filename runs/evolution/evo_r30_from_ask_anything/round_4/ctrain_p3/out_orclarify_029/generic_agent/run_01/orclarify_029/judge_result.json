@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "exact_demand_equality",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the \"fully meet the demand\" priority, does this mean the total number of people assigned to each specific branch and specialty combination must be exactly equal to the demand value in Table 4-3",
+      "rationale": "The agent explicitly asked whether demand fulfillment is exact equality, which directly targets the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "priority_order_lexicographic",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the two goals of having 8000 people meet their preferred specialty and 8000 meet their preferred city, are these two goals to be optimized simultaneously ... or is the primary objective to minimize the number of people who do not get their preferred city while treating the 8000 preferred-specialty target as a hard constraint that must be met",
+      "rationale": "The agent asked about the priority relationship between the two lower goals (p2 and p3), but did not explicitly ask about the full lexicographic order with p1 highest and p3 lowest; the p1 priority was only revealed when the user simulator volunteered it."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent stopped after partially covering the P0 priority-order slot; the agent did not explicitly ask about p1's lexicographic priority, relying on the user simulator's volunteered answer."
+  },
+  "summary": "The agent clearly confirmed the exact-demand equality (P1) and asked a relevant but incomplete question about priority order (P0), missing the explicit three-level lexicographic structure. It stopped with the P0 slot only partially covered by its own questions.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7,
+    "earned_weight": 3.5,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      },
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

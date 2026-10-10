@@ -1,0 +1,112 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a signed contract must be used for all months in its term or whether partial usage is allowed; no question addresses mandatory full-period coverage."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether contracts of at least two distinct lengths must be signed or whether a single contract type is acceptable."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never inquired about a cap on the number of distinct contract lengths or types that can be used."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For each warehouse, must the total rented area in every month be at least the required area for that month, or is it acceptable to rent less than required in some months?",
+      "rationale": "The agent explicitly probed whether monthly rented area must match required area or whether undersupply is allowed, covering the exact-satisfaction meaning."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and all months, or is there a different goal such as maximizing flexibility or minimizing the number of contracts?",
+      "rationale": "The agent explicitly asked for the optimization goal and confirmed the cost-minimization objective."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The conversation degenerated into a loop of incomplete questions and never reached READY_TO_MODEL or any final modeling/final answer state, so there is no clear stop. Both P0 slots (H4, H5) were resolved, but the P1 slot H2 (contract length diversity) remained unaddressed."
+  },
+  "summary": "The agent correctly resolved the two P0 slots (objective and exact demand satisfaction) but failed to ask about the P1 contract-length-diversity rule and the P2 slots (full coverage, contract-count cap). The interaction then broke down into repetitive incomplete questions with no READY_TO_MODEL, so no model was ever produced.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.6,
+    "earned_weight": 6.0,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 3,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 2.0,
+        "score": 0.0
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

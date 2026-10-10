@@ -1,0 +1,91 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never explicitly asked about a $10,000 minimum weekly profit or any lower bound on profit; the generic 'any other constraints' question did not target this slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements for the weekly production plan, such as minimum production levels for Model B, labor availability limits, or material shortages, that are not mentioned in the initial brief?",
+      "rationale": "The agent explicitly asked about minimum production levels for Model B, which uncovered and then confirmed the 15-unit contractual minimum."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is the 150-hour maximum weekly capacity for Process I a hard ceiling that cannot be exceeded, or is it also expandable through overtime?",
+      "rationale": "The agent touched Process I capacity by asking whether 150 hours was a hard ceiling, but did not ask whether Process I time must be exactly 150 hours rather than at most 150."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No minimum weekly profit target of $10,000 applies; the objective is only to maximize profit.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about U4/H1, and the READY_TO_MODEL summary includes only profit maximization while omitting any minimum-profit constraint."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is a hard upper bound of 150 hours, expressed as 4x_A + 6x_B ≤ 150, rather than an exact 150-hour usage requirement.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only whether 150 hours was a hard ceiling, not whether it must be exactly used, yet the READY_TO_MODEL summary presents the inequality as confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2. The agent resolved H2 and stopped after asking several relevant clarification questions; H1 and H3 remain unresolved P2 details, so there were no unresolved P0/P1 slots at stop."
+  },
+  "summary": "The agent recovered the Model B minimum-production requirement but missed the minimum-profit target and only partially probed the exact Process I usage requirement. It stopped appropriately because all hidden slots were P2, though it left some P2 assumptions unconfirmed.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 1.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

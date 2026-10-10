@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Does the constraint that each student can work no more than 2 shifts per week mean that a student can only be assigned to work on at most 2 distinct days out of the 5 operating days?",
+      "rationale": "The agent explicitly asked whether the shift limit means at most 2 distinct working days per student per week, directly targeting the hidden slot's meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Does the constraint that no more than 3 students can be scheduled for duty each day mean that on any given day, the total number of students with positive hours assigned cannot exceed 3?",
+      "rationale": "The agent explicitly asked about the daily cap on the number of distinct students assigned, matching the hidden slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective of the scheduling plan to minimize the total weekly labor cost (sum of wage times hours for all students), or is there a different primary goal such as maximizing fairness or minimizing total hours worked?",
+      "rationale": "The agent asked the optimization goal up front, explicitly offering minimize total labor cost, directly covering the objective hidden slot."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All scored hidden slots were resolved before READY_TO_MODEL (H3 in turn 1, H1 in turn 5, H2 in turn 6); the agent's remaining open items (integrality, student classification) were explicitly flagged as assumptions, and no unresolved P0/P1 scored slots remained."
+  },
+  "summary": "The agent recovered all three scored hidden slots through targeted questions\u2014the cost-minimization objective, the two-shift (two-day) weekly limit, and the three-students-per-day cap\u2014and flagged its remaining uncertainties (integrality, undergrad/grad classification) as explicit assumptions before stopping."
+}

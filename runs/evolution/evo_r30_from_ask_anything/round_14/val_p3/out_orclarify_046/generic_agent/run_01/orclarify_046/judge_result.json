@@ -1,0 +1,86 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Are there any constraints on the number of days per week each student is allowed to work, or can a student work on any subset of the five days (Monday through Friday) as long as their daily and weekly hour limits are met?",
+      "rationale": "The agent explicitly asked whether a per-student weekly limit on working days/shifts exists, directly targeting the 2-shifts-per-week rule."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a daily cap on the number of distinct students assigned. The constraint surfaced only through a vague catch-all ('any additional constraints... not mentioned yet') in turn 9, and per the rules such vague catch-alls are penalized and volunteered facts earn no credit. Turn 10 merely clarified the hardness of an already-revealed constraint."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the primary objective of this scheduling plan to minimize the total weekly labor cost (sum of hours worked multiplied by hourly wage for all students), or is there a different goal such as maximizing fairness or minimizing the number of students used?",
+      "rationale": "The agent explicitly asked about the optimization objective and proposed minimizing total weekly labor cost, fully covering the slot."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "H1 and H3 were proactively recovered (P0 objective fully confirmed), but P1 slot H2 was never directly asked about; it only surfaced via a vague catch-all and was volunteered by the user. Per the hit-based rule, H2 remains an unresolved P1 recovery at the point the agent declared READY_TO_MODEL."
+  },
+  "summary": "The agent cleanly recovered the objective (H3) and the weekly shift limit (H1) with direct questions, but never proactively asked about the per-day distinct-student cap (H2), relying on a vague catch-all that the simulator filled in. Interaction quality is good on most slots but leaves one P1 hidden constraint unrecovered through agent initiative.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.7142857142857143,
+    "earned_weight": 5.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

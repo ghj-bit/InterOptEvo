@@ -1,0 +1,98 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Before the first READY_TO_MODEL, the agent did not ask about a minimum profit requirement of $10,000. The later confirmation at turn 11 followed the user simulator volunteering this requirement."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Before the first READY_TO_MODEL, the agent did not ask about a minimum production requirement for Model B. It asked about maximum Model B limits instead, and the minimum-15 requirement was later volunteered by the user simulator."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Is the 150-hour maximum weekly capacity for Process I a hard limit that cannot be exceeded, or is it also a base capacity that can be extended through overtime?",
+      "rationale": "The agent touched the related Process I capacity issue but only clarified whether 150 hours is a hard upper bound; it did not ask whether Process I time must equal exactly 150 hours."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum weekly profit requirement; the model only maximizes profit.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about or confirm a $10,000 minimum profit before the initial READY_TO_MODEL."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no minimum production requirement for Model B beyond non-negativity.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent did not ask about or confirm the minimum 15 units of Model B before the initial READY_TO_MODEL."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is constrained by an upper bound of 150 hours, not an exact equality.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed that 150 hours is a hard capacity limit; it did not confirm that Process I time must equal exactly 150 hours."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "No hidden P0 or P1 slots are present in this case. After the P2 hidden constraints were surfaced and confirmed, the agent repeatedly asked the same unresolved overtime-cost question and re-entered READY_TO_MODEL without making further progress."
+  },
+  "summary": "The agent initially stopped before recovering the hidden P2 constraints on minimum profit, minimum Model B production, and exact Process I utilization; it only confirmed them after the user simulator volunteered them, then looped on an unresolved overtime-cost detail.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.16666666666666666,
+    "earned_weight": 0.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 3.0,
+        "score": 0.16666666666666666
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1",
+      "H2",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

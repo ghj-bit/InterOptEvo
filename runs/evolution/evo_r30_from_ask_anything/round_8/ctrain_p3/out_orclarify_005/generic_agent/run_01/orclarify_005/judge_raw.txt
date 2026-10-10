@@ -1,0 +1,40 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as options for this dinner, or should the selection be limited to the four fiber-containing vegetables (okra, carrots, celery, cabbage)?",
+      "rationale": "The agent asked about protein availability/limitation, a related issue, but did not explicitly ask whether exactly one protein is required or whether multiple proteins can be combined; the exactly-one rule was volunteered by the user simulator."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "No question or explicit assumption check about the minimum number of vegetable types; the agent never asked whether at least two vegetables must be selected."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum vegetable-variety constraint applies; the meal plan can be formulated without requiring at least two vegetable types.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "H2 was never asked or confirmed, yet the READY_TO_MODEL summary lists constraints and states no assumptions remain, effectively omitting any variety requirement."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent stopped at READY_TO_MODEL while H1 was only partially addressed and H2 was never asked, leaving P1 hidden slots unresolved."
+  },
+  "summary": "The agent clarified several boundary/data assumptions, but it missed the minimum vegetable-types constraint and only indirectly touched the protein selection rule before stopping prematurely."
+}

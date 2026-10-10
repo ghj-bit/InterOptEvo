@@ -1,0 +1,66 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "demand_fulfillment_required",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the market demand for each container type a hard minimum that must be fully satisfied, or is it a target that can be exceeded by producing additional units of that type",
+      "rationale": "The agent explicitly asked whether demand is a hard minimum that must be fully satisfied, directly covering the demand-fulfillment slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_cost_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the objective",
+      "rationale": "The agent asked a question explicitly targeting the objective function, prompting the user to state that the goal is to minimize total cost including variable and fixed setup costs."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "Both P0 hidden slots (demand fulfillment and cost-minimization objective) were resolved by turn 5, but the agent then repeated the same low-value variable-cost question for roughly 25 turns without ever reaching a READY_TO_MODEL or final state."
+  },
+  "summary": "The agent successfully recovered both P0 hidden slots (demand fulfillment requirement and total-cost objective) early on, but then degenerated into an endless loop of repeated, truncated questions about variable cost under substitution and never converged to a final model, making the interaction unproductive despite the good early slot coverage.",
+  "weighted_summary": {
+    "weighted_slot_score": 1.0,
+    "earned_weight": 6.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": true,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "no_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unclear_production_time_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the 110-hour weekly production time the total available regular-time capacity, or is it the total time including both regular and overtime?",
+      "rationale": "The agent touched the 110-hour figure but only to clarify whether it is regular-time or total capacity; it never asked whether fully using 110 hours is a hard equality constraint versus a prioritized soft goal, which is the slot's key meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unclear_overtime_limit_goal",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is the 10-hour overtime limit a hard constraint that must",
+      "rationale": "The agent directly asked whether the 10-hour overtime limit is a hard constraint, matching the semantic hit rule for the nature of the overtime rule."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The 110-hour weekly production time is merely available regular-time capacity (a resource limit), not a soft goal requiring full utilization with a specific priority.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only clarified whether 110 hours was regular vs. total capacity; it never confirmed whether full utilization of 110 hours is a prioritized goal, yet treated it purely as a capacity bound in the final model."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": ["H1"],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent declared READY_TO_MODEL while the P0 slot H1 (whether 110-hour full utilization is a hard constraint or prioritized goal) remained unresolved; only H2 was addressed."
+  },
+  "summary": "The agent confirmed the overtime limit's constraint nature (H2) but only tangentially probed the 110-hour rule, never resolving whether full utilization is a hard constraint or a prioritized goal (H1), then stopped with that P0 fact silently assumed as a capacity bound."
+}

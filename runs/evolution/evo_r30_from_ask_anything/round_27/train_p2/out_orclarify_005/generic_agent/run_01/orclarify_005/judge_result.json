@@ -1,0 +1,72 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the model allow selecting any of the seven listed foods (salmon, beef, pork, okra, carrots, celery, cabbage) in any non-negative amounts, or are the three meats (salmon, beef, pork) excluded from the dinner plan?",
+      "rationale": "The agent explicitly probed the protein-selection rule by asking whether the meats may be freely selected/combined in any amounts or excluded, which targets whether multiple proteins can be combined versus a discrete choice."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never explicitly asked about the minimum number of vegetable types; it only issued a vague catch-all ('any other requirements or restrictions') that does not target vegetable variety, so the at-least-two-vegetables rule was obtained solely because the user volunteered it."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 vegetable-variety rule (H2) had never been explicitly asked about; it was only surfaced by the user's answer to a generic catch-all question."
+  },
+  "summary": "The agent reasonably probed the protein-selection rule but never explicitly asked about the minimum number of vegetable types, relying on a vague catch-all and then a follow-up about hardness, so H2 was resolved only by user volunteering. Several data-type questions were left unconfirmed but were at least explicitly flagged as assumptions, and the stop was premature with respect to the unresolved vegetable-variety slot.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,147 @@
+# Case facts for Judge
+
+## Initial brief shown to Generic Agent
+Visible unit IDs: U1, U10, U11, U12, U2, U3, U4, U5, U6, U7, U8
+I need help planning the transportation of products from the warehouse to sales points, ensuring that total pollution from all trips must not exceed 2000 units, the number of truck trips must be at least 10, and total units delivered must be at least 1800 units.
+
+Number of sales points: 3.
+
+Transportation options: truck, van, motorcycle, electric vehicle.
+
+Transport capacities per trip (units): truck 100, van 80, motorcycle 40, electric vehicle 60.
+
+Pollution generated per trip (units): truck 100, van 50, motorcycle 10, electric vehicle 0.
+
+Delivery target: 1800 units.
+
+Maximum total pollution allowed: 2000 units.
+
+Minimum number of truck trips: 10.
+
+## Problem units
+- U1 (context): I need help planning the transportation of products from the warehouse to sales points.
+- U2 (data): Number of sales points: 3.
+- U3 (data): Transportation options: truck, van, motorcycle, electric vehicle.
+- U4 (data): Transport capacities per trip (units): truck 100, van 80, motorcycle 40, electric vehicle 60.
+- U5 (data): Pollution generated per trip (units): truck 100, van 50, motorcycle 10, electric vehicle 0.
+- U6 (data): Delivery target: 1800 units.
+- U7 (data): Maximum total pollution allowed: 2000 units.
+- U8 (data): Minimum number of truck trips: 10.
+- U9 (constraint): Either vans or electric vehicles can be used, but not both.
+- U10 (constraint): Total pollution from all trips must not exceed 2000 units.
+- U11 (constraint): The number of truck trips must be at least 10.
+- U12 (constraint): Total units delivered must be at least 1800 units.
+- U13 (objective): Minimize the total pollution generated.
+
+## Hidden slot scoring rules
+## H1: van_ev_mutual_exclusion
+- Severity: P1
+- Severity reason: Without this constraint, the model could allow both vans and electric vehicles, leading to a solution that violates the operational restriction. The problem remains coherent, but the plan would be business-invalid.
+- Problem unit ID: U9
+- Semantic hit rule: The agent's question must explicitly ask whether vans and electric vehicles can be used together or must be mutually exclusive.
+- Reference acceptable questions:
+  - Can I use both vans and electric vehicles in the transportation plan, or must I choose only one type?
+  - Is it allowed to mix vans and electric vehicles, or do they need to be mutually exclusive?
+- Failure modes:
+  - Assuming both vans and electric vehicles can be used simultaneously without restriction.
+  - Not considering the mutual exclusivity clause, leading to a model that combines them.
+
+## H2: minimize_total_pollution_objective
+- Severity: P0
+- Severity reason: Without a stated objective, the optimization problem is ill-posed; the modeling agent cannot define optimality, making modeling impossible.
+- Problem unit ID: U13
+- Semantic hit rule: The agent must ask about the objective function, specifically confirming whether it is to minimize total pollution or clarifying what to optimize.
+- Reference acceptable questions:
+  - What is the objective we should optimize? For example, is it minimizing total pollution, total cost, or something else?
+  - You mentioned minimizing total pollution; is that the primary goal for this transportation plan?
+- Failure modes:
+  - Assuming the objective is to minimize total cost when no cost data is provided.
+  - Assuming the objective is to minimize the number of trips.
+  - Leaving the objective unspecified and formulating an arbitrary or infeasible model.
+
+
+# Full Transcript
+
+## Turn 1 - Generic Agent
+
+QUESTION: Is the objective to minimize total transportation cost, and if so, what is the cost per trip for each vehicle type (truck, van, motorcycle, electric vehicle)?
+
+## Turn 1 - User Simulator
+
+No, the objective is not to minimize total transportation cost. The main goal is to minimize the total pollution generated from all trips, while still delivering at least 1800 units.
+
+There is no cost per trip provided for any vehicle type.
+
+## Turn 2 - Generic Agent
+
+QUESTION: Is the minimum number of trips (at least 10) a constraint that applies to the total number of trips across all vehicle types, or is it specifically a minimum of 10 truck trips?
+
+## Turn 2 - User Simulator
+
+It is specifically a minimum of 10 truck trips.
+
+## Turn 3 - Generic Agent
+
+QUESTION: Are the number of trips for each vehicle type (truck, van, motorcycle, electric vehicle) required to be whole numbers (integers), or can they be fractional values?
+
+## Turn 3 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 4 - Generic Agent
+
+QUESTION: Are the number of trips for each vehicle type required to be whole numbers (integers), or can they be fractional values?
+
+## Turn 4 - User Simulator
+
+The number of trips for each vehicle type must be whole numbers (integers).
+
+## Turn 5 - Generic Agent
+
+QUESTION: Are there any upper limits on the number of trips for any specific vehicle type, or is the only upper bound the total pollution constraint?
+
+## Turn 5 - User Simulator
+
+No, there are no upper limits on the number of trips for any specific vehicle type. The only upper bound is the total pollution constraint.
+
+## Turn 6 - Generic Agent
+
+QUESTION: Are there any other constraints or requirements not mentioned in the brief, such as minimum or maximum trips for vans, motorcycles, or electric vehicles, or any rules about which sales points must be served?
+
+## Turn 6 - User Simulator
+
+Yes, there is one additional constraint: either vans or electric vehicles can be used, but not both. You need to pick one type or the other, not mix them.
+
+There are no other constraints or requirements regarding minimum or maximum trips for vans, motorcycles, or electric vehicles, or rules about which sales points must be served.
+
+## Turn 7 - Generic Agent
+
+QUESTION: Is the constraint that "either vans or electric vehicles can be used, but not both" a hard constraint that must be strictly satisfied, or is it a soft target that can be violated if necessary?
+
+## Turn 7 - User Simulator
+
+It is a hard constraint that must be strictly satisfied.
+
+## Turn 8 - Generic Agent
+
+READY_TO_MODEL
+
+**Confirmed Understanding:**
+
+1.  **Objective:** Minimize total pollution generated from all trips.
+2.  **Decision Variables:** The number of trips for each vehicle type (truck, van, motorcycle, electric vehicle).
+3.  **Variable Domain:** All decision variables must be non-negative integers.
+4.  **Constraints:**
+    *   **Total Pollution:** Total pollution from all trips must not exceed 2000 units.
+    *   **Total Delivery:** Total units delivered must be at least 1800 units.
+    *   **Truck Minimum:** The number of truck trips must be at least 10.
+    *   **Mutual Exclusivity:** The number of van trips and the number of electric vehicle trips cannot both be positive (i.e., you must choose to use only vans, only electric vehicles, or neither, but not both).
+5.  **Parameters:**
+    *   **Capacities (units/trip):** Truck = 100, Van = 80, Motorcycle = 40, Electric Vehicle = 60.
+    *   **Pollution (units/trip):** Truck = 100, Van = 50, Motorcycle = 10, Electric Vehicle = 0.
+    *   **Sales Points:** 3 (Note: The brief does not specify distinct constraints per sales point, so this is treated as a single aggregate delivery problem).
+
+**Assumptions:**
+*   The "3 sales points" detail is descriptive and does not impose additional constraints (e.g., no specific capacity or pollution limits per sales point, no requirement to serve each point separately).
+*   There are no upper bounds on the number of trips for any vehicle type other than those implied by the pollution and delivery constraints.
+*   The "minimum number of truck trips" is strictly 10, not a total trip minimum.

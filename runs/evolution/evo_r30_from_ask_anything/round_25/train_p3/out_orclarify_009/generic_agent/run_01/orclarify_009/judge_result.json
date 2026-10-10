@@ -1,0 +1,73 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is the goal to maximize the total profit from the production of these four toy types?",
+      "rationale": "The agent explicitly asked about the optimization objective and whether profit should be maximized, fully covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "boat_not_exceed_train",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements not mentioned in the brief, such as minimum production quantities for any toy type, maximum production limits per type, or additional resource limitations?",
+      "rationale": "The agent only posed a broad catch-all about 'other constraints' without targeting the boat/train relationship. The explicit mention of x_B <= x_R in turn 5 came only after the user volunteered that constraint in response to the catch-all, so it does not count as a targeted discovery."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The only P0 slot (objective) was resolved via a direct question, and there were no P1 slots. The remaining H2 issue is P2 only, and the boat/train constraint was confirmed with the user, so stopping at READY_TO_MODEL was appropriate."
+  },
+  "summary": "The agent cleanly resolved the P0 objective slot with a direct question and confirmed integer domain, hard ceilings, and the boat/train constraint (though the latter emerged via a broad catch-all rather than a targeted probe). With no unresolved P0/P1 slots, the stop was appropriate.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.875,
+    "earned_weight": 3.5,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 1.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 1,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [
+      "H2"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

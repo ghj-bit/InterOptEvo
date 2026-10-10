@@ -1,0 +1,52 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total cost of the tables ordered, or is there a different objective (such as maximizing the number of tables within a budget or meeting a specific supplier mix)?",
+      "rationale": "Agent explicitly asked about the optimization objective before READY_TO_MODEL."
+    },
+    {
+      "slot_id": "H2",
+      "name": "A_requires_min_B_tables",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Agent asked only about per-supplier minimum/maximum order limits (turn 2); it never asked about the conditional link requiring a minimum of 30 B tables if A is used."
+    },
+    {
+      "slot_id": "H3",
+      "name": "B_requires_C_order",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "Agent never asked whether ordering from Supplier B forces an order from Supplier C; the turn 2 question about per-supplier limits does not cover this conditional dependency."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no linkage between Supplier A and Supplier B; each supplier's order can be chosen independently.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the A-to-B conditional minimum-tables rule, yet its confirmed-understanding section states only non-negativity limits exist and claims all formulation-critical facts were confirmed."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Orders from Supplier B and Supplier C are independent, with no obligation to order from C when ordering from B.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the B-to-C conditional requirement and treated B and C as freely independent in its final formulation summary."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2", "H3"],
+    "rationale": "The agent entered READY_TO_MODEL while two P1 hidden slots (A-requires-B and B-requires-C conditional rules) remained unasked and unconfirmed, resulting in a model that omits key business constraints."
+  },
+  "summary": "The agent correctly recovered the objective (H1) with a direct question but never probed the two conditional supplier-linkage rules (H2, H3), declaring all formulation-critical facts confirmed and stopping prematurely with unresolved P1 slots."
+}

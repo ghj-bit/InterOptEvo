@@ -1,0 +1,91 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum weekly profit target or a $10,000 lower bound, and the READY_TO_MODEL formulation omits this constraint entirely."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements for the weekly production plan, such as a minimum production quantity for Model B, a maximum total number of units, or any relationship between the production of Model A and Model B?",
+      "rationale": "The agent explicitly asked about a minimum production quantity for Model B, which directly targets the hidden requirement; the user then supplied the at-least-15-unit value."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Is the 150-hour maximum weekly capacity for Process I a hard limit that cannot be exceeded, or can it also be extended through overtime?",
+      "rationale": "The agent probed whether Process I is a hard capacity limit, but did not ask whether Process I time must be exactly 150 hours rather than only at most 150 hours."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum weekly profit target or $10,000 lower bound.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about or confirmed a minimum profit requirement, yet the final formulation omits any such lower bound."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is constrained only by a hard upper bound of 150 hours, not by an exact-150-hours requirement.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent asked only whether 150 hours is a hard limit, not whether Process I must be used for exactly 150 hours; the final model uses a <= constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are P2, so no P0/P1 slots remained unresolved. However, the agent repeated several low-value overtime, Process I, and integrality questions multiple times before finally entering READY_TO_MODEL."
+  },
+  "summary": "The agent recovered the Model B minimum-production requirement and partially probed Process I's capacity nature, but missed the $10,000 minimum-profit target and did not fully clarify exact Process I usage. It also repeated several low-value questions before stopping, though no P0/P1 hidden slots were left unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 1.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "over_questioning",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

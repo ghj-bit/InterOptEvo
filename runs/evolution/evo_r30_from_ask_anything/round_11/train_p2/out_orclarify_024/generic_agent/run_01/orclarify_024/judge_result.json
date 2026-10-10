@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "van_ev_mutual_exclusion",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "Is the constraint that you must use at least one trip of either vans or electric",
+      "rationale": "The agent's earlier turn 5 'Are there any other constraints or requirements' is a vague catch-all and the mutual-exclusion fact was volunteered by the simulator. The agent's follow-up (turn 6) probes the van/EV constraint but asks whether at least one must be used, not whether vans and EVs must be mutually exclusive, so the key meaning of the slot is only indirectly touched."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_pollution_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize total transportation cost, and if so, what is the cost per trip for each vehicle type (truck, van, motorcycle, electric vehicle)?",
+      "rationale": "The agent explicitly asked about the objective function, clarifying what to optimize, and the user confirmed it is minimizing total pollution, resolving the P0 objective slot."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 objective slot was directly confirmed in turn 1 and the P1 mutual-exclusion constraint was surfaced and clarified in turns 5-6 before READY_TO_MODEL, so all P0/P1 slots were resolved and no core modeling facts were left unconfirmed."
+  },
+  "summary": "The agent directly confirmed the P0 objective and surfaced/clarified the van-EV mutual-exclusion constraint before declaring READY_TO_MODEL; the only weakness is that the mutual-exclusion point was elicited largely via a vague catch-all question rather than an explicit probe.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

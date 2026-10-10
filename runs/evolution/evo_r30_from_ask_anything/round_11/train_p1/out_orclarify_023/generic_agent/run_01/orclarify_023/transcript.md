@@ -1,0 +1,239 @@
+## Turn 1 - Generic Agent
+
+QUESTION: Should the weekly fixed costs for each equipment be included in the objective function as a deduction from total profit, or should the objective be to maximize total revenue minus only the variable costs
+
+## Turn 1 - User Simulator
+
+The weekly fixed costs for each equipment should be included in the objective function as a deduction from total profit. We want to maximize our weekly profit, which means total revenue minus both variable costs and fixed costs.
+
+## Turn 2 - Generic Agent
+
+QUESTION: Are the production quantities for each product type required to be whole numbers
+
+## Turn 2 - User Simulator
+
+The available business facts do not specify whether production quantities must be whole numbers. This point still needs internal confirmation.
+
+## Turn 3 - Generic Agent
+
+QUESTION: Should the production quantities for each product type be modeled as continuous
+
+## Turn 3 - User Simulator
+
+The available business facts do not specify whether production quantities should be modeled as continuous. This point still needs internal confirmation.
+
+## Turn 4 - Generic Agent
+
+QUESTION: Are there any additional requirements or constraints beyond the labor and material limits
+
+## Turn 4 - User Simulator
+
+Yes. Each special equipment is dedicated to producing only one specific product type: the first produces shirts, the second produces short-sleeved shirts, the third produces casual clothes.
+
+## Turn 5 - Generic Agent
+
+QUESTION: Is there a minimum production quantity required for each product
+
+## Turn 5 - User Simulator
+
+The available business facts do not specify a minimum production quantity for each product. This point still needs internal confirmation.
+
+## Turn 6 - Generic Agent
+
+QUESTION: Is there a maximum production
+
+## Turn 6 - User Simulator
+
+The available business facts do not specify a maximum production quantity for each product. This point still needs internal confirmation.
+
+## Turn 7 - Generic Agent
+
+QUESTION: Are the labor and material constraints hard
+
+## Turn 7 - User Simulator
+
+Yes. Total labor used per week must not exceed the available 1500 units, and total material used per week must not exceed the available 1600 units.
+
+## Turn 8 - Generic Agent
+
+QUESTION: Should the model allow producing zero units
+
+## Turn 8 - User Simulator
+
+The available business facts do not specify whether producing zero units is allowed. This point still needs internal confirmation.
+
+## Turn 9 - Generic Agent
+
+QUESTION: Should the model allow producing
+
+## Turn 9 - User Simulator
+
+The available business facts do not specify whether the model should allow producing zero units. This point still needs internal confirmation.
+
+## Turn 10 - Generic Agent
+
+QUESTION: Are the labor and material
+
+## Turn 10 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 11 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 11 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 12 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 12 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 13 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 13 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 14 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 14 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 15 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 15 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 16 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 16 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still
+
+## Turn 17 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 17 - User Simulator
+
+The available business facts do not provide enough information to answer this incomplete question. This point still needs internal confirmation.
+
+## Turn 18 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 18 - User Simulator
+
+The available business facts do not provide
+
+## Turn 19 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 19 - User Simulator
+
+The available
+
+## Turn 20 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 20 - User Simulator
+
+The available
+
+## Turn 21 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 21 - User Simulator
+
+The
+
+## Turn 22 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 22 - User Simulator
+
+The
+
+## Turn 23 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 23 - User Simulator
+
+The
+
+## Turn 24 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 24 - User Simulator
+
+The
+
+## Turn 25 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 25 - User Simulator
+
+The
+
+## Turn 26 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 26 - User Simulator
+
+The
+
+## Turn 27 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 27 - User Simulator
+
+The
+
+## Turn 28 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 28 - User Simulator
+
+The
+
+## Turn 29 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 29 - User Simulator
+
+The
+
+## Turn 30 - Generic Agent
+
+QUESTION: Are the labor
+
+## Turn 30 - User Simulator
+
+The

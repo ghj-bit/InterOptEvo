@@ -1,0 +1,43 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "corn_minimum_twice_wheat",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any relationship or ratio between corn and wheat acreage. Its closest question (turn 5) asked about per-crop min/max limits, which does not target a corn-wheat relational constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "wheat_three_times_sorghum",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a fixed ratio linking wheat and sorghum (e.g., wheat = 3 * sorghum). Turn 4 only addressed the soybean-sorghum constraint that was already visible in the brief."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no constraint relating corn and wheat acreage (corn >= 2 * wheat is not enforced).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a corn-wheat relationship, yet its READY_TO_MODEL constraint list omits any such rule and its assumptions section only mentions integrality and other cost/constraint types, implicitly treating corn and wheat as independent."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no ratio constraint between wheat and sorghum acreage (wheat = 3 * sorghum is not enforced).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a wheat-sorghum ratio, yet its READY_TO_MODEL constraint list includes only the total-acreage and soybean-sorghum constraints, silently treating wheat and sorghum as independent."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The agent entered READY_TO_MODEL while two P1 hidden constraints (corn >= 2*wheat and wheat = 3*sorghum) were never asked about and remained unresolved."
+  },
+  "summary": "The agent confirmed the visible units and clarified the ceiling, integrality, and soybean-sorghum constraint, but it entirely missed the two hidden relational constraints (corn vs wheat and wheat vs sorghum), stopping prematurely with those P1 slots unresolved and silently assumed away."
+}

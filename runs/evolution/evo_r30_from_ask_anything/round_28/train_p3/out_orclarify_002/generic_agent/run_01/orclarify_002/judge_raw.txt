@@ -1,0 +1,48 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "How many trained pilots does one fighter jet produce per year when allocated exclusively for pilot training, and is this rate constant across both years?",
+      "rationale": "The agent explicitly asked for the per-jet, per-year pilot training capacity, directly covering the slot's key meaning."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked how many combat jets a trained pilot can operate; it only worked with the raw pilot count, so the pilot-to-jet relationship was never probed."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Are the jets allocated for training in year 1 still available for training in year 2, or are they consumed or retired after year 1?",
+      "rationale": "The agent probed the two-year training timeline (reuse of year-1 training jets) but never asked about the training program's start year or its duration, so the slot's key meaning (start year/length) was not covered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "The training program operates over years 1 and 2 (starting in year 1, lasting two years), so jets allocated in each year yield pilots within that same year.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked when training starts or how long it lasts, yet fixed a two-year train-each-year timeline in its model without confirming it."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H3"
+    ],
+    "rationale": "The critical P0 training-capacity slot was resolved, but the P1 training start/duration slot was only partially touched (jet reuse) and never confirmed before the agent declared READY_TO_MODEL and produced a final answer."
+  },
+  "summary": "The agent secured the key P0 training-capacity fact and clarified the objective and decision variable well, and it explicitly flagged an unconfirmed jet-reuse assumption. However, it never asked about the training program's start year or duration (P1) and never asked about the pilot-to-combat-jet mapping (P2) before stopping."
+}

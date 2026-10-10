@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available options for this dinner, or should the selection be limited to the four vegetable items (okra, carrots, celery, cabbage) that have fiber data provided?",
+      "rationale": "The agent probed the protein topic (whether proteins are decision entities) but never directly asked the selection rule (how many proteins/clarify combine-or-not); the 'exactly one protein' rule was volunteered by the user in turn 1 and only its semantics were confirmed later (turn 7), so the slot's core question was not fully asked by the agent."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Are there any additional requirements for the meal plan beyond the budget ceiling, the exact 600g weight, and the exactly-one-protein rule, such as a minimum or maximum amount of any specific food, a requirement to include at least one vegetable, or a limit on how many different foods can be selected?",
+      "rationale": "The agent asked a broad catch-all that gestured at a vegetable requirement ('at least one vegetable') and food-type limits, but never explicitly asked the minimum number of vegetable types; the 'at least two kinds of vegetables' rule was volunteered by the user in turn 5 and only its semantics were confirmed later (turn 6)."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the two P1 hidden slots were only partially elicited: the protein-selection rule and the minimum-vegetable-types rule were both volunteered by the user rather than directly asked, so the agent never fully recovered these hidden facts through its own questions."
+  },
+  "summary": "The agent was diligent about clarifying given constraints (weight equality, budget ceiling, protein fiber, integrality) and confirmed both disputed rules before modeling, but the two P1 hidden rules (exactly-one protein, at-least-two vegetable types) were volunteered by the user rather than directly asked, and the agent's own questions only touched adjacent issues before it declared READY_TO_MODEL.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

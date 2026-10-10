@@ -1,0 +1,81 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unclear_production_time_goal",
+      "severity": "P0",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent's questions about the 110 hours only clarified whether it is total vs per shift (turn 1) and whether it is regular capacity with overtime beyond it (turn 2). It never asked whether fully utilizing the 110 hours is a hard equality constraint or a prioritized soft goal, nor about its priority relative to the other objectives."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unclear_overtime_limit_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is there a maximum limit on how many overtime hours can be used per week, or is overtime allowed to be any non-negative amount needed to meet the minimum sales requirements?",
+      "rationale": "The agent asked whether an overtime limit exists (establishing the 10-hour cap), which touches the limit's nature, but it never asked whether the 10-hour rule is a strict constraint versus a soft target, nor about its priority relative to minimizing overtime."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The 110-hour regular capacity is a rigid hard bound and the requirement to fully utilize the 110 hours is not treated as a prioritized goal at all.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether full utilization of 110 hours is a hard constraint or a prioritized soft goal, so the READY_TO_MODEL treatment of 110 hours as plain regular capacity is an unconfirmed assumption."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P0 slot H1 was never addressed and the P0 slot H2 was only partially probed (limit existence asked, but not its hard/soft nature or priority)."
+  },
+  "summary": "The agent clarified overtime definition, sales floors, and objective scope but never probed the goal-programming nature of the 110-hour utilization (H1) or the hard/soft status and priority of the 10-hour overtime rule (H2), stopping prematurely with both P0 slots unresolved or only partially covered.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.5,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 1.5,
+        "total_weight": 6.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

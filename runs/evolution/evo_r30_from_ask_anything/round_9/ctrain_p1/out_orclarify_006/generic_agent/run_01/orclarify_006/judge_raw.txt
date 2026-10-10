@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions for Product I (or any product). Its closest question (turn 8) was about a per-product maximum production quantity, which does not address the ban on producing Product I in Q2."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Regarding the \"contract reservations\" in the table, are these quantities that must be delivered to customers in that specific quarter (i.e., demand that must be met from production or inventory in that quarter), or are they minimum production targets",
+      "rationale": "The agent probed the delivery semantics of contract reservations (must-deliver vs. minimum targets), which is related to the slot, but framed it strictly as on-time delivery in the specific quarter and never asked whether all reservations must eventually be fulfilled even if delivered late. The key backlogging/forced-fulfillment meaning is not covered."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The transcript never reaches READY_TO_MODEL or any final modeling/answer state; it degenerates into dozens of repeated incomplete 'Regarding...' messages and simply ends, so there is no clear stop. H1 is entirely unresolved and H2 only partially addressed."
+  },
+  "summary": "The agent asked a few sensible clarifying questions early on but never touched the Product-I-no-production-in-Q2 restriction and only partially covered the contract-reservation fulfillment semantics, then got stuck in a long loop of broken, incomplete messages and ended without any final model or READY_TO_MODEL state."
+}

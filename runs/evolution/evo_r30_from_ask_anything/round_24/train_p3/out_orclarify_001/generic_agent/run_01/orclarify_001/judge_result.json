@@ -1,0 +1,77 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "no_production_during_training_period",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "When a skilled worker trains new workers, does that skilled worker spend their entire two-week training period on training (producing zero food), or can they split their time between production and training within those two weeks?",
+      "rationale": "The agent asked whether the skilled trainer produces during training, covering part of the hidden slot, but did not ask whether trainees also abstain from production during the training period."
+    },
+    {
+      "slot_id": "H2",
+      "name": "minimize_total_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total cost over the 8 weeks, where total cost includes wages for skilled workers, wages for trainees during training, wages for newly trained workers after they finish training, overtime wages, and late-delivery compensation fees?",
+      "rationale": "The agent explicitly asked about and confirmed the optimization objective as minimizing total cost over the horizon."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent never entered READY_TO_MODEL or produced an equivalent final modeling state. H2 was resolved, but H1 remained only partially addressed because trainee production during training was not confirmed."
+  },
+  "summary": "The agent confirmed the core objective and several training/workforce details, but only partially resolved the no-production-during-training rule by asking about trainers but not trainees. The interaction ended without a final modeling state after repeated unanswered overtime questions.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8,
+    "earned_weight": 4.0,
+    "total_weight": 5.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "no_stop",
+    "rule_based_status": "no_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

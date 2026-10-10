@@ -1,0 +1,48 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the number of trained pilots that can be produced from one fighter jet allocated to training in a single year?",
+      "rationale": "The agent explicitly asked for the per-jet annual training capacity, directly covering the hidden slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked how many combat jets a trained pilot can operate or otherwise clarified the pilot-to-combat-jet relationship."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Is the total number of trained pilots available by the end of year 2 the sum of pilots produced in year 1 and year 2, or do pilots produced in year 1 remain available and count toward the total in year 2?",
+      "rationale": "The agent touched the two-year timeline and cumulative pilot accounting, but did not explicitly ask when training starts or how long the training program lasts."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Training occurs in both Year 1 and Year 2 and therefore pilots can be produced in each of those years.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly confirmed the training start year or duration; the READY_TO_MODEL model assumes the training program spans Year 1 and Year 2 without marking this assumption as unconfirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H3"
+    ],
+    "rationale": "The P0 slot H1 was resolved, but P1 hidden slot H3 was only partially addressed and not fully confirmed before the agent entered READY_TO_MODEL."
+  },
+  "summary": "The agent directly resolved the key training-capacity slot, but it did not ask about pilot-to-combat-jet mapping and only tangentially addressed training start/duration, then stopped with that P1 timeline issue unconfirmed."
+}

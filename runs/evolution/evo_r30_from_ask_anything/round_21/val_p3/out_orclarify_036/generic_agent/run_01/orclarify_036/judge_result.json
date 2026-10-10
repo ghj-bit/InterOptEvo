@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "single_vehicle_per_customer",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a customer's demand can be split across vehicles. The catch-all question in turn 5 ('any additional constraints... such as maximum route duration') does not target this slot, and the 'exactly once' phrasing only appears silently in the READY_TO_MODEL summary."
+    },
+    {
+      "slot_id": "H2",
+      "name": "depot_return_requirement",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Does the depot operating time window of [0, 1236] minutes represent the latest time a truck must return to the depot, or is it simply the horizon within which all routes must be completed?",
+      "rationale": "The question touches return-to-depot timing but presupposes that returning occurs; it never asks whether returning to the depot is mandatory or whether routes can be open, so the slot's key meaning is not covered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each customer is served by exactly one vehicle (no split deliveries).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether a customer's demand can be split across trucks, yet asserted 'All customer demands must be met exactly once' in the confirmed understanding."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Vehicles must start at and return to the depot.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The return-to-depot requirement was never explicitly confirmed; the agent assumed it in the 'Route Continuity' constraint without asking whether routes could be open."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent declared READY_TO_MODEL while both P1 hidden slots (single-vehicle-per-customer and depot return requirement) remained unresolved, silently assuming them instead."
+  },
+  "summary": "The agent asked several reasonable modeling questions (speed, depot horizon, fleet homogeneity, objective, catch-all constraints) but never resolved the two P1 hidden slots on split deliveries and mandatory depot return, silently assuming both before declaring READY_TO_MODEL.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "contract_full_coverage",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked whether a signed contract must remain active for its entire term versus being usable for only part of it; the fee questions (turns 3/7/13) concern pricing, not the coverage obligation."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_length_diversity",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 10 generic_agent",
+      "evidence_quote": "Does the constraint that \"at least two different contracts (with different lengths) must be signed\" mean that at least two distinct contract lengths from the set {1, 2, 3, 4} must be used in the final plan?",
+      "rationale": "The agent clarified the meaning of the diversity requirement, but only after the simulator volunteered it in response to a vague catch-all question (turn 9); it never independently asked whether diversification is required, so it only partially covers the slot."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_distinct_contracts",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 11 generic_agent",
+      "evidence_quote": "Does the constraint that \"the number of distinct warehouse contracts signed cannot exceed 3\" mean that the total number of individual contract instances ... cannot exceed 3?",
+      "rationale": "The agent probed the interpretation of the cap, but the cap was volunteered by the simulator (turn 9) and the agent never independently asked whether a limit on distinct contract types exists; it touches the related issue only partially."
+    },
+    {
+      "slot_id": "H4",
+      "name": "demand_exact_satisfaction",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Can the required area for each month be covered by renting more area than strictly necessary (i.e., is it allowed to rent excess space in a given month to take advantage of a cheaper long-term contract rate)?",
+      "rationale": "The agent directly asked whether excess (and by implication exact) coverage is required, eliciting the no-shortage/no-excess confirmation."
+    },
+    {
+      "slot_id": "H5",
+      "name": "objective_minimize_cost",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the objective to minimize the total rental cost across all warehouses and all months?",
+      "rationale": "The agent explicitly confirmed the cost-minimization objective in the first question."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "A signed contract is treated as fully covering its entire term (e.g., a 2-month contract covers Months 1 and 2), i.e., the warehouse must be kept for all months of the contract.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether a signed contract must remain active for its whole term, yet listed 'Contract Start' coverage (Assumption 3) as a truth for modeling without confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "over_questioning",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 slots (objective and exact demand) were resolved early and the P1 diversity rule was clarified by turn 10, yet the agent repeatedly asked the identical variable-domain (continuous vs integer) question six times (turns 5, 6, 8, 12, 14, 15) receiving the same non-answer, which is low-value repetition before stopping."
+  },
+  "summary": "The agent correctly nailed the two P0 slots (cost objective and exact demand satisfaction) and clarified the diversity/cap constraints, but those latter facts were largely volunteered by the simulator, the full-coverage obligation was never asked about and was silently assumed, and the agent wasted many turns repeating an unanswered variable-domain question.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.75,
+    "earned_weight": 7.5,
+    "total_weight": 10.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 2,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.5,
+        "total_weight": 2.0,
+        "score": 0.25
+      },
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 2.0,
+        "score": 0.5
+      },
+      "P0": {
+        "earned_weight": 6.0,
+        "total_weight": 6.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2"
+    ],
+    "p2_slot_count": 2,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 5,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "over_questioning",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": true,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

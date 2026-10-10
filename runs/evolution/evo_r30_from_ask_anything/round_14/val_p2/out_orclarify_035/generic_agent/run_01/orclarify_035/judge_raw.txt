@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_vat_sequence",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Can a single batch be split across multiple vats, or must each batch be processed entirely on exactly one vat?",
+      "rationale": "The agent touched the related issue of whether a batch uses multiple vats versus exactly one vat, but it did not ask whether batches must pass through all three vats in the fixed order vat 1 → vat 2 → vat 3."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Each batch is processed entirely on exactly one vat, so batches do not have to pass through all three vats in a fixed sequence.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed the required vat sequence. It asked only a related question about single-vs-multiple-vat processing, then treated single-vat assignment as the confirmed routing structure."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot about the required fixed processing sequence across the three vats was still unresolved."
+  },
+  "summary": "The agent asked many useful clarification questions and resolved several modeling details, but it only partially touched the vat-sequence issue and stopped before confirming whether every batch must visit all three vats in a fixed order."
+}

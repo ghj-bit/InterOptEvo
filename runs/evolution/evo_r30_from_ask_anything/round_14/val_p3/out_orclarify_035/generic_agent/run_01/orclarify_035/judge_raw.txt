@@ -1,0 +1,28 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_vat_sequence",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is each batch required to be processed in exactly one vat (so the five batches are split across the three vats with no batch split across vats)?",
+      "rationale": "This asks whether each batch uses one vat versus multiple vats, which touches the flow-shop structure, but it does not ask whether the required route is fixed as vat 1 then vat 2 then vat 3. The fixed sequence was volunteered by the user in the answer."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Every batch must pass through vat 1, then vat 2, then vat 3 in that fixed order.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly asked about the fixed vat sequence; that fact was supplied only as a user elaboration to a different question and then adopted in the READY_TO_MODEL summary without targeted confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while H1 was only partially covered, because it never directly asked whether the vat order is fixed."
+  },
+  "summary": "The agent clarified many scheduling details, but its handling of H1 was only partial: it asked whether each batch uses exactly one vat rather than whether the vat sequence is fixed, so the fixed order came from the simulator rather than a targeted question."
+}

@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "What is the number of fighter jets required to train one pilot during a single year?",
+      "rationale": "Directly asks the per-pilot/per-jet training capacity in a year; the simulator's answer establishes that one jet trains five pilots per year."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "No question asks how many combat jets a trained pilot can operate or otherwise addresses the pilot-to-combat-jet relationship."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Are the fighter jets produced in a given year available for pilot training in that same year, or do they become available for training only in the following year?",
+      "rationale": "Touches the timing of when training can use jets and later how Year 1/Year 2 pilots are counted, but does not explicitly ask when the training program starts or how many years it lasts."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "that pilot training occurs in Year 1 and Year 2, i.e., starts in Year 1 and spans the two-year horizon",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed the training start year or duration; it only asked related availability/carry-over and summation questions, then modeled x1 and x2 as training allocations in Year 1 and Year 2."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H3"],
+    "rationale": "H1 was resolved, but H3 remained only partially addressed when the agent entered READY_TO_MODEL, and no explicit confirmation of training start/duration was obtained."
+  },
+  "summary": "The agent recovered the key per-jet training capacity and clarified objective/count definition, but it did not fully clarify the training start/duration and never addressed pilot-to-combat-jet mapping; it stopped with a partially unresolved P1 slot."
+}

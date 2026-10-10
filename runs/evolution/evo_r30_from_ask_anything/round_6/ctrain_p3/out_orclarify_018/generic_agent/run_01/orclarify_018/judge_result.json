@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "unclear_production_time_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the 110 hours of weekly production time a hard ceiling that cannot be exceeded, or is it the regular-time capacity where any additional hours beyond 110 count as overtime that you want to minimize?",
+      "rationale": "The agent asked about the nature of the 110-hour capacity, which is related, but did not clarify whether fully utilizing 110 hours is a soft goal or its priority relative to minimizing overtime. The final model treats it only as an upper-bound capacity constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "unclear_overtime_limit_goal",
+      "severity": "P0",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Is there a maximum limit on how many overtime hours per week the factory is allowed to work, or can overtime be any non-negative amount as long as it is minimized?",
+      "rationale": "The agent asked whether an overtime limit exists, but did not clarify whether the 10-hour limit is a strict constraint or a soft goal, nor its priority relative to minimizing overtime. The final model treats it as a hard upper bound."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "The 110-hour regular-time capacity is only an upper bound; fully utilizing it is not modeled as a prioritized soft goal.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The user only said 110 hours is regular-time capacity, not whether full utilization is a goal or what priority it has. The final model enforces R_c + R_cl <= 110 without any goal-deviation variable."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "The 10-hour overtime limit is a hard upper bound that cannot be treated as a soft target.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The user only stated that overtime should not exceed 10 hours. The agent did not confirm whether this is strict or a prioritized goal, but the final model imposes O_c + O_cl <= 10 as a hard constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [
+      "H1",
+      "H2"
+    ],
+    "unresolved_p1_slots": [],
+    "rationale": "The agent entered READY_TO_MODEL while both P0 hidden slots about the goal nature/priority of the 110-hour utilization and the 10-hour overtime limit were only partially clarified. The final model hard-codes both as ordinary capacity constraints."
+  },
+  "summary": "The agent asked related capacity questions but did not fully recover the preemptive goal-programming structure: it never clarified whether full 110-hour utilization and the 10-hour overtime limit are soft goals or what their priorities are. It then stopped and modeled both as hard constraints, leaving both P0 slots unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 3.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 6.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

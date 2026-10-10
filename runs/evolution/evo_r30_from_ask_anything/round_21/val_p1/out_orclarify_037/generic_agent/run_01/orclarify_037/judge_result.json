@@ -1,0 +1,85 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a $10,000 minimum profit requirement or any lower bound on weekly profit, and never marked it as an assumption."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements for the weekly production plan, such as a maximum production limit for Model B, a minimum production level for Model B, or a total production cap across both models?",
+      "rationale": "The agent explicitly asked about a minimum production level for Model B (the hidden slot's subject), and then in turn 8 confirmed the 15-unit hard lower bound; the catch-all explicitly targets the Model B minimum."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is the 150-hour maximum weekly capacity for Process I a hard ceiling that must not be exceeded, or is it also a baseline that can be exceeded through overtime?",
+      "rationale": "The agent touched Process I's constraint interpretation, but framed it as a ceiling-vs-exceedable question rather than asking whether Process I time must equal exactly 150 hours, so the key equality meaning was not covered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No minimum profit requirement (e.g., $10,000 per week) exists; the objective is pure unconstrained-above profit maximization.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a profit floor and listed no such constraint in its READY_TO_MODEL confirmed facts, silently dropping the $10,000 lower bound."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots are only P2 severity; there are no P0/P1 slots. The agent reached READY_TO_MODEL after resolving the Model B minimum, with only the P2 profit-target miss and a partial P2 Process I interpretation remaining."
+  },
+  "summary": "The agent ran a focused interview and correctly recovered the Process II overtime interpretation and the Model B (15-unit) minimum, but never asked about the $10,000 minimum profit target and only partially probed the exact-150-hour Process I requirement. Since all hidden slots are P2, the stop at READY_TO_MODEL is acceptable, though it silently dropped the profit floor.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 1.5,
+    "total_weight": 3.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 1.5,
+        "total_weight": 3.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 3,
+    "p2_unresolved_slots": [
+      "H1",
+      "H3"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about any quarter-specific production restriction, nor about Product I specifically. Its questions covered the shared hours limit, demand firmness, and delay-cost mechanics, but nothing addressed whether Product I can be produced in the second quarter."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "are the table values hard minimum delivery requirements that must be met each quarter (with any shortfall incurring delay costs), or are they target quantities where the factory can choose to produce more or less each quarter...",
+      "rationale": "The agent probed whether reservations are firm requirements versus discretionary targets and followed up (turn 3) on how held/backlogged units satisfy later minimums. This touches the demand-fulfillment semantics, but it does not explicitly confirm that all reservations must be fulfilled eventually with late delivery permitted, so coverage is only partial."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "no_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1", "H2"],
+    "rationale": "The conversation never reached a READY_TO_MODEL or equivalent final modeling/answer state; the agent instead looped on the same delay-cost question until the transcript degenerated. At the end, the P1 slots H1 (never addressed) and H2 (only partially covered) remained unresolved."
+  },
+  "summary": "The agent clarified the shared capacity limit and delay-cost mechanics but never asked about the Product I second-quarter production restriction and only partially probed whether all contract reservations must be fulfilled with late delivery. It then got stuck repeating an already-answered delay-cost question and never reached a modeling/READY_TO_MODEL state, leaving both P1 slots unresolved."
+}

@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "minimum_profit_target",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Is the $10,000 total weekly profit requirement a hard constraint that must be strictly satisfied, or is it a soft target that can be violated if necessary to maximize profit?",
+      "rationale": "The agent explicitly asked about the minimum weekly profit requirement and clarified its hard-constraint status."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_production_model_B",
+      "severity": "P2",
+      "hit": "yes",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "Is there a minimum production requirement for Model B per week, or can the production quantity for Model B be zero?",
+      "rationale": "The agent directly asked about the minimum production requirement for Model B, surfacing the 15-unit contractual obligation."
+    },
+    {
+      "slot_id": "H3",
+      "name": "exact_process_I_time",
+      "severity": "P2",
+      "hit": "partial",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is there a maximum limit on the total weekly hours that can be used for Process I, or is the 150-hour capacity for Process I a hard ceiling that cannot be exceeded?",
+      "rationale": "The agent probed the Process I time constraint but only as an upper-bound/ceiling question, never asking whether Process I time must be exactly 150 hours."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Process I time is constrained to at most 150 hours (4A + 6B <= 150), not required to equal exactly 150 hours.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent only confirmed the 150-hour ceiling in turn 3 and never asked whether Process I must be exactly 150 hours, then modeled it as an inequality without confirmation."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "All hidden slots in this case are P2; H1 and H2 were resolved and the only gap (H3) is a P2 boundary detail, so stopping at READY_TO_MODEL was appropriate."
+  },
+  "summary": "The agent recovered the minimum Model B production and minimum profit requirements through targeted questions and clarified key interpretation issues, but only partially addressed the Process I exact-150-hour requirement, which it silently modeled as an upper bound. Since all hidden slots are P2, the stop was appropriate."
+}

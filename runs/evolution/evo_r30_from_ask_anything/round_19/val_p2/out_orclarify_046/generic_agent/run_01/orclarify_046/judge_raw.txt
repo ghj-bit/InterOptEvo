@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "max_shifts_per_week",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements for the scheduling plan, such as limits on the number of days a student can work per week, requirements for specific students to be on duty on specific days, or restrictions on which students can work together?",
+      "rationale": "The agent explicitly asked about limits on the number of days a student can work per week, directly targeting the hidden shift-limit slot."
+    },
+    {
+      "slot_id": "H2",
+      "name": "max_students_per_day",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not independently ask about a daily cap on the number of distinct students before the user volunteered it; later questions only clarified the already-revealed constraint, so no recovery credit is given."
+    },
+    {
+      "slot_id": "H3",
+      "name": "objective_minimize_gross_pay",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 3 generic_agent",
+      "evidence_quote": "Is the primary objective of the scheduling plan to minimize the total weekly labor cost (sum of wage times hours for all students), or is there a different objective such as maximizing fairness or minimizing total hours worked?",
+      "rationale": "The agent explicitly asked about the optimization objective, including minimizing total weekly labor cost."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H2"],
+    "rationale": "The agent entered READY_TO_MODEL after resolving the objective and the weekly shift limit, but H2 was not independently elicited and is therefore unresolved by slot-hit result, making the stop premature for a P1 hidden slot."
+  },
+  "summary": "The agent asked directly about the objective and the weekly shift limit, but it only received the daily distinct-student cap because the user volunteered it. It then entered READY_TO_MODEL with H2 not properly recovered and later looped on unconfirmed non-hidden details."
+}

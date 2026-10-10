@@ -1,0 +1,37 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "product_I_no_production_Q2",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about quarter-specific production restrictions, and never mentioned Product I being unavailable in Q2. Its questions focused only on hours, costs, inventory, and integrality."
+    },
+    {
+      "slot_id": "H2",
+      "name": "contract_reservations_must_be_delivered",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 6 generic_agent",
+      "evidence_quote": "can inventory be negative (i.e., can you produce less than demand in a quarter and make up the difference in a later quarter, incurring the delay compensation cost), or must inventory never go below zero",
+      "rationale": "The agent explicitly probed whether late delivery (backlogging) is permitted and how it is handled, confirming that shortfalls are carried over and made up later, which matches the slot's acceptable-question criterion."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Product I can be produced in all four quarters, with no quarter-specific production restriction (Q2 prohibition ignored).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about quarter-specific production restrictions for Product I, yet the READY_TO_MODEL summary lists only hours, inventory, and final-stock constraints and states 'No other costs or constraints beyond those specified,' implicitly assuming Product I is producible in Q2."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": ["H1"],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 slot H1 (Product I cannot be produced in Q2) was never raised or confirmed, leaving a material constraint unmodeled."
+  },
+  "summary": "The agent thoroughly clarified cost mechanics, inventory semantics, hours limits, and integrality, correctly resolving H2, but never asked about quarter-specific production restrictions, silently assuming Product I could be produced in Q2 and stopping prematurely with that P1 slot unresolved."
+}

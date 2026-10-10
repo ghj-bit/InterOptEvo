@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "robot_doll_mutual_exclusion",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether manufacturing robots prevents making dolls or otherwise inquire about restrictions between robots and dolls before READY_TO_MODEL."
+    },
+    {
+      "slot_id": "H2",
+      "name": "doll_model_car_quantity_limit",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether doll production is capped by the number of model cars or mention the dolls versus model cars quantity relationship before READY_TO_MODEL."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Robots and dolls can be manufactured simultaneously; there is no mutual-exclusion constraint between them.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the robot-doll business rule, and the final READY_TO_MODEL model includes no constraint preventing simultaneous robot and doll production."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Doll production is not capped by or linked to model car production.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a dolls-versus-model-cars quantity limit, and the final READY_TO_MODEL model contains no such linking constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while two P1 hidden business constraints remained unasked and unconfirmed, so the stop was premature."
+  },
+  "summary": "The agent clarified the model-car/building-block implication and variable-domain issues, but missed the two P1 business constraints on robot-doll mutual exclusion and doll production versus model car production, then declared all critical facts confirmed.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

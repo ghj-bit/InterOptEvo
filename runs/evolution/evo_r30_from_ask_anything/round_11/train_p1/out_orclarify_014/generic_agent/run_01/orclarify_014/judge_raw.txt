@@ -1,0 +1,39 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_purchase_quantity_type",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "For the protein options (chicken, salmon, tofu), are you allowed to purchase any continuous weight (for example, 150g of chicken), or must proteins also be bought in fixed 100g increments like the vegetables",
+      "rationale": "The agent explicitly asked whether proteins can be bought continuously or only in discrete 100g increments, directly covering the purchase-unit question."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types_required",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Are there any minimum quantity requirements for any specific protein or vegetable (for example, you must include at least one pack of broccoli or at least 100g of chicken",
+      "rationale": "The agent asked about minimum quantities for specific foods, which is related to vegetable requirements, but did not ask about a minimum number of distinct vegetable types, which is the key meaning of H2."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no requirement to select at least three different vegetable types.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never confirmed whether a minimum number of distinct vegetable types must be selected; the user only confirmed no minimum quantity requirements for any specific protein or vegetable, which does not answer H2."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the P1 hidden slot H2 about minimum distinct vegetable types remained only partially addressed and effectively unresolved."
+  },
+  "summary": "The agent correctly resolved the protein purchase-unit ambiguity, but it did not fully recover the minimum distinct vegetable types constraint and then stopped prematurely, silently assuming no such requirement existed."
+}

@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "corn_minimum_twice_wheat",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 5 generic_agent",
+      "evidence_quote": "For the constraint that corn acreage must be at least twice wheat acreage, is this a minimum",
+      "rationale": "The agent never independently asked whether a corn-wheat relationship exists; the constraint was volunteered by the simulator in turn 3 in response to a vague catch-all ('any other constraints... such as minimum or maximum acreage for specific crops'). The agent only asked a confirming follow-up (turn 5) about an already-revealed fact, so this is a partial touch rather than true slot recovery."
+    },
+    {
+      "slot_id": "H2",
+      "name": "wheat_three_times_sorghum",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "For the constraint that wheat acreage must be three times sorghum acreage, is this an exact equality",
+      "rationale": "Same pattern: the wheat-sorghum ratio was volunteered by the simulator in turn 3, not elicited by a slot-targeted question. The agent's turn 4 question only confirms the equality form of an already-disclosed fact, so coverage is partial."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "Both P1 relational constraints (corn >= 2*wheat; wheat = 3*sorghum) were only partially recovered: they were volunteered by the simulator in response to a vague catch-all question and were never independently surfaced by a slot-targeted agent question before READY_TO_MODEL, so they remain unresolved P1 slots at stop time."
+  },
+  "summary": "The agent asked good boundary questions (land as hard max, integrality) and confirmed the two relational constraints, but it recovered corn>=2*wheat and wheat=3*sorghum only because the simulator volunteered them after a vague 'any other constraints?' prompt, then merely confirmed their form; it entered READY_TO_MODEL with those P1 slots not independently elicited.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

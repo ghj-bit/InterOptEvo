@@ -1,0 +1,97 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "min_weekly_production_A",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum/lower bound on Model A production. Turn 10 only asked about a MAXIMUM limit on total units, and turns 11/13 used a vague catch-all about 'additional production limits,' neither of which targets the minimum-A requirement."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_weekly_production_B",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a minimum/lower bound on Model B production. The only production-quantity questions concerned maximum total units and vague 'additional limits,' not a lower bound for B."
+    },
+    {
+      "slot_id": "H3",
+      "name": "max_overtime_process_II",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 4 generic_agent",
+      "evidence_quote": "Is there a maximum limit on the total overtime hours that can be used in Process II per week, or can overtime hours be used without any upper bound?",
+      "rationale": "Explicitly asks for the upper limit/cap on Process II overtime, matching the slot semantics; the cap of 30 hours was then confirmed."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "There is no minimum production requirement for Model A, so x_A and y_A have no lower bound beyond non-negativity.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production quantity for Model A and the fact was never confirmed, yet the READY_TO_MODEL model omits any lower bound on A."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "There is no minimum production requirement for Model B, so x_B and y_B have no lower bound beyond non-negativity.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum production quantity for Model B and the fact was never confirmed, yet the READY_TO_MODEL model omits any lower bound on B."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while two P1 hidden slots (minimum weekly production of Model A and Model B) remained entirely unasked and unresolved, so the model silently omits required contractual lower bounds."
+  },
+  "summary": "The agent confirmed several important facts, including the Process II overtime cap (H3), the objective, the exact Process I usage, the regular/overtime split, and the distinct profit rates. However, it never inquired about the minimum weekly production requirements for Model A or Model B (H1, H2), and then silently omitted those lower bounds in its READY_TO_MODEL formulation, stopping prematurely with two P1 slots unresolved.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.3333333333333333,
+    "earned_weight": 2.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 6.0,
+        "score": 0.3333333333333333
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

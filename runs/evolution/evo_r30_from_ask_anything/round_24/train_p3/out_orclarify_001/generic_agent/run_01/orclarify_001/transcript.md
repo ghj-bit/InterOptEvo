@@ -1,0 +1,239 @@
+## Turn 1 - Generic Agent
+
+QUESTION: Is the objective to minimize the total cost over the 8 weeks, where total cost includes wages for skilled workers, wages for trainees during training, wages for newly trained workers after they finish training, overtime wages, and late-delivery compensation fees?
+
+## Turn 1 - User Simulator
+
+Yes, that is correct. The objective is to minimize the total cost over the 8 weeks, and the total cost includes wages for skilled workers, wages for trainees during training, wages for newly trained workers after they finish training, overtime wages, and late-delivery compensation fees.
+
+## Turn 2 - Generic Agent
+
+QUESTION: When a skilled worker trains new workers, does that skilled worker spend their entire two-week training period on training (producing zero food), or can they split their time between production and training within those two weeks?
+
+## Turn 2 - User Simulator
+
+The skilled worker spends their entire two-week training period on training and produces zero food. They do not split their time between production and training.
+
+## Turn 3 - Generic Agent
+
+QUESTION: Can a single skilled worker train a new batch of 3 workers in consecutive two-week periods (for example, training 3 in weeks 1-2 and another 3 in weeks 3-4), or is there a limit on how many consecutive training periods one skilled worker can undertake?
+
+## Turn 3 - User Simulator
+
+There is no limit on how many consecutive training periods one skilled worker can undertake. A skilled worker can train a new batch of 3 workers in consecutive two-week periods.
+
+## Turn 4 - Generic Agent
+
+QUESTION: When a skilled worker is assigned to train a batch of 3 new workers during a specific two-week period, does that skilled worker remain in the skilled workforce and continue receiving the skilled worker wage of 360 yuan per week during those two weeks, or are they removed from the skilled workforce and paid at a different rate?
+
+## Turn 4 - User Simulator
+
+The skilled worker remains in the skilled workforce and continues receiving the skilled worker wage of 360 yuan per week during the two-week training period.
+
+## Turn 5 - Generic Agent
+
+QUESTION: Do the 50 new workers that must be trained by the end of week 8 need to be trained in batches of exactly 3 per skilled worker per two-week period, or can a skilled worker train fewer than 3 new workers in a two-week period if needed?
+
+## Turn 5 - User Simulator
+
+A skilled worker can train fewer than 3 new workers in a two-week period if needed. The number 3 is the maximum, not a required batch size.
+
+## Turn 6 - Generic Agent
+
+QUESTION: Can a single new worker be trained by multiple skilled workers simultaneously, or must each new worker be assigned to exactly one skilled worker for their entire two-week training period?
+
+## Turn 6 - User Simulator
+
+Each new worker must be assigned to exactly one skilled worker for their entire two-week training period.
+
+## Turn 7 - Generic Agent
+
+QUESTION: When a new worker finishes their two-week training period, do they immediately become a fully productive worker with the same production rates as skilled workers starting the very next week, or is there any delay or ramp-up period before they can contribute to production?
+
+## Turn 7 - User Simulator
+
+They immediately become a fully productive worker with the same production rates as skilled workers starting the very next week. There is no delay or ramp-up period.
+
+## Turn 8 - Generic Agent
+
+QUESTION: Can a worker who has just finished training in a two-week period immediately start training new workers in the very next two-week period, or is there a minimum gap between finishing training and starting a new training assignment?
+
+## Turn 8 - User Simulator
+
+A worker who has just finished training can immediately start training new workers in the very next two-week period. There is no minimum gap between finishing training and starting a new training assignment.
+
+## Turn 9 - Generic Agent
+
+QUESTION: Are the weekly demand figures for foods I and II hard requirements that must be met exactly each week, or can production exceed demand (with excess inventory carried over to future weeks) or fall short (incurring the late-delivery compensation fee)?
+
+## Turn 9 - User Simulator
+
+Production can fall short of demand, incurring the late-delivery compensation fee. The demand figures are not hard requirements that must be met exactly each week.
+
+## Turn 10 - Generic Agent
+
+QUESTION: If production exceeds demand in a given week, can the excess be stored as inventory and used to satisfy demand in future weeks, or is any excess production simply wasted and cannot be carried over?
+
+## Turn 10 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 11 - Generic Agent
+
+QUESTION: If production exceeds demand in a given week, is the excess production stored as inventory to satisfy future demand, or is it simply wasted and cannot be carried over to future weeks?
+
+## Turn 11 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 12 - Generic Agent
+
+QUESTION: For the purpose of this model, should I assume that excess production in any week is simply wasted and cannot be carried over as inventory to satisfy demand in future weeks?
+
+## Turn 12 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 13 - Generic Agent
+
+QUESTION: Regarding the late-delivery compensation fee of 0.5 yuan per kg per week for food I, if demand is not met in week 1, does the penalty accumulate for each subsequent week until the shortfall is covered, or is the penalty charged only once for the total shortfall amount?
+
+## Turn 13 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 14 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 14 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 15 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 15 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 16 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 16 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 17 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 17 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 18 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 18 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 19 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 19 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 20 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 20 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 21 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 21 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 22 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 22 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 23 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 23 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 24 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 24 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 25 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 25 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 26 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 26 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 27 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 27 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 28 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 28 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 29 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 29 - User Simulator
+
+The point still needs internal confirmation.
+
+## Turn 30 - Generic Agent
+
+QUESTION: Regarding the overtime option of 60 hours per week, is this available to all workers (skilled workers, newly trained workers, and trainees) or only to skilled workers?
+
+## Turn 30 - User Simulator
+
+The point still needs internal confirmation.

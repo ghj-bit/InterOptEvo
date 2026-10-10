@@ -1,0 +1,102 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "missing_objective",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the goal to minimize the total cost of the tables ordered, or is there a different objective such as maximizing the number of tables within a budget?",
+      "rationale": "The agent explicitly asked about the optimization objective and confirmed minimizing total cost."
+    },
+    {
+      "slot_id": "H2",
+      "name": "A_requires_min_B_tables",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked only about general per-supplier order limits and whether the total-table constraint was the only constraint; it never asked about the conditional rule that ordering from A requires at least 30 tables from B."
+    },
+    {
+      "slot_id": "H3",
+      "name": "B_requires_C_order",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent did not ask whether ordering from Supplier B requires also ordering from Supplier C, nor did it explicitly mark this conditional rule as needing confirmation."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H2",
+      "agent_assumption": "Orders from Supplier A and Supplier B are independent, so ordering from A imposes no requirement to order at least 30 tables from B.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the A-to-B conditional requirement and then omitted it from the final model constraints."
+    },
+    {
+      "related_slot": "H3",
+      "agent_assumption": "Orders from Supplier B and Supplier C are independent, so ordering from B does not require also ordering from C.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the B-to-C conditional requirement and then omitted it from the final model constraints."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H2",
+      "H3"
+    ],
+    "rationale": "The P0 objective slot was resolved, but the agent entered READY_TO_MODEL while two P1 conditional business-rule slots remained unasked and unconfirmed."
+  },
+  "summary": "The agent correctly confirmed the objective and basic order quantities, but stopped prematurely without investigating the key conditional supplier constraints, leading to a model that silently treats Suppliers A, B, and C as independent.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.42857142857142855,
+    "earned_weight": 3.0,
+    "total_weight": 7.0,
+    "hit_counts": {
+      "yes": 1,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 3,
+    "core_unresolved_slots": [
+      "H2",
+      "H3"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H2",
+      "H3"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

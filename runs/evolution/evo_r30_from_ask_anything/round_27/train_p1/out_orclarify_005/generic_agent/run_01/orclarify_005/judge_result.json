@@ -1,0 +1,75 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Are salmon, beef, and pork available as selectable foods for this dinner, or are they excluded from the menu?",
+      "rationale": "The agent asked about protein availability/inclusion, which is on the protein-selection topic, but never asked the key fact of whether exactly one protein must be chosen or whether multiple can be combined. The exactly-one rule was volunteered by the user simulator, so it is not a full hit."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "turn 9 generic_agent",
+      "evidence_quote": "Are there any other constraints or requirements for the meal plan that have not been mentioned yet, such as minimum quantities for specific foods or restrictions on combining certain items?",
+      "rationale": "The only coverage is a vague catch-all that does not target the minimum number of vegetable types. The at-least-two-vegetables rule was volunteered by the user simulator in response, so it is not a hit."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "At READY_TO_MODEL the agent had only partially touched the protein-selection rule and never specifically asked about the minimum vegetable-types rule. Both P1 slots relied on facts the user volunteered rather than on the agent's own questions, so they remain unresolved when the agent stopped."
+  },
+  "summary": "The agent thoroughly probed data interpretation (weight equality, budget direction, integrality, fiber data) but failed to independently recover the two discrete selection rules, relying on the user simulator volunteering the exactly-one-protein and at-least-two-vegetables rules after a vague catch-all question.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.25,
+    "earned_weight": 1.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 1,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 1.0,
+        "total_weight": 4.0,
+        "score": 0.25
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

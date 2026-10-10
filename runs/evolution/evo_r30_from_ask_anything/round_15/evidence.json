@@ -1,0 +1,1845 @@
+{
+  "schema_version": 1,
+  "benchmark": "OR-Clarify",
+  "round": 15,
+  "passes": 3,
+  "aggregate": {
+    "cases": 8,
+    "core": 0.625,
+    "allslot": 0.5,
+    "silent": 0.125,
+    "net": 0.55
+  },
+  "metrics_note": "Core Exact / All-Slot Exact 是 run 级全有或全无（分别针对 P0/P1 与全部隐藏要素）；Silent/run 是未确认却当真用的假设条数。net = 0.5*Core + 0.5*AllSlot - 0.1*Silent。每个 case 给出各遍的判定与 pass1 的完整问答历史。",
+  "records": [
+    {
+      "case_id": "orclarify_005",
+      "core_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allslot_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "silent_runs": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "net_runs": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "stopping_runs": [
+        "premature_stop",
+        "premature_stop",
+        "premature_stop"
+      ],
+      "turns_runs": [
+        9,
+        9,
+        9
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "partial"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P1",
+          "hit": "partial"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Are salmon, beef, and pork allowed to be included in the dinner selection, or should the model be restricted to the four fiber-containing vegetables (okra, carrots, celery, cabbage) only?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "Salmon, beef, and pork are allowed in the dinner selection. However, the plan must include exactly one of those three protein sources, not all of them."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Is the 600-gram total weight constraint a strict equality that must be met exactly, or is it a maximum limit that allows the total weight to be less than 600 grams?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "The 600-gram total weight is a strict equality; the total weight of the selected foods must equal exactly 600 grams."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Is the $15 budget a strict maximum limit that the total cost must not exceed, or is it a target that the total cost must equal exactly?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The $15 budget is a strict maximum limit; the total cost of the selected foods must not exceed $15."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Are the food quantities (weights) allowed to be any continuous value, or must they be restricted to specific discrete increments such as whole 100-gram units?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Should the food quantities be modeled as continuous values (allowing any fractional gram amount), or must they be restricted to whole 100-gram units?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Are there any additional requirements or constraints on the dinner plan, such as minimum or maximum amounts for specific foods, or rules linking the protein choice to the vegetable selection?"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "Yes, there are two additional requirements:\n\n1. Exactly one protein source from salmon, beef, or pork must be selected.\n2. At least two different kinds of vegetables from okra, carrots, celery, and cabbage must be selected."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: For the requirement that at least two different kinds of vegetables must be selected, does \"selected\" mean that each chosen vegetable must have a strictly positive weight, or is a weight of zero grams acceptable for a vegetable that is counted as selected?"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: For the requirement that at least two different kinds of vegetables must be selected, does \"selected\" mean that each chosen vegetable must have a strictly positive weight, or is a weight of zero grams acceptable for a vegetable that is counted as selected?"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\n**Confirmed Understanding:**\n\n1.  **Objective:** Maximize total fiber intake.\n2.  **Decision Variables:** Weight (in grams) of each food item (salmon, beef, pork, okra, carrots, celery, cabbage).\n3.  **Variable Domain:** Continuous, non-negative values. *(Assumed: The user did not confirm if weights must be discrete 100g units, so continuous is the standard default for such planning problems unless specified otherwise.)*\n4.  **Constraints:**\n    *   **Total Weight:** Must equal exactly 600 grams.\n    *   **Total Cost:** Must not exceed $15.\n    *   **Protein Selection:** Exactly one of salmon, beef, or pork must be selected. *(Assumed: \"Selected\" implies a strictly positive weight for the chosen protein and zero weight for the others.)*\n    *   **Vegetable Selection:** At least two different kinds of vegetables from okra, carrots, celery, and cabbage must be selected. *(Assumed: \"Selected\" implies a strictly positive weight for at least two of the vegetable types.)*\n5.  **Data:**\n    *   **Fiber (per 100g):** Okra 3.2g, Carrots 2.7g, Celery 1.6g, Cabbage 2.0g. *(Note: Fiber content for salmon, beef, and pork is not provided. Assumed to be 0g.)*\n    *   **Price (per 100g):** Salmon $4.0, Beef $3.6, Pork $1.8, Okra $2.6, Carrots $1.2, Celery $1.6, Cabbage $2.3.\n\n**Open Assumptions:**\n*   Food weights are continuous (not restricted to 100g increments).\n*   \"Selected\" for proteins and vegetables means a strictly positive weight (> 0g).\n*   Fiber content for salmon, beef, and pork is 0g."
+        }
+      ],
+      "mean_net": -0.067
+    },
+    {
+      "case_id": "orclarify_011",
+      "core_runs": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "allslot_runs": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "net_runs": [
+        0.0,
+        1.0,
+        -0.1
+      ],
+      "stopping_runs": [
+        "no_stop",
+        "appropriate_stop",
+        "premature_stop"
+      ],
+      "turns_runs": [
+        30,
+        7,
+        7
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P0",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P1",
+          "hit": "partial"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the objective to maximize total weekly profit, or is it to minimize total weekly cost, given that you also require profit to be at least 3000 yuan"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The objective is to maximize total weekly profit."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Are the production quantities for Type A and Type B required to be whole numbers"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "The business facts do not specify whether production quantities must be whole numbers. This point still needs internal confirmation."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Should the production quantities for Type A and Type B be treated as whole numbers"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The business facts do not specify whether production quantities must be whole numbers. This point still needs internal confirmation."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Are there any additional requirements or constraints beyond the profit minimum, Type A minimum, and the three time"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "Yes, there is an additional requirement: idle time for each process should be minimized, with weights proportional to the corresponding hourly cost."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Is the requirement to minimize idle time a secondary objective to be optimized only after maximizing profit"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "The business facts state that we want to minimize idle time for each process, with weights proportional to the corresponding hourly cost, but they do not specify whether this is a secondary objective to be optimized only after maximizing profit. This point still needs internal confirmation."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Is the requirement to minimize idle time a secondary objective to be optimized only after maximizing"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "The business facts do not specify whether minimizing idle time is a secondary objective to be optimized only after maximizing profit. This point still needs internal confirmation."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: Is the requirement to minimize idle time a secondary objective"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "The business facts do not specify whether minimizing idle time is a secondary objective. This point still needs internal confirmation."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: Is the requirement to minimize idle"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "The business facts do not specify whether minimizing idle time is a secondary objective. This point still needs internal confirmation."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION: Is the requirement to"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "QUESTION: Is the requirement to minimize"
+        },
+        {
+          "turn": 10,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 11,
+          "who": "agent",
+          "text": "QUESTION: Is the"
+        },
+        {
+          "turn": 11,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 12,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 12,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 13,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 13,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 14,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 14,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 15,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 15,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 16,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 16,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 17,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 17,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 18,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 18,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 19,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 19,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 20,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 20,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 21,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 21,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 22,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 22,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 23,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 23,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 24,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 24,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 25,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 25,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 26,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 26,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 27,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 27,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 28,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 28,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 29,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 29,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 30,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 30,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        }
+      ],
+      "mean_net": 0.3
+    },
+    {
+      "case_id": "orclarify_020",
+      "core_runs": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "premature_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        6,
+        6,
+        8
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "no"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P1",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: When you say that manufacturing model cars means they will also manufacture building blocks, do you mean that the number of model cars produced must be less than or equal to the number of building blocks produced, or that the number of model cars produced must be exactly equal to the number of building blocks produced?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "It means that if we produce any model cars, we must also produce building blocks. It does not require the quantities to be equal, nor does it require the number of model cars to be less than or equal to the number of building blocks. It is simply a requirement that both products are produced together if model cars are in the plan."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: For the production quantities of robots, model cars, building blocks, and dolls, should each be a whole number (integer) or can they be fractional values?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "The production quantities should be whole numbers (integers)."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Are there any other requirements or constraints on the production plan, such as minimum production quantities for any product, maximum production limits, or other resource limitations beyond plastic and electronic components?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "There are two additional constraints:\n\n1. If we manufacture robots, we will not manufacture dolls.\n2. The number of dolls manufactured cannot exceed the number of model cars manufactured."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Regarding the constraint that the number of dolls manufactured cannot exceed the number of model cars manufactured, does this apply even if no model cars are produced (meaning dolls would also be zero), or is this constraint only active when model cars are being produced?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "This constraint applies at all times. If no model cars are produced, then no dolls can be produced either."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Are there any maximum production limits for any of the four products (robots, model cars, building blocks, dolls), or can each product theoretically be produced in unlimited quantities as long as the resource constraints are satisfied?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "There are no maximum production limits for any of the four products. Each product can be produced in unlimited quantities as long as the resource constraints and the other requirements are satisfied."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\n**Confirmed Understanding:**\n\n**Objective:** Maximize total profit.\n\n**Decision Variables:**\n- x1 = number of robots produced (integer, non-negative)\n- x2 = number of model cars produced (integer, non-negative)\n- x3 = number of building blocks produced (integer, non-negative)\n- x4 = number of dolls produced (integer, non-negative)\n\n**Profit per unit:**\n- Robot: $15\n- Model car: $8\n- Building blocks: $12\n- Doll: $5\n\n**Objective Function:** Maximize 15x1 + 8x2 + 12x3 + 5x4\n\n**Resource Constraints:**\n- Plastic: 30x1 + 10x2 + 20x3 + 15x4 ≤ 1200\n- Electronic components: 8x1 + 5x2 + 3x3 + 2x4 ≤ 800\n\n**Logical Constraints:**\n1. If model cars are produced (x2 > 0), then building blocks must also be produced (x3 > 0).\n2. If robots are produced (x1 > 0), then dolls cannot be produced (x4 = 0).\n3. The number of dolls cannot exceed the number of model cars: x4 ≤ x2 (applies at all times, so if x2 = 0 then x4 = 0).\n\n**Variable Domains:**\n- All variables are non-negative integers.\n- No upper bounds on any variable beyond what the resource constraints impose.\n\n**Assumptions:**\n- None. All formulation-critical facts were confirmed by the user."
+        }
+      ],
+      "mean_net": 0.667
+    },
+    {
+      "case_id": "orclarify_001",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "no_stop",
+        "no_stop",
+        "no_stop"
+      ],
+      "turns_runs": [
+        30,
+        30,
+        30
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P0",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the objective to minimize the total cost over the 8-week horizon, where total cost includes wages for skilled workers, wages for trainees during their training period, wages for newly trained workers after they finish training, overtime premiums, and late-delivery compensation fees"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "Yes, that is correct. The objective is to minimize the total cost over the 8-week horizon, and total cost includes wages for skilled workers, wages for trainees during their training period, wages for newly trained workers after they finish training, overtime premiums, and late-delivery compensation fees."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: When a skilled worker is assigned to train new workers during a two-week period, is that worker completely unavailable for production during those two weeks"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "Yes, during the two-week training period, the skilled worker doing the training is completely unavailable for production."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Can a single skilled worker train new workers in consecutive two-week periods"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The available business facts do not specify whether a skilled worker can train in consecutive two-week periods. This point still needs internal confirmation."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Can a single skilled worker train new workers in consecutive two-week"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The available business facts do not specify whether a skilled worker can train in consecutive two-week periods. This point still needs internal confirmation."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Is the 50 new workers that must be trained by the end of week 8 a hard"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "Yes, the requirement to train a total of 50 new workers by the end of the 8th week is a hard constraint."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Is the weekly demand for foods"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking about the weekly demand for foods."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: Is the weekly"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: Is the weekly"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION: Is the"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 10,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 11,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 11,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 12,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 12,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 13,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 13,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 14,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 14,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 15,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 15,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 16,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 16,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 17,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 17,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 18,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 18,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 19,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 19,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 20,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 20,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 21,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 21,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 22,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 22,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 23,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 23,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 24,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 24,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 25,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 25,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 26,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 26,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 27,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 27,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 28,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 28,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 29,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 29,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        },
+        {
+          "turn": 30,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 30,
+          "who": "client",
+          "text": "The question appears incomplete. Please clarify what you are asking."
+        }
+      ],
+      "mean_net": 1.0
+    },
+    {
+      "case_id": "orclarify_003",
+      "core_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "allslot_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stopping_runs": [
+        "no_stop",
+        "no_stop",
+        "no_stop"
+      ],
+      "turns_runs": [
+        30,
+        30,
+        30
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "no"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the 10,000-unit minimum ending inventory requirement for June a hard constraint that must be strictly satisfied, or is it a soft target that can be violated if doing so increases total net profit"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "It is a hard constraint. The ending inventory at the end of June must be at least 10,000 units."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Is the 20-hour maximum overtime per worker per month a hard constraint that must be strictly"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "It is a hard constraint. Total overtime hours per month for the entire workforce cannot exceed 20 hours per worker."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Are the decision variables for workforce size (hiring and"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The workforce size can change each month through hiring and firing. Hiring and firing are decisions we make each month, with associated costs of 5,000 Yuan per new worker hired and 8,000 Yuan per worker fired."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Is the workforce size"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The workforce size can change each month through hiring and firing."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Is the"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "The question appears to be incomplete. Could you please clarify what you are asking?"
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "The question appears to be incomplete. Could you please clarify what you are asking?"
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "The question appears to be incomplete. Could you please clarify what you are asking?"
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "The question appears to be incomplete. Could you please clarify what you are asking?"
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "The question appears to be incomplete. Could you please clarify what you are"
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 10,
+          "who": "client",
+          "text": "The question appears to be incomplete. Could you"
+        },
+        {
+          "turn": 11,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 11,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 12,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 12,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 13,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 13,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 14,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 14,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 15,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 15,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 16,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 16,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 17,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 17,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 18,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 18,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 19,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 19,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 20,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 20,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 21,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 21,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 22,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 22,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 23,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 23,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 24,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 24,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 25,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 25,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 26,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 26,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 27,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 27,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 28,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 28,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 29,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 29,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 30,
+          "who": "agent",
+          "text": "QUESTION: Is"
+        },
+        {
+          "turn": 30,
+          "who": "client",
+          "text": "The"
+        }
+      ],
+      "mean_net": 0.0
+    },
+    {
+      "case_id": "orclarify_009",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        7,
+        6,
+        8
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P0",
+          "hit": "yes"
+        },
+        {
+          "slot_id": "H2",
+          "severity": "P2",
+          "hit": "partial"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Are the production quantities for each toy type required to be whole numbers (integer units), or can they be fractional?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The production quantities for each toy type must be whole numbers (integer units)."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Is the goal to maximize the total profit from all toys produced, or is there a different objective such as minimizing resource usage or meeting a specific production target?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "The goal is to maximize the total profit from all toys produced."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Are there any minimum production requirements for any of the toy types, or can the production quantity for any toy type be zero?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "There are no minimum production requirements. The production quantity for any toy type can be zero."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Are there any maximum production limits for any specific toy type, or are the only upper bounds on production determined by the available wood and steel?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "There are no specific maximum production limits for any individual toy type. The only upper bounds on production are determined by the available wood and steel."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Are there any other constraints or requirements not yet mentioned, such as labor limits, storage capacity, or additional conditional rules between the toy types?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "Yes, there is one additional constraint: the number of toy boats manufactured cannot exceed the number of toy trains manufactured."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION: Is the constraint that the number of toy boats manufactured cannot exceed the number of toy trains manufactured a hard limit that must always be satisfied, or is it a soft target where violations are allowed if a penalty is applied?"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "It is a hard limit that must always be satisfied."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\n**Confirmed Understanding:**\n\n1.  **Objective:** Maximize total profit.\n    *   Profit per unit: Truck $5, Airplane $10, Boat $8, Train $7.\n2.  **Decision Variables:**\n    *   $x_T$: Number of toy trucks produced (integer, $\\ge 0$)\n    *   $x_A$: Number of toy airplanes produced (integer, $\\ge 0$)\n    *   $x_B$: Number of toy boats produced (integer, $\\ge 0$)\n    *   $x_R$: Number of toy trains produced (integer, $\\ge 0$)\n3.  **Resource Constraints:**\n    *   Wood: $12x_T + 20x_A + 15x_B + 10x_R \\le 890$\n    *   Steel: $6x_T + 3x_A + 5x_B + 4x_R \\le 500$\n4.  **Logical Constraints:**\n    *   If trucks are manufactured ($x_T > 0$), then trains are not manufactured ($x_R = 0$).\n    *   If boats are manufactured ($x_B > 0$), then airplanes are also manufactured ($x_A > 0$).\n    *   The number of boats cannot exceed the number of trains ($x_B \\le x_R$).\n5.  **Domain:** All variables are non-negative integers.\n\n**Assumptions:**\n*   None. All critical facts were confirmed by the user."
+        }
+      ],
+      "mean_net": 0.5
+    },
+    {
+      "case_id": "orclarify_022",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "appropriate_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        6,
+        13,
+        6
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P0",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the objective to maximize total profit, calculated as total revenue from sales minus total production costs minus total activation costs for the products that are produced?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "No. The objective is to maximize total revenue from selling the products."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Are the production costs and activation costs included as constraints that limit the available budget, or are they simply excluded from the model entirely?"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "They are simply excluded from the model entirely."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION: Is the production quantity for each product required to be an integer number of units, or can it be any continuous value?"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION: Is the production quantity for each product required to be an integer number of units, or can it be any continuous value?"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The point still needs internal confirmation."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION: Are there any other constraints or requirements for the production plan that have not been mentioned yet?"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "No."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "READY_TO_MODEL\n\n**Confirmed Understanding:**\n\n1.  **Objective:** Maximize total revenue from selling products A1, A2, and A3.\n    *   Revenue = (Quantity of A1 × $124) + (Quantity of A2 × $109) + (Quantity of A3 × $115).\n    *   Production costs and activation costs are **excluded** from the model entirely (neither in the objective nor as constraints).\n\n2.  **Decision Variables:**\n    *   Let $x_1, x_2, x_3$ be the production quantities for products A1, A2, and A3, respectively.\n    *   Let $y_1, y_2, y_3$ be binary variables indicating whether product $i$ is produced ($y_i = 1$ if $x_i > 0$, $y_i = 0$ if $x_i = 0$).\n\n3.  **Constraints:**\n    *   **Maximum Demand (Ceiling):**\n        *   $x_1 \\le 5300$\n        *   $x_2 \\le 4500$\n        *   $x_3 \\le 5400$\n    *   **Minimum Batch Size (Linked to Activation):**\n        *   If produced, quantity must be at least the minimum batch size.\n        *   $x_1 \\ge 20 y_1$\n        *   $x_2 \\ge 20 y_2$\n        *   $x_3 \\ge 16 y_3$\n    *   **Production Days (Total Limit):**\n        *   Total production days used must not exceed 22.\n        *   $\\frac{x_1}{500} + \\frac{x_2}{450} + \\frac{x_3}{550} \\le 22$\n    *   **Non-negativity:**\n        *   $x_1, x_2, x_3 \\ge 0$\n        *   $y_1, y_2, y_3 \\in \\{0, 1\\}$\n\n4.  **Assumptions:**\n    *   **Variable Domain:** It is assumed that production quantities $x_1, x_2, x_3$ are **continuous** variables. (Note: The user indicated this point needed internal confirmation and did not provide a final answer. If integer quantities are required, the model should be adjusted to $x_i \\in \\mathbb{Z}^+$).\n    *   **Activation Cost Role:** Although activation costs are listed in the data, they are explicitly excluded from the model per user instruction. The binary variables $y_i$ are only used to enforce the minimum batch size logic."
+        }
+      ],
+      "mean_net": 1.0
+    },
+    {
+      "case_id": "orclarify_027",
+      "core_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "allslot_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "silent_runs": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "net_runs": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "stopping_runs": [
+        "no_stop",
+        "appropriate_stop",
+        "appropriate_stop"
+      ],
+      "turns_runs": [
+        30,
+        8,
+        6
+      ],
+      "slot_verdicts": [
+        {
+          "slot_id": "H1",
+          "severity": "P1",
+          "hit": "yes"
+        }
+      ],
+      "dialogue": [
+        {
+          "turn": 1,
+          "who": "agent",
+          "text": "QUESTION: Is the goal to maximize total profit (revenue minus raw material costs and operating costs), or is there a different objective such as maximizing total units produced or minimizing total cost?"
+        },
+        {
+          "turn": 1,
+          "who": "client",
+          "text": "The goal is to maximize total profit. That means revenue from the products sold, minus the raw material costs, minus the operating costs for any machines you decide to run."
+        },
+        {
+          "turn": 2,
+          "who": "agent",
+          "text": "QUESTION: Are the operating costs listed in the table (e.g., 300 yuan for A1) fixed costs incurred if the machine is used at all, or are they variable costs that scale proportionally with the amount of time the machine is used"
+        },
+        {
+          "turn": 2,
+          "who": "client",
+          "text": "They are fixed costs. If you use a machine at all during the planning period, you must pay the entire listed amount."
+        },
+        {
+          "turn": 3,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 3,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 4,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 4,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 5,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 5,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 6,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 6,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 7,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 7,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 8,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 8,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 9,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 9,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 10,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 10,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 11,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 11,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 12,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 12,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 13,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 13,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 14,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 14,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 15,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 15,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 16,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 16,
+          "who": "client",
+          "text": "The operating costs are fixed charges. If you use a machine at all during the planning period, you must pay that entire amount."
+        },
+        {
+          "turn": 17,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 17,
+          "who": "client",
+          "text": "The operating costs are fixed"
+        },
+        {
+          "turn": 18,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 18,
+          "who": "client",
+          "text": "The operating"
+        },
+        {
+          "turn": 19,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 19,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 20,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 20,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 21,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 21,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 22,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 22,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 23,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 23,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 24,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 24,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 25,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 25,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 26,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 26,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 27,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 27,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 28,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 28,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 29,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 29,
+          "who": "client",
+          "text": "The"
+        },
+        {
+          "turn": 30,
+          "who": "agent",
+          "text": "QUESTION"
+        },
+        {
+          "turn": 30,
+          "who": "client",
+          "text": "The"
+        }
+      ],
+      "mean_net": 1.0
+    }
+  ]
+}

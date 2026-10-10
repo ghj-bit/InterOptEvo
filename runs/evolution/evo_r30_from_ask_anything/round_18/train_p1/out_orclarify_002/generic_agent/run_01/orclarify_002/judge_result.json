@@ -1,0 +1,87 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "training_capacity_per_jet",
+      "severity": "P0",
+      "hit": "yes",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Is the number of trained pilots produced in a given year equal to the number of fighter jets allocated to training that year, or is there a different conversion rate or training duration that affects how many pilots are available by the end of year 2?",
+      "rationale": "The question explicitly asks about the conversion rate from training jets to trained pilots, which is semantically equivalent to the per-jet training capacity."
+    },
+    {
+      "slot_id": "H2",
+      "name": "pilot_to_combat_jet_mapping",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked how many combat jets a trained pilot can operate or otherwise touched the pilot-to-combat-jet relationship."
+    },
+    {
+      "slot_id": "H3",
+      "name": "training_duration_and_start",
+      "severity": "P1",
+      "hit": "yes",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "Are the 5 pilots trained by a training jet in a given year available immediately at the end of that same year, or do they require an additional year of training before they are counted as available?",
+      "rationale": "The agent explicitly asked about the training duration/timeline by asking whether an additional training year is required before pilots become available."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The P0 slot H1 and the P1 slot H3 were both asked about before READY_TO_MODEL; only the low-impact P2 slot H2 remained unasked. Other operational uncertainties were explicitly flagged as assumptions rather than silently modeled."
+  },
+  "summary": "The agent recovered the core per-jet training capacity and clarified the training timing, then stopped appropriately after resolving the P0/P1 hidden slots. It did not ask about the P2 pilot-to-combat-jet mapping, but that omission does not affect the core trained-pilot count.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.8333333333333334,
+    "earned_weight": 5.0,
+    "total_weight": 6.0,
+    "hit_counts": {
+      "yes": 2,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P0": {
+        "earned_weight": 3.0,
+        "total_weight": 3.0,
+        "score": 1.0
+      },
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 1.0,
+        "score": 0.0
+      },
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 2.0,
+        "score": 1.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": true,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [
+      "H2"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 3,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

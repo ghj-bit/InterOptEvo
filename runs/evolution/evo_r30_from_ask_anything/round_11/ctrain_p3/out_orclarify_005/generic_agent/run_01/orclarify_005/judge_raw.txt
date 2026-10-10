@@ -1,0 +1,33 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 7 generic_agent",
+      "evidence_quote": "For the requirement that exactly one protein source must be selected, does \"selected\" mean that the chosen meat must have a strictly positive amount, or is it acceptable for the chosen meat to have a zero amount as long as the other two meats are zero?",
+      "rationale": "The agent touched the protein-selection issue, but only after the user volunteered the exactly-one-protein rule. It asked about the meaning of \"selected\" rather than directly asking whether exactly one protein must be chosen or whether multiple proteins can be combined."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 8 generic_agent",
+      "evidence_quote": "For the requirement that at least two different kinds of vegetables must be selected, does \"selected\" mean that each chosen vegetable must have a strictly positive amount, or is it acceptable for a chosen vegetable to have a zero amount as long as at least two of the four have positive amounts?",
+      "rationale": "The agent touched the vegetable-selection issue, but only after the user volunteered the at-least-two-vegetables rule. It did not directly ask whether a minimum number of vegetable types is required before that volunteered answer."
+    }
+  ],
+  "silent_assumptions": [],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the two P1 hidden slots were only partially recovered through the agent's own questions. The exactly-one-protein and at-least-two-vegetables rules were volunteered by the user after a broad catch-all question, so the agent's direct hidden-slot recovery remains incomplete at stopping."
+  },
+  "summary": "The agent asked several useful clarifications but relied on a broad catch-all question that prompted the user to volunteer the two P1 hidden constraints. It then treated those constraints as confirmed in READY_TO_MODEL, but its own questions never directly recovered H1 or H2, making the stop premature under the hidden-slot standard."
+}

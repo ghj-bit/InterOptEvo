@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked whether salmon, beef, and pork should be included with zero fiber, but never asked how many protein sources must or can be selected. It did not recover the rule that exactly one protein source is required."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent asked about continuous quantities and per-food quantity limits, but never asked whether a minimum number of vegetable types must be selected. It did not recover the at-least-two-vegetables constraint."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No protein selection restriction applies; any combination or amount of salmon, beef, and pork may be selected without requiring exactly one protein source.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about the protein selection rule, and the READY_TO_MODEL summary lists only weight and budget constraints while treating all foods as continuously selectable."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No minimum vegetable type restriction applies; vegetables such as okra, carrots, celery, and cabbage can be selected arbitrarily without requiring at least two kinds.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about a minimum vegetable variety constraint, and the READY_TO_MODEL summary omits any such constraint."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the two P1 hidden constraints about exactly one protein source and at least two vegetable types remained completely unresolved."
+  },
+  "summary": "The agent clarified several boundary issues, including exact weight, continuous amounts, and zero-fiber protein inclusion, but it missed both P1 hidden selection constraints and stopped prematurely with an incomplete READY_TO_MODEL summary.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 2,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 0.0,
+        "total_weight": 4.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

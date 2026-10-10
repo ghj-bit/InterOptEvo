@@ -1,0 +1,66 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "truck_capacity_limit",
+      "severity": "P2",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent's Turn 4 question was about capacity limits on warehouse-to-port routes, not about the number of containers a truck can carry. It never asked about truck capacity or any per-truck container limit, so the hidden truck-capacity fact (U6: each truck carries up to 2 containers) was never recovered."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Truck capacity is unconstrained/irrelevant, so the per-truck limit of 2 containers was omitted from the model.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked about truck capacity in any turn, yet its final model contains no truck-related constraint and lists no per-truck limit, implicitly treating truck capacity as non-binding."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "appropriate_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [],
+    "rationale": "The only hidden slot (H1) is P2 and does not affect the optimization problem's objective or feasibility, so stopping at READY_TO_MODEL after clarifying demand, distances, cost structure, route limits, and integrality was reasonable. No P0/P1 slots remained unresolved."
+  },
+  "summary": "The agent thoroughly clarified the core modeling facts (demand exactness, symmetric distances, single cost component, route capacities, integrality) and stopped appropriately, but never probed the hidden truck-capacity detail (U6), instead silently omitting any per-truck limit. Since that slot is only P2, the omission has minimal impact on model correctness.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.0,
+    "earned_weight": 0.0,
+    "total_weight": 1.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 0,
+      "no": 1,
+      "other": 0
+    },
+    "severity_scores": {
+      "P2": {
+        "earned_weight": 0.0,
+        "total_weight": 1.0,
+        "score": 0.0
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 0,
+    "core_unresolved_slots": [],
+    "p2_slot_count": 1,
+    "p2_unresolved_slots": [
+      "H1"
+    ],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 1,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "appropriate_stop",
+    "rule_based_status": "appropriate_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}

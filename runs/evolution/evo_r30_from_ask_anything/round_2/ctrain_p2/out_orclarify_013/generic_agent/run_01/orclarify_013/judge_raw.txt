@@ -1,0 +1,46 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "corn_minimum_twice_wheat",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a corn-wheat ratio or multiplier. The broad 'any other constraints' question in turn 4 is a vague catch-all and does not clearly target this hidden constraint."
+    },
+    {
+      "slot_id": "H2",
+      "name": "wheat_three_times_sorghum",
+      "severity": "P1",
+      "hit": "no",
+      "evidence_location": "",
+      "evidence_quote": "",
+      "rationale": "The agent never asked about a fixed relationship between wheat and sorghum acres. Its questions covered bounds, integrality, and generic other constraints, not the wheat = 3 * sorghum rule."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "No constraint links corn and wheat acreage; they can be chosen independently.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether corn must be at least twice wheat, yet its READY_TO_MODEL constraints list omits any such relationship."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "No fixed ratio links wheat and sorghum acreage; they can be chosen independently.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never asked whether wheat must be three times sorghum, yet its READY_TO_MODEL constraints list omits that relationship."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent declared READY_TO_MODEL while both P1 hidden relational constraints remained unasked and unresolved."
+  },
+  "summary": "The agent clarified land-use, integrality, and generic resource constraints, but it missed both hidden crop-ratio constraints and then stopped with those P1 slots unresolved. This is a premature stop with silent assumptions that corn/wheat and wheat/sorghum are independent."
+}

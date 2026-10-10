@@ -1,0 +1,88 @@
+{
+  "slot_scores": [
+    {
+      "slot_id": "H1",
+      "name": "protein_selection_rule",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 1 generic_agent",
+      "evidence_quote": "Should the model select quantities from all seven listed foods (salmon, beef, pork, okra, carrots, celery, cabbage), or only from the four fiber-containing vegetables (okra, carrots, celery, cabbage)?",
+      "rationale": "The question touched whether proteins should be included in the selection at all, but it did not explicitly ask the key hidden rule: whether exactly one protein must be selected or whether multiple proteins can be combined."
+    },
+    {
+      "slot_id": "H2",
+      "name": "min_vegetable_types",
+      "severity": "P1",
+      "hit": "partial",
+      "evidence_location": "turn 2 generic_agent",
+      "evidence_quote": "For the \"at least two kinds of vegetables\" restriction, does \"selected\" mean that the quantity of each chosen vegetable must be strictly greater than zero, or is a quantity of zero grams acceptable for a vegetable that is considered \"selected\"?",
+      "rationale": "The question referenced the vegetable-variety restriction and clarified strict positivity, but it did not ask whether a minimum number of vegetable types is required; the at-least-two rule had already been volunteered by the user."
+    }
+  ],
+  "silent_assumptions": [
+    {
+      "related_slot": "H1",
+      "agent_assumption": "Exactly one protein source must be selected (quantity > 0), and the other two protein quantities must be 0.",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly asked about the protein selection count rule; the restriction was volunteered by the user after a broader food-scope question and then treated as confirmed in the READY_TO_MODEL summary."
+    },
+    {
+      "related_slot": "H2",
+      "agent_assumption": "At least two of the four vegetables must be selected (quantity > 0).",
+      "where_it_appeared": "ready_to_model",
+      "silent_reason": "The agent never explicitly asked whether a minimum number of vegetable types was required; it only clarified the meaning of 'selected' after the user volunteered the at-least-two rule, then treated the rule as confirmed."
+    }
+  ],
+  "stopping_behavior": {
+    "status": "premature_stop",
+    "unresolved_p0_slots": [],
+    "unresolved_p1_slots": [
+      "H1",
+      "H2"
+    ],
+    "rationale": "The agent entered READY_TO_MODEL while the two P1 hidden selection rules were not explicitly elicited; both were only partially addressed and were then listed as confirmed based on user-volunteered information."
+  },
+  "summary": "The agent asked useful scoping and calibration questions and resolved several boundary issues, but it did not explicitly ask the two P1 discrete selection rules and instead incorporated them as confirmed after the user volunteered them.",
+  "weighted_summary": {
+    "weighted_slot_score": 0.5,
+    "earned_weight": 2.0,
+    "total_weight": 4.0,
+    "hit_counts": {
+      "yes": 0,
+      "partial": 2,
+      "no": 0,
+      "other": 0
+    },
+    "severity_scores": {
+      "P1": {
+        "earned_weight": 2.0,
+        "total_weight": 4.0,
+        "score": 0.5
+      }
+    }
+  },
+  "restoration_summary": {
+    "core_exact_restore": false,
+    "core_slot_count": 2,
+    "core_unresolved_slots": [
+      "H1",
+      "H2"
+    ],
+    "p2_slot_count": 0,
+    "p2_unresolved_slots": [],
+    "all_slot_exact_restore": false,
+    "all_slot_count": 2,
+    "rule": "Exact restoration uses only P0/P1 slots; unresolved P2 slots do not affect exact restoration."
+  },
+  "stopping_consistency_audit": {
+    "judge_status": "premature_stop",
+    "rule_based_status": "premature_stop",
+    "status_mismatch": false,
+    "unresolved_p0_slots_from_scores": [],
+    "unresolved_p1_slots_from_scores": [
+      "H1",
+      "H2"
+    ],
+    "rule": "Any non-yes P0/P1 slot at READY_TO_MODEL is unresolved."
+  }
+}
